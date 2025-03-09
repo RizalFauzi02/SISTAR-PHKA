@@ -1,6 +1,6 @@
-# Pijetin
+# SISTRA
 
-APPS WEB PIJETIN RPL
+APPS WEB SISTAR
 
 ## Getting started
 
