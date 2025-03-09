@@ -14,7 +14,7 @@
 
             <div class="navbar-collapse collapse" id="navbar-footer">
                 <span class="navbar-text">
-                    &copy; <?= date('Y'); ?>. <a href="#">SISTAR</a> by <a href="#" target="_blank">Github</a>
+                    &copy; <?= date('Y'); ?>. <a href="https://github.com/RizalFauzi02/SISTAR-PHKA">SISTAR</a> by <a href="https://github.com/RizalFauzi02/SISTAR-PHKA" target="_blank">Github</a>
                 </span>
             </div>
         </div>
