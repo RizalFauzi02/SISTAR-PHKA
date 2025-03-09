@@ -1,0 +1,11 @@
+ACCOUNT
+
+- superadmin
+username 	: superadmin
+pass		: superadmin@321
+
+
+MASTER DATA ISINYA:
+- DATA MASTER STATUS PELAYANAN [NANTI DI LOOPING DI MENU STATUS PELAYANAN] > DAN SETIAP MENU MEMILIKI HAK AKSES MASING MASING > DAN ISI NYA ADA nama status, pesan status, created_at, updated_at
+
+== BERESIN ACTION MASTER USER ==
