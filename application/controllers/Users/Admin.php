@@ -17,11 +17,42 @@ class Admin extends CI_Controller
     public function index()
     {
         // Default
-        $this->data['title'] = 'Status Pelayanan';
+        $this->data['title'] = 'Input Pasien Ranap';
         $this->data['menuAdmin'] = [
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => 'active'
+        ];
+
+        $this->data['dropdownAdmin'] = [
+            'nav' => '',
+            'style' => '',
+        ];
+        $this->data['linkAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['profile'] = $this->M_superadmin->getProfile($session)->row_array();
+        // WAJIB ADA
+
+        $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
+
+        $this->template->load('template/default/template', 'admin/v_inputPasien', $this->data);
+    }
+
+    public function status_admin()
+    {
+        // Default
+        $this->data['title'] = 'Status Pelayanan';
+        $this->data['menuAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => 'active',
+            'PasienPulang'       => ''
         ];
 
         $this->data['dropdownAdmin'] = [
@@ -49,7 +80,7 @@ class Admin extends CI_Controller
         // Ambil status berdasarkan role user
         $this->data['status'] = $this->M_superadmin->getStatusByRole($is_role);
 
-        $this->template->load('template/default/template', 'admin/v_admin', $this->data);
+        $this->template->load('template/default/template', 'admin/status_admin', $this->data);
     }
 
     public function prosesAddPasien()

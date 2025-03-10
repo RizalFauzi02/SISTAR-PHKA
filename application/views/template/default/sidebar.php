@@ -23,15 +23,17 @@
                 <div class="media">
                     <div class="media-body">
                         <div class="media-title font-weight-semibold">
-                            <?php if ($_SESSION['is_role'] == 1) {
-                                echo "Superadmin";
-                            } elseif ($_SESSION['is_role'] == 2) {
-                                echo "Admin";
-                            } elseif ($_SESSION['is_role'] == 3) {
-                                echo "Perawat";
-                            } elseif ($_SESSION['is_role'] == 4) {
-                                echo "Farmasi";
-                            } ?>
+                            <div class="media-title font-weight-semibold"><?= $_SESSION['username']; ?> -
+                                <?php if ($_SESSION['is_role'] == 1) {
+                                    echo "Superadmin";
+                                } elseif ($_SESSION['is_role'] == 2) {
+                                    echo "Admin";
+                                } elseif ($_SESSION['is_role'] == 3) {
+                                    echo "Perawat";
+                                } elseif ($_SESSION['is_role'] == 4) {
+                                    echo "Farmasi";
+                                } ?>
+                            </div>
                         </div>
                     </div>
 
@@ -59,18 +61,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= base_url('users/superadmin/status_pelayanan'); ?>" class="nav-link <?= $menuSuperAdmin['Status']; ?>">
+                        <a href="<?= base_url('users/superadmin/add_Pasien'); ?>" class="nav-link <?= $menuSuperAdmin['PasienPulang']; ?>">
                             <i class="icon-gear"></i>
                             <span>
-                                Status Pelayanan
+                                Input Pasien Ranap
                             </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?= base_url('users/superadmin/add_Pasien'); ?>" class="nav-link <?= $menuSuperAdmin['PasienPulang']; ?>">
+                        <a href="<?= base_url('users/superadmin/status_pelayanan'); ?>" class="nav-link <?= $menuSuperAdmin['Status']; ?>">
                             <i class="icon-gear"></i>
                             <span>
-                                Input Pasien Pulang
+                                Status Pelayanan
                             </span>
                         </a>
                     </li>
@@ -91,18 +93,18 @@
                         <a href="<?= base_url('users/admin'); ?>" class="nav-link <?= $menuAdmin['PasienPulang']; ?>">
                             <i class="icon-gear"></i>
                             <span>
-                                Status Pelayanan
+                                Input Pasien Ranap
                             </span>
                         </a>
                     </li>
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <a href="<?= base_url('users/admin/status_admin'); ?>" class="nav-link <?= $menuAdmin['Status']; ?>">
                             <i class="icon-gear"></i>
                             <span>
                                 Status Pelayanan
                             </span>
                         </a>
-                    </li> -->
+                    </li>
                 <?php } elseif ($_SESSION['is_role'] == 3) { ?>
                     <!-- PERAWAT -->
                     <li class="nav-item">

@@ -265,7 +265,7 @@ class Superadmin extends CI_Controller
     public function add_pasien()
     {
         // Default
-        $this->data['title'] = 'Input Pasien Pulang';
+        $this->data['title'] = 'Input Pasien Ranap';
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => '',
             'Status'       => '',
@@ -287,6 +287,8 @@ class Superadmin extends CI_Controller
         $session = $this->session->userdata('username');
         $this->data['profile'] = $this->M_superadmin->getProfile($session)->row_array();
         // WAJIB ADA
+
+        $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
 
         $this->template->load('template/default/template', 'superadmin/pasien_pulang', $this->data);
     }

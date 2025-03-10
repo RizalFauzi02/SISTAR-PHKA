@@ -20,6 +20,15 @@ class M_superadmin extends CI_Model
         return $query->result_array();
     }
 
+    public function get_all_pasien()
+    {
+        $this->db->select('id_pasien, nama_pasien, tanggal_lahir, no_whatsapp, created_at');
+        $this->db->from('m_pasien'); // Pastikan tabel ini benar
+        $query = $this->db->get();
+        return $query->result_array(); // Pastikan menggunakan result_array()
+    }
+
+
     public function insertStatus($data, $users)
     {
         // Simpan status ke tabel m_status
