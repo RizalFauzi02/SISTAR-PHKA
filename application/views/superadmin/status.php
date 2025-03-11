@@ -8,9 +8,6 @@
             </div>
         </div>
         <!-- /page header -->
-        <!-- <?= $user['username']; ?>
-        <?= $user['id_user']; ?>
-        <?= $user['is_role']; ?> -->
         <?= $this->session->flashdata('pesan'); ?>
         <!-- Content area -->
         <div class="content">
@@ -19,11 +16,6 @@
                 <div class="card">
                     <div class=" card-header header-elements-inline d-flex justify-content-center w-100">
                         <h5 class="card-title">Status Pelayanan Pasien</h5>
-                        <!-- <div class="header-elements">
-                            <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a>
-                            </div>
-                        </div> -->
                     </div>
 
                     <div class="card-body">

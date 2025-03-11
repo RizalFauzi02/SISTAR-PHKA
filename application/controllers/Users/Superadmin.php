@@ -21,7 +21,8 @@ class Superadmin extends CI_Controller
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => 'active',
             'Status'       => '',
-            'PasienPulang'       => ''
+            'PasienPulang'       => '',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -52,7 +53,8 @@ class Superadmin extends CI_Controller
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => '',
             'Status'       => 'active',
-            'PasienPulang'       => ''
+            'PasienPulang'       => '',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -112,6 +114,39 @@ class Superadmin extends CI_Controller
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    public function log_SendWhatsApp()
+    {
+        // Default
+        $this->data['title'] = 'Superadmin';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => 'active'
+        ];
+
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->data['log_WA'] = $this->M_superadmin->get_log_WhatsApp();
+
+        $this->template->load('template/default/template', 'superadmin/log_sendWA', $this->data);
+    }
 
     public function m_status()
     {
@@ -120,7 +155,8 @@ class Superadmin extends CI_Controller
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => '',
             'Status'       => '',
-            'PasienPulang'       => ''
+            'PasienPulang'       => '',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -153,7 +189,8 @@ class Superadmin extends CI_Controller
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => '',
             'Status'       => '',
-            'PasienPulang'       => ''
+            'PasienPulang'       => '',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -297,7 +334,8 @@ class Superadmin extends CI_Controller
         $this->data['menuSuperAdmin'] = [
             'Dashboard'     => '',
             'Status'       => '',
-            'PasienPulang'       => 'active'
+            'PasienPulang'       => 'active',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [

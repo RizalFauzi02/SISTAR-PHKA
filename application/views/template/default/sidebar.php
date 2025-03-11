@@ -76,6 +76,15 @@
                             </span>
                         </a>
                     </li>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/superadmin/log_SendWhatsApp'); ?>" class="nav-link <?= $menuSuperAdmin['log_WA']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
                     <li class="nav-item-header">
                         <div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
                     </li>

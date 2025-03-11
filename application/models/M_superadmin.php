@@ -44,7 +44,12 @@ class M_superadmin extends CI_Model
         $this->db->insert('log_sendwhatsapp', $data);
     }
 
-
+    public function get_log_WhatsApp()
+    {
+        $this->db->select('*');
+        $query = $this->db->get('log_sendwhatsapp');
+        return $query->result_array();
+    }
 
     function getuser($session)
     {

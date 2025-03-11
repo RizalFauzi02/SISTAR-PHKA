@@ -8,7 +8,6 @@
             </div>
         </div>
         <!-- /page header -->
-
         <?= $this->session->flashdata('pesan'); ?>
         <!-- Content area -->
         <div class="content">
@@ -20,7 +19,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="<?= base_url('users/admin/changepassword'); ?>" method="POST">
+                        <form action="<?= base_url('users/admin/kirim_whatsapp'); ?>" method="POST">
                             <div class="form-group text-center text-muted content-divider">
                                 <span class="px-2">Data Pasien</span>
                             </div>
@@ -28,7 +27,7 @@
                             <div class="form-group">
                                 <label for="nama_pasien">Nama Pasien</label>
                                 <select class="form-control select-search" id="nama_pasien">
-                                    <option value="">Pilih Pasien</option>
+                                    <option value="" disabled selected>-- Pilih Pasien --</option>
                                     <?php foreach ($pasien as $p) : ?>
                                         <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
                                     <?php endforeach; ?>
@@ -71,7 +70,7 @@
 
                             <div class="form-group">
                                 <label for="exampleTextarea">Pesan</label>
-                                <textarea class="form-control" id="exampleTextarea" rows="5" readonly></textarea>
+                                <textarea class="form-control" id="exampleTextarea" name="pesan_status" rows="5" readonly></textarea>
                             </div>
 
 
@@ -84,9 +83,28 @@
             </div>
         </div>
         <script>
+            <?php if ($this->session->flashdata('swal_success')) : ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '<?= $this->session->flashdata('swal_success') ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            <?php endif; ?>
+
+            <?php if ($this->session->flashdata('swal_error')) : ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '<?= $this->session->flashdata('swal_error') ?>',
+                    showConfirmButton: true
+                });
+            <?php endif; ?>
+
+
             $(document).ready(function() {
                 $('.select-search').select2({
-                    placeholder: "Pilih",
                     allowClear: true
                 });
             });
@@ -130,11 +148,11 @@
             });
 
             $(document).ready(function() {
-                let pesanDariButton = "";
+                let pesanDariButton = ""; // Simpan pesan dari tombol status
 
                 // Event saat tombol status diklik
                 $(".btn-status").click(function() {
-                    pesanDariButton = $(this).data("pesan");
+                    pesanDariButton = $(this).data("pesan"); // Ambil data pesan dari tombol yang diklik
                     updatePesan();
                 });
 
