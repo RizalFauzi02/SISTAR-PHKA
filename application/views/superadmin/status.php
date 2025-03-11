@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <label for="nama_pasien">Nama Pasien</label>
                                 <select class="form-control select-search" id="nama_pasien">
-                                    <option value="">Pilih Pasien</option>
+                                    <option value="" disabled selected>-- Pilih Pasien --</option>
                                     <?php foreach ($pasien as $p) : ?>
                                         <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
                                     <?php endforeach; ?>
@@ -48,6 +48,17 @@
                             <div class="form-group">
                                 <label>No Whatsapp Pasien:</label>
                                 <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ucapan">Ucapan</label>
+                                <select class="form-control select-search" id="ucapan">
+                                    <option value="" disabled selected>-- Pilih Ucapan --</option>
+                                    <option value="Pagi">Pagi</option>
+                                    <option value="Siang">Siang</option>
+                                    <option value="Sore">Sore</option>
+                                    <option value="Malam">Malam</option>
+                                </select>
                             </div>
 
                             <!-- Looping status dengan event onclick -->
@@ -80,7 +91,6 @@
         <script>
             $(document).ready(function() {
                 $('.select-search').select2({
-                    placeholder: "Pilih Pasien",
                     allowClear: true
                 });
             });
@@ -121,6 +131,30 @@
                     var pesan = $(this).data('pesan'); // Ambil pesan dari atribut data
                     $('#exampleTextarea').val(pesan); // Masukkan pesan ke textarea
                 });
+            });
+
+            $(document).ready(function() {
+                let pesanDariButton = ""; // Simpan pesan dari tombol status
+
+                // Event saat tombol status diklik
+                $(".btn-status").click(function() {
+                    pesanDariButton = $(this).data("pesan"); // Ambil data pesan dari tombol yang diklik
+                    updatePesan();
+                });
+
+                // Event saat dropdown "Ucapan" berubah
+                $("#ucapan").change(function() {
+                    updatePesan();
+                });
+
+                // Fungsi untuk memperbarui textarea
+                function updatePesan() {
+                    let ucapan = $("#ucapan").val(); // Ambil nilai ucapan
+                    let teksUcapan = ucapan ? "Selamat " + ucapan + " Bapak/Ibu,\n\n" : ""; // Format ucapan
+                    let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
+
+                    $("#exampleTextarea").val(pesanFinal);
+                }
             });
         </script>
 

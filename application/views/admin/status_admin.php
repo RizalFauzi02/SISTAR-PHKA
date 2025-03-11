@@ -17,11 +17,6 @@
                 <div class="card">
                     <div class=" card-header header-elements-inline d-flex justify-content-center w-100">
                         <h5 class="card-title">Status Pelayanan Pasien</h5>
-                        <!-- <div class="header-elements">
-                            <div class="list-icons">
-                                <a class="list-icons-item" data-action="collapse"></a>
-                            </div>
-                        </div> -->
                     </div>
 
                     <div class="card-body">
@@ -48,6 +43,17 @@
                             <div class="form-group">
                                 <label>No Whatsapp Pasien:</label>
                                 <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ucapan">Ucapan</label>
+                                <select class="form-control select-search" id="ucapan">
+                                    <option value="" disabled selected>-- Pilih Ucapan --</option>
+                                    <option value="Pagi">Pagi</option>
+                                    <option value="Siang">Siang</option>
+                                    <option value="Sore">Sore</option>
+                                    <option value="Malam">Malam</option>
+                                </select>
                             </div>
 
                             <!-- Looping status dengan event onclick -->
@@ -80,7 +86,7 @@
         <script>
             $(document).ready(function() {
                 $('.select-search').select2({
-                    placeholder: "Pilih Pasien",
+                    placeholder: "Pilih",
                     allowClear: true
                 });
             });
@@ -121,6 +127,30 @@
                     var pesan = $(this).data('pesan'); // Ambil pesan dari atribut data
                     $('#exampleTextarea').val(pesan); // Masukkan pesan ke textarea
                 });
+            });
+
+            $(document).ready(function() {
+                let pesanDariButton = "";
+
+                // Event saat tombol status diklik
+                $(".btn-status").click(function() {
+                    pesanDariButton = $(this).data("pesan");
+                    updatePesan();
+                });
+
+                // Event saat dropdown "Ucapan" berubah
+                $("#ucapan").change(function() {
+                    updatePesan();
+                });
+
+                // Fungsi untuk memperbarui textarea
+                function updatePesan() {
+                    let ucapan = $("#ucapan").val(); // Ambil nilai ucapan
+                    let teksUcapan = ucapan ? "Selamat " + ucapan + " Bapak/Ibu,\n\n" : ""; // Format ucapan
+                    let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
+
+                    $("#exampleTextarea").val(pesanFinal);
+                }
             });
         </script>
 
