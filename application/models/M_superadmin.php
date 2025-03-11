@@ -5,7 +5,48 @@ if (!defined('BASEPATH'))
 
 class M_superadmin extends CI_Model
 {
-    function getProfile($session)
+
+    private $instance_id = "instance110037"; // Ganti dengan INSTANCE_ID UltraMsg Anda
+    private $api_token = "1vobo8wwynk1j4ij"; // Ganti dengan API TOKEN UltraMsg Anda
+
+    public function kirim_pesan($nomor, $pesan)
+    {
+        $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages/chat";
+
+        $data = [
+            'token' => $this->api_token,
+            'to'    => $nomor,
+            'body'  => $pesan
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $api_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($response, true);
+    }
+
+    public function simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role)
+    {
+        $data = [
+            'nomor_pasien' => $nomor,
+            'pesan_whatsapp' => $pesan,
+            'status_kirim' => $status,
+            'respon_sistem' => json_encode($response),
+            'username_pengirim' => $username,
+            'id_user' => $user_id,
+            'is_role' => $is_role,
+        ];
+        $this->db->insert('log_sendwhatsapp', $data);
+    }
+
+
+
+    function getuser($session)
     {
         $data = $this->db->query("SELECT * 
                                     FROM tbl_user

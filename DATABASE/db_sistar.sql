@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Mar 2025 pada 17.10
+-- Waktu pembuatan: 11 Mar 2025 pada 18.17
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.4.26
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_sistar`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `log_sendwhatsapp`
+--
+
+CREATE TABLE `log_sendwhatsapp` (
+  `id_logWA` int(11) NOT NULL,
+  `username_pengirim` varchar(100) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `is_role` int(11) NOT NULL,
+  `nomor_pasien` varchar(20) NOT NULL,
+  `pesan_whatsapp` text NOT NULL,
+  `status_kirim` varchar(20) NOT NULL,
+  `respon_sistem` varchar(20) NOT NULL,
+  `tgl_kirim` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `log_sendwhatsapp`
+--
+
+INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `is_role`, `nomor_pasien`, `pesan_whatsapp`, `status_kirim`, `respon_sistem`, `tgl_kirim`) VALUES
+(1, 'superadmin', 1, 1, '6289664091196', 'Selamat Malam Bapak/Ibu,\r\n\r\nPESAN TIDAK ADA UCAPAN\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:13:26');
 
 -- --------------------------------------------------------
 
@@ -141,6 +166,12 @@ INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `is_active`, `is_role
 --
 
 --
+-- Indeks untuk tabel `log_sendwhatsapp`
+--
+ALTER TABLE `log_sendwhatsapp`
+  ADD PRIMARY KEY (`id_logWA`);
+
+--
 -- Indeks untuk tabel `m_pasien`
 --
 ALTER TABLE `m_pasien`
@@ -169,6 +200,12 @@ ALTER TABLE `tbl_user`
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
+
+--
+-- AUTO_INCREMENT untuk tabel `log_sendwhatsapp`
+--
+ALTER TABLE `log_sendwhatsapp`
+  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_pasien`

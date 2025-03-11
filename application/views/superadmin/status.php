@@ -8,7 +8,9 @@
             </div>
         </div>
         <!-- /page header -->
-
+        <!-- <?= $user['username']; ?>
+        <?= $user['id_user']; ?>
+        <?= $user['is_role']; ?> -->
         <?= $this->session->flashdata('pesan'); ?>
         <!-- Content area -->
         <div class="content">
@@ -25,7 +27,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="<?= base_url('users/admin/changepassword'); ?>" method="POST">
+                        <form action="<?= base_url('users/superadmin/kirim_whatsapp'); ?>" method="POST">
                             <div class="form-group text-center text-muted content-divider">
                                 <span class="px-2">Data Pasien</span>
                             </div>
@@ -76,7 +78,7 @@
 
                             <div class="form-group">
                                 <label for="exampleTextarea">Pesan</label>
-                                <textarea class="form-control" id="exampleTextarea" rows="5" readonly></textarea>
+                                <textarea class="form-control" id="exampleTextarea" name="pesan_status" rows="5" readonly></textarea>
                             </div>
 
 
@@ -89,6 +91,26 @@
             </div>
         </div>
         <script>
+            <?php if ($this->session->flashdata('swal_success')) : ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '<?= $this->session->flashdata('swal_success') ?>',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            <?php endif; ?>
+
+            <?php if ($this->session->flashdata('swal_error')) : ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '<?= $this->session->flashdata('swal_error') ?>',
+                    showConfirmButton: true
+                });
+            <?php endif; ?>
+
+
             $(document).ready(function() {
                 $('.select-search').select2({
                     allowClear: true
