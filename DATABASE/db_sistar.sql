@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Mar 2025 pada 18.33
+-- Waktu pembuatan: 11 Mar 2025 pada 17.10
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.4.26
 
@@ -48,7 +48,8 @@ INSERT INTO `m_pasien` (`id_pasien`, `nama_pasien`, `tanggal_lahir`, `no_whatsap
 (5, 'Novaaaa', '2006-12-05', '628964512556', '2025-03-09 02:28:40', ''),
 (6, 'Upi', '2009-06-05', '6289644515663', '2025-03-09 02:31:01', ''),
 (7, 'HALIMAHATUS', '2007-05-04', '628544635445', '2025-03-09 02:39:06', ''),
-(8, 'TRIASTUTRI', '2001-09-26', '628554153365', '2025-03-09 02:43:43', '');
+(8, 'TRIASTUTRI', '2001-09-26', '628554153365', '2025-03-09 02:43:43', ''),
+(9, 'Ayu', '2007-03-02', '6289664872217', '2025-03-10 08:28:35', '');
 
 -- --------------------------------------------------------
 
@@ -69,10 +70,12 @@ CREATE TABLE `m_status` (
 --
 
 INSERT INTO `m_status` (`id_status`, `nama_status`, `pesan_status`, `created_at`, `updated_at`) VALUES
-(1, 'Menyiapkan Berkas Pulang', 'Selamat Pagi/Siang/Sore/Malam, \n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\n\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.\n\n[ ini adalah pesan otomatis ]', '2025-03-09 00:39:22', ''),
-(2, 'Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \r\n\r\nPetugas Farmasi saat ini sedang mempersiapkan obat kepulangan Anda dan akan segera mengantarkannya ke ruang perawatan.\r\n\r\n[ ini adalah pesan otomatis ]', '2025-03-09 01:44:59', ''),
-(3, 'Dalam Antrian', 'Berkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \r\n\r\nTerima kasih telah bersedia menunggu.\r\n\r\n[ ini adalah pesan otomatis ]', '2025-03-09 01:59:03', ''),
-(4, 'Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-09 01:59:43', '');
+(1, 'Menyiapkan Berkas Pulang', 'Saat ini perawat ...', '2025-03-09 00:39:22', ''),
+(2, 'Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \n\nPetugas Farmasi saat ini sedang mempersiapkan obat kepulangan Anda dan akan segera mengantarkannya ke ruang perawatan.\n', '2025-03-09 01:44:59', ''),
+(3, 'Dalam Antrian', 'Berkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.\n', '2025-03-09 01:59:03', ''),
+(4, 'Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \n\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-09 01:59:43', ''),
+(8, 'CONTOH TIDAK ADA UCAPAN', 'PESAN TIDAK ADA UCAPAN', '2025-03-11 00:04:29', ''),
+(10, 'CONTOHH UCAPAN TERBARU', 'Berkas anda sedang di persiapkan dan sedang dalam proses, mohon ditunggu.', '2025-03-11 22:41:14', '');
 
 -- --------------------------------------------------------
 
@@ -98,7 +101,10 @@ INSERT INTO `status_user` (`id_status_user`, `id_status`, `id_user`) VALUES
 (5, 3, 1),
 (6, 3, 2),
 (7, 4, 1),
-(8, 4, 2);
+(8, 4, 2),
+(15, 8, 1),
+(17, 10, 1),
+(18, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -124,10 +130,11 @@ INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `is_active`, `is_role
 (1, 'superadmin', '$2y$10$UphUusGOux7Dmj1AwtqzWOrJH8ykkSblfb17hwsxatECNcC6I8IaO', 1, 1, '2025-03-07 21:59:22', ''),
 (2, 'admin', '$2y$10$R325JVmEADszEYGUysKs5ux/dLt8jLaqzW0CZzOjnso7q9.9dU9aW', 1, 2, '2025-03-08 23:47:03', ''),
 (3, 'perawat', '$2y$10$qOnhe6pmrs60YMdfHJCYh.kxRTL.EGJh05sPWHLkvHGavKI8Bbagi', 1, 3, '2025-03-08 23:47:37', ''),
-(4, 'farmasi', '$2y$10$We2NvUM0cmCOW4j/WyQS4uLxu.QXfamtIg/xkWbxmvFwFsXKwPyvm', 1, 4, '2025-03-08 23:48:07', ''),
+(4, 'farmasi', '$2y$10$We2NvUM0cmCOW4j/WyQS4uLxu.QXfamtIg/xkWbxmvFwFsXKwPyvm', 1, 4, '2025-03-08 23:48:07', '2025-03-11 23:07:20'),
 (5, 'admin2', '$2y$10$AoZ65NLRD4atC.JiA11iEuiEu12aeGPVeS8uRHFKesnFnFk1AAigi', 0, 2, '2025-03-09 23:41:40', '2025-03-10 00:25:41'),
 (6, 'farmasi2', '$2y$10$efIv.P.z.M7lLKVzvPzgCuWOOTQIqdmGx/S9t1dYHgVu.engtvxtS', 0, 4, '2025-03-09 23:43:19', '2025-03-10 00:22:27'),
-(7, 'perawat2', '$2y$10$KzQDTS0IkZF6i0z97yJqV.TGPr5143nFsPoLlsq6AHG.gIFJ4BH9i', 0, 3, '2025-03-09 23:45:10', '2025-03-10 00:21:19');
+(7, 'perawat2', '$2y$10$KzQDTS0IkZF6i0z97yJqV.TGPr5143nFsPoLlsq6AHG.gIFJ4BH9i', 0, 3, '2025-03-09 23:45:10', '2025-03-10 00:21:19'),
+(9, 'drRatnah', '$2y$10$XxQOWf7ba11e8R8kxO5F8u8MwSFhRFrZc8hThapBuX4Gr1V4Z6sNO', 1, 1, '2025-03-10 11:25:58', '');
 
 --
 -- Indexes for dumped tables
@@ -167,25 +174,25 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `m_pasien`
 --
 ALTER TABLE `m_pasien`
-  MODIFY `id_pasien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pasien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_status`
 --
 ALTER TABLE `m_status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_user`
 --
 ALTER TABLE `status_user`
-  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
