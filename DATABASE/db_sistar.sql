@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Mar 2025 pada 18.17
+-- Waktu pembuatan: 12 Mar 2025 pada 13.42
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.4.26
 
@@ -44,7 +44,9 @@ CREATE TABLE `log_sendwhatsapp` (
 --
 
 INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `is_role`, `nomor_pasien`, `pesan_whatsapp`, `status_kirim`, `respon_sistem`, `tgl_kirim`) VALUES
-(1, 'superadmin', 1, 1, '6289664091196', 'Selamat Malam Bapak/Ibu,\r\n\r\nPESAN TIDAK ADA UCAPAN\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:13:26');
+(1, 'superadmin', 1, 1, '6289664091196', 'Selamat Malam Bapak/Ibu,\r\n\r\nPESAN TIDAK ADA UCAPAN\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:13:26'),
+(2, 'admin', 2, 2, '6289664091196', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \r\n\r\nTerima kasih telah bersedia menunggu.\r\n\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:40:21'),
+(3, 'admin', 2, 2, '6281310734281', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-12 03:37:13');
 
 -- --------------------------------------------------------
 
@@ -66,7 +68,7 @@ CREATE TABLE `m_pasien` (
 --
 
 INSERT INTO `m_pasien` (`id_pasien`, `nama_pasien`, `tanggal_lahir`, `no_whatsapp`, `created_at`, `updated_at`) VALUES
-(1, 'Rizal Fauzi', '2001-03-02', '6289664091196', '2025-03-08 00:39:58', ''),
+(1, 'Rizal Fauzi', '2001-03-02', '6281310734281', '2025-03-08 00:39:58', ''),
 (2, 'Syaiful Fikri', '2001-03-02', '6589664019965', '2025-03-08 00:42:54', ''),
 (3, 'Fauzi Rizal', '2006-03-05', '6289664091196', '2025-03-08 00:50:31', ''),
 (4, 'Faturrochman', '1989-07-09', '6289664152236', '2025-03-09 02:20:19', ''),
@@ -205,7 +207,7 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `log_sendwhatsapp`
 --
 ALTER TABLE `log_sendwhatsapp`
-  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_pasien`
