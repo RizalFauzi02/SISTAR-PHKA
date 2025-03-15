@@ -166,6 +166,7 @@ class Superadmin extends CI_Controller
 
     public function m_status()
     {
+        ob_start();
         // Default
         $this->data['title'] = 'Master Status Pelayanan';
         $this->data['menuSuperAdmin'] = [
@@ -202,10 +203,12 @@ class Superadmin extends CI_Controller
         }
 
         $this->template->load('template/default/template', 'superadmin/m_status', $this->data);
+        ob_end_flush();
     }
 
     public function updateStatus()
     {
+        ob_start(); // Hindari output sebelum redirect
         $id_status = $this->input->post('id_status');
         $status_data = [
             'nama_status'  => $this->input->post('nama_status'),
@@ -214,24 +217,27 @@ class Superadmin extends CI_Controller
         $user_ids = $this->input->post('id_user');
 
         if ($this->M_superadmin->update_status($id_status, $status_data, $user_ids)) {
-            $this->session->set_flashdata('pesan_sukses', 'Berhasil Update Status!');
+            // $this->session->set_flashdata('pesan_sukses', 'Berhasil Update Status!');
         } else {
-            $this->session->set_flashdata('pesan_error', 'Gagal Update Status!');
+            // $this->session->set_flashdata('pesan_error', 'Gagal Update Status!');
         }
-
         redirect('Users/superadmin/m_status');
+        ob_end_flush();
     }
 
     public function deleteStatus($id_status)
     {
+        ob_start();
         // Hapus status dari tabel status_user
         $this->M_superadmin->delete_status_user($id_status);
 
         // Hapus status dari tabel m_status
         $this->M_superadmin->delete_status($id_status);
 
-        $this->session->set_flashdata('pesan_berhasil', 'Berhasil Hapus Status!');
+        // $this->session->set_flashdata('pesan_berhasil', 'Berhasil Hapus Status!');
+
         redirect('Users/superadmin/m_status');
+        ob_end_flush();
     }
 
     public function m_user()
@@ -335,6 +341,25 @@ class Superadmin extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus akun!']);
         }
     }
+
+    public function update_user()
+    {
+        $id_user = $this->input->post('id_user');
+        $username = $this->input->post('username');
+        $is_role = $this->input->post('is_role');
+        $password = $this->input->post('password');
+
+        $update = $this->M_superadmin->update_user($id_user, $username, $is_role, $password);
+
+        if ($update) {
+            $this->session->set_flashdata('pesan_sukses', 'Data user berhasil diperbarui');
+        } else {
+            $this->session->set_flashdata('pesan_error', 'Gagal memperbarui data user');
+        }
+
+        redirect('users/superadmin/m_user');
+    }
+
 
     public function prosesAddMasterStatus()
     {

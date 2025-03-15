@@ -9,6 +9,23 @@
 			</div>
 			<!-- /page header -->
 
+			<?php if ($this->session->flashdata('pesan_sukses')) : ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<?= $this->session->flashdata('pesan_sukses'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+
+			<?php if ($this->session->flashdata('pesan_error')) : ?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<?= $this->session->flashdata('pesan_error'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
 
 			<!-- Content area -->
 			<div class="content">
@@ -63,9 +80,9 @@
 												</a>
 
 												<div class="dropdown-menu dropdown-menu-right">
-													<!-- <a href="#" class="dropdown-item" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
+													<a href="#" class="dropdown-item" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
 														Edit
-													</a> -->
+													</a>
 													<a href="#" class="dropdown-item" onclick="deleteAkun(<?= $u['id_user'] ?>)">
 														Hapus
 													</a>
@@ -94,26 +111,39 @@
 												</button>
 											</div>
 											<div class="modal-body">
-												<form>
+												<form action="<?= base_url('users/superadmin/update_user') ?>" method="post">
+													<input type="hidden" name="id_user" value="<?= $u['id_user'] ?>">
+
 													<div class="form-group">
 														<label for="username">Username</label>
-														<input type="text" class="form-control" id="username" value="<?= htmlspecialchars($u['username']) ?>">
+														<input type="text" class="form-control" name="username" value="<?= htmlspecialchars($u['username']) ?>" required>
 													</div>
+
 													<div class="form-group">
-														<label for="role">Role</label>
-														<select class="form-control" id="role">
+														<label for="is_role">Role</label>
+														<select class="form-control" name="is_role" required>
 															<option value="1" <?= $u['is_role'] == 1 ? 'selected' : '' ?>>Superadmin</option>
 															<option value="2" <?= $u['is_role'] == 2 ? 'selected' : '' ?>>Admin</option>
 															<option value="3" <?= $u['is_role'] == 3 ? 'selected' : '' ?>>Perawat</option>
 															<option value="4" <?= $u['is_role'] == 4 ? 'selected' : '' ?>>Farmasi</option>
 														</select>
 													</div>
-													<button type="submit" class="btn btn-primary">Simpan</button>
+
+													<div class="form-group">
+														<label for="password">Password <b>*(Kosongkan jika tidak ingin mengubah)</b></label>
+														<input type="password" class="form-control" name="password">
+													</div>
+
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+														<button type="submit" class="btn btn-primary">Simpan</button>
+													</div>
 												</form>
 											</div>
 										</div>
 									</div>
 								</div>
+
 							<?php endforeach; ?>
 						</tbody>
 					</table>
@@ -168,6 +198,9 @@
 			<!-- /content area -->
 
 			<script>
+				setTimeout(function() {
+					$(".alert").fadeOut("slow");
+				}, 2000);
 				// ===================== TAMBAH AKUN ========================
 				$(document).ready(function() {
 					$("#formTambahAkun").submit(function(e) {

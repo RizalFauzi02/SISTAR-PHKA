@@ -80,6 +80,22 @@ class M_superadmin extends CI_Model
         return $query->result_array();
     }
 
+    public function update_user($id_user, $username, $is_role, $password = null)
+    {
+        $data = [
+            'username' => $username,
+            'is_role' => $is_role,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        if (!empty($password)) {
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $this->db->where('id_user', $id_user);
+        return $this->db->update('tbl_user', $data);
+    }
+
 
     public function insertStatus($data, $users)
     {
