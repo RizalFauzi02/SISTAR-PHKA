@@ -40,7 +40,7 @@ class Farmasi extends CI_Controller
         // WAJIB ADA
         $session = $this->session->userdata('username');
         $id_user = $this->session->userdata('id_user');
-        $this->data['profile'] = $this->M_superadmin->getProfile($session)->row_array();
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
         // WAJIB ADA
 
         $this->data['pasien'] = $this->M_pasien->getPasien();
@@ -51,6 +51,22 @@ class Farmasi extends CI_Controller
         // Ambil status berdasarkan role user
         $this->data['status'] = $this->M_superadmin->getStatusByRole($is_role);
 
-        $this->template->load('template/default/template', 'superadmin/status', $this->data);
+        $this->template->load('template/default/template', 'farmasi/status_farmasi', $this->data);
+    }
+
+    public function kirim_whatsapp()
+    {
+        // Ambil data user yang sedang login
+        $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+        $username = $this->session->userdata('username'); // Pastikan session user sudah diset
+        $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
+        $nomor = $this->input->post('no_whatsapp');
+        $pesan = $this->input->post('pesan_status');
+
+        // Simpan log ke database dengan user_id
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role);
+
+        // Kirim response ke AJAX
+        echo "success";
     }
 }

@@ -128,6 +128,31 @@ class Admin extends CI_Controller
 
     // ================================= BUTTON KIRIM WHATSAPP ==========================================
 
+    // public function kirim_whatsapp()
+    // {
+    //     // Ambil data user yang sedang login
+    //     $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+    //     $username = $this->session->userdata('username'); // Pastikan session user sudah diset
+    //     $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
+    //     $nomor = $this->input->post('no_whatsapp');
+    //     $pesan = $this->input->post('pesan_status');
+
+    //     $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
+
+    //     if (isset($response['sent']) && $response['sent'] == true) {
+    //         $status = "Sukses";
+    //         $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+    //     } else {
+    //         $status = "Gagal";
+    //         $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+    //     }
+
+    //     // Simpan log ke database dengan user_id
+    //     $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+
+    //     redirect($_SERVER['HTTP_REFERER']);
+    // }
+
     public function kirim_whatsapp()
     {
         // Ambil data user yang sedang login
@@ -137,19 +162,10 @@ class Admin extends CI_Controller
         $nomor = $this->input->post('no_whatsapp');
         $pesan = $this->input->post('pesan_status');
 
-        $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
-
-        if (isset($response['sent']) && $response['sent'] == true) {
-            $status = "Sukses";
-            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
-        } else {
-            $status = "Gagal";
-            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
-        }
-
         // Simpan log ke database dengan user_id
-        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role);
 
-        redirect($_SERVER['HTTP_REFERER']);
+        // Kirim response ke AJAX
+        echo "success";
     }
 }

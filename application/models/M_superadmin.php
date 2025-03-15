@@ -6,49 +6,55 @@ if (!defined('BASEPATH'))
 class M_superadmin extends CI_Model
 {
 
-    private $instance_id = "instance110037"; // Ganti dengan INSTANCE_ID UltraMsg Anda
-    private $api_token = "1vobo8wwynk1j4ij"; // Ganti dengan API TOKEN UltraMsg Anda
+    // private $instance_id = ""; // Ganti dengan INSTANCE_ID UltraMsg Anda
+    // private $api_token = ""; // Ganti dengan API TOKEN UltraMsg Anda
 
-    public function kirim_pesan($nomor, $pesan)
-    {
-        $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages/chat";
+    // public function kirim_pesan($nomor, $pesan)
+    // {
+    //     $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages/chat";
 
-        $data = [
-            'token' => $this->api_token,
-            'to'    => $nomor,
-            'body'  => $pesan
-        ];
+    //     $data = [
+    //         'token' => $this->api_token,
+    //         'to'    => $nomor,
+    //         'body'  => $pesan
+    //     ];
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $api_url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
+    //     $ch = curl_init();
+    //     curl_setopt($ch, CURLOPT_URL, $api_url);
+    //     curl_setopt($ch, CURLOPT_POST, true);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //     $response = curl_exec($ch);
+    //     curl_close($ch);
 
-        return json_decode($response, true);
-    }
+    //     return json_decode($response, true);
+    // }
 
-    public function simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role)
+    public function simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role)
     {
         $data = [
             'nomor_pasien' => $nomor,
             'pesan_whatsapp' => $pesan,
-            'status_kirim' => $status,
-            'respon_sistem' => json_encode($response),
             'username_pengirim' => $username,
             'id_user' => $user_id,
             'is_role' => $is_role,
         ];
-        $this->db->insert('log_sendwhatsapp', $data);
+        $insert = $this->db->insert('log_sendwhatsapp', $data);
+
+        if (!$insert) {
+            log_message('error', 'Gagal insert ke database: ' . json_encode($this->db->error()));
+            return false;
+        }
+        return true;
     }
 
     public function get_log_WhatsApp()
     {
-        $this->db->select('*');
-        $query = $this->db->get('log_sendwhatsapp');
-        return $query->result_array();
+        return $this->db->select('*')
+            ->from('log_sendwhatsapp')
+            ->order_by('tgl_kirim', 'DESC')
+            ->get()
+            ->result_array();
     }
 
     function getuser($session)
@@ -69,17 +75,16 @@ class M_superadmin extends CI_Model
     public function get_all_pasien()
     {
         $this->db->select('id_pasien, nama_pasien, tanggal_lahir, no_whatsapp, created_at');
-        $this->db->from('m_pasien'); // Pastikan tabel ini benar
+        $this->db->from('m_pasien');
         $query = $this->db->get();
-        return $query->result_array(); // Pastikan menggunakan result_array()
+        return $query->result_array();
     }
 
 
     public function insertStatus($data, $users)
     {
-        // Simpan status ke tabel m_status
         $this->db->insert('m_status', $data);
-        $status_id = $this->db->insert_id(); // Ambil ID status yang baru disimpan
+        $status_id = $this->db->insert_id();
 
         // Simpan hubungan status dengan banyak user (many-to-many)
         if (!empty($users)) {
@@ -132,5 +137,56 @@ class M_superadmin extends CI_Model
         $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user');
         $this->db->where('tbl_user.is_role', $role); // Sesuaikan dengan role
         return $this->db->get()->result_array();
+    }
+
+    public function get_all_status()
+    {
+        $this->db->select('m_status.id_status, m_status.nama_status, m_status.pesan_status, GROUP_CONCAT(tbl_user.username SEPARATOR ", ") as pengguna_status');
+        $this->db->from('status_user');
+        $this->db->join('m_status', 'status_user.id_status = m_status.id_status');
+        $this->db->join('tbl_user', 'status_user.id_user = tbl_user.id_user');
+        $this->db->group_by('m_status.id_status');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function get_users_by_status($id_status)
+    {
+        $this->db->select('status_user.id_user, tbl_user.username');
+        $this->db->from('status_user');
+        $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user', 'left');
+        $this->db->where('status_user.id_status', $id_status);
+        return $this->db->get()->result_array();
+    }
+
+    // Update status berdasarkan ID
+    public function update_status($id_status, $status_data, $user_ids)
+    {
+        // Update tabel m_status
+        $this->db->where('id_status', $id_status);
+        $this->db->update('m_status', $status_data);
+
+        // Hapus semua pengguna terkait sebelumnya
+        $this->db->where('id_status', $id_status);
+        $this->db->delete('status_user');
+
+        // Tambahkan pengguna baru yang dipilih
+        foreach ($user_ids as $id_user) {
+            $this->db->insert('status_user', ['id_status' => $id_status, 'id_user' => $id_user]);
+        }
+
+        return true;
+    }
+
+    public function delete_status_user($id_status)
+    {
+        $this->db->where('id_status', $id_status);
+        $this->db->delete('status_user');
+    }
+
+    public function delete_status($id_status)
+    {
+        $this->db->where('id_status', $id_status);
+        $this->db->delete('m_status');
     }
 }

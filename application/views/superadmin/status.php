@@ -8,7 +8,25 @@
             </div>
         </div>
         <!-- /page header -->
-        <?= $this->session->flashdata('pesan'); ?>
+        <?php if ($this->session->flashdata('pesan_sukses')) : ?>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "<?= $this->session->flashdata('pesan_sukses'); ?>"
+                });
+            </script>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('pesan_error')) : ?>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: "<?= $this->session->flashdata('pesan_error'); ?>"
+                });
+            </script>
+        <?php endif; ?>
         <!-- Content area -->
         <div class="content">
             <div class="col-md-4">
@@ -27,10 +45,14 @@
                             <div class="form-group">
                                 <label for="nama_pasien">Nama Pasien</label>
                                 <select class="form-control select-search" id="nama_pasien">
-                                    <option value="" disabled selected>-- Pilih Pasien --</option>
-                                    <?php foreach ($pasien as $p) : ?>
-                                        <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
-                                    <?php endforeach; ?>
+                                    <?php if (!empty($pasien)) : ?>
+                                        <option value="" disabled selected>-- Pilih Pasien --</option>
+                                        <?php foreach ($pasien as $p) : ?>
+                                            <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <option value="" disabled selected>Tidak ada pasien tersedia</option>
+                                    <?php endif; ?>
                                 </select>
                             </div>
 
@@ -55,27 +77,33 @@
                                 </select>
                             </div>
 
-                            <!-- Looping status dengan event onclick -->
-                            <?php foreach ($status as $s) : ?>
+                            <?php if (!empty($status)) : ?>
+                                <?php foreach ($status as $s) : ?>
+                                    <div class="text-center mt-2">
+                                        <button type="button" class="btn btn-primary btn-status" data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
+                                            <?= $s['nama_status']; ?>
+                                        </button>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else : ?>
                                 <div class="text-center mt-2">
-                                    <button type="button" class="btn btn-primary btn-status" data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
-                                        <?= $s['nama_status']; ?>
-                                    </button>
+                                    <p class="text-muted">Belum ada status tersedia.</p>
                                 </div>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
+
 
                             <div class="form-group text-center text-muted content-divider mt-2">
                                 <span class="px-2">Pesan WhatsApp</span>
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleTextarea">Pesan</label>
-                                <textarea class="form-control" id="exampleTextarea" name="pesan_status" rows="5" readonly></textarea>
+                                <label for="pesan_status">Pesan</label>
+                                <textarea class="form-control" id="pesan_status" name="pesan_status" rows="5" readonly></textarea>
                             </div>
 
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-info">Kirim WhatsApp</button>
+                                <button type="button" class="btn btn-info" id="kirimWa">Kirim WhatsApp</button>
                             </div>
                         </form>
                     </div>
@@ -140,10 +168,92 @@
                 });
             });
 
+            // SCRIPT UNTUK CHAT DENGAN REDIRECT WA.ME
+            document.getElementById('kirimWa').addEventListener('click', function() {
+                var button = this; // Simpan referensi tombol
+                var noWhatsApp = document.getElementById('no_whatsapp').value.trim();
+                var pesan = document.getElementById('pesan_status').value.trim();
+
+                if (noWhatsApp === "" || pesan === "") {
+                    Swal.fire({
+                        title: "Oops...",
+                        text: "Nomor WhatsApp atau pesan tidak boleh kosong!",
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+
+                // Ubah 0 di awal menjadi 62 (kode negara Indonesia)
+                noWhatsApp = noWhatsApp.replace(/^0/, "62");
+
+                // Encode pesan agar sesuai format URL
+                var encodedPesan = encodeURIComponent(pesan);
+
+                // Buat URL WhatsApp dari input user
+                var urlUserInput = "https://wa.me/" + noWhatsApp + "?text=" + encodedPesan;
+
+                // Tampilkan loading
+                Swal.fire({
+                    title: "Mengirim...",
+                    text: "Mohon tunggu sebentar..!",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Disable tombol untuk mencegah spam klik
+                button.disabled = true;
+                button.innerText = "Sedang Mengirim...";
+
+                // Kirim data ke database menggunakan fetch()
+                fetch("<?= base_url('users/superadmin/kirim_whatsapp') ?>", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}`
+                    })
+                    .then(response => response.text()) // Ubah response ke text
+                    .then(data => {
+                        // Notifikasi berhasil
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil!",
+                            text: "Pesan berhasil dikirim dan disimpan ke database!",
+                            confirmButtonColor: "#28a745",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            // Buka WhatsApp di tab baru setelah user menekan "OK"
+                            window.open(urlUserInput, '_blank');
+                        });
+
+                        // Kembalikan tombol ke kondisi awal
+                        button.disabled = false;
+                        button.innerText = "Kirim WhatsApp";
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops!",
+                            text: "Terjadi kesalahan saat menyimpan data ke database!",
+                            confirmButtonColor: "#d33",
+                            confirmButtonText: "OK"
+                        });
+
+                        // Kembalikan tombol ke kondisi awal jika gagal
+                        button.disabled = false;
+                        button.innerText = "Kirim WhatsApp";
+                    });
+            });
+
             $(document).ready(function() {
                 $('.btn-status').click(function() {
                     var pesan = $(this).data('pesan'); // Ambil pesan dari atribut data
-                    $('#exampleTextarea').val(pesan); // Masukkan pesan ke textarea
+                    $('#pesan_status').val(pesan); // Masukkan pesan ke textarea
                 });
             });
 
@@ -164,10 +274,11 @@
                 // Fungsi untuk memperbarui textarea
                 function updatePesan() {
                     let ucapan = $("#ucapan").val(); // Ambil nilai ucapan
-                    let teksUcapan = ucapan ? "Selamat " + ucapan + " Bapak/Ibu,\n\n" : ""; // Format ucapan
-                    let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
+                    let teksUcapan = ucapan ? "*Selamat " + ucapan + " Bapak/Ibu,*\n\n" : ""; // Format ucapan
+                    //let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
+                    let pesanFinal = teksUcapan + pesanDariButton;
 
-                    $("#exampleTextarea").val(pesanFinal);
+                    $("#pesan_status").val(pesanFinal);
                 }
             });
         </script>

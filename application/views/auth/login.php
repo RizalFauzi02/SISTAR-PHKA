@@ -64,9 +64,9 @@
                     <button type="button" class="btn btn-outline bg-info border-info text-info btn-icon rounded-round border-2 ml-2"><i class="icon-twitter"></i></button>
                 </div> -->
 
-                <div class="form-group text-center text-muted content-divider">
+                <!-- <div class="form-group text-center text-muted content-divider">
                     <span class="px-2">Develop: IT Primaya Hospital Karawang</span>
-                </div>
+                </div> -->
 
                 <!-- <div class="form-group">
                     <a href="auth/opsi" class="btn btn-light btn-block">Daftar</a>

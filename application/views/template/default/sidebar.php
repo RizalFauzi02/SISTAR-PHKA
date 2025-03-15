@@ -117,7 +117,7 @@
                 <?php } elseif ($_SESSION['is_role'] == 3) { ?>
                     <!-- PERAWAT -->
                     <li class="nav-item">
-                        <a href="<?= base_url('users/superadmin/status_pelayanan'); ?>" class="nav-link <?= $menuPerawat['Status']; ?>">
+                        <a href="<?= base_url('users/perawat'); ?>" class="nav-link <?= $menuPerawat['Status']; ?>">
                             <i class="icon-gear"></i>
                             <span>
                                 Status Pelayanan
@@ -127,7 +127,7 @@
                 <?php } elseif ($_SESSION['is_role'] == 4) { ?>
                     <!-- FARMASI -->
                     <li class="nav-item">
-                        <a href="<?= base_url('users/superadmin/status_pelayanan'); ?>" class="nav-link <?= $menuFarmasi['Status']; ?>">
+                        <a href="<?= base_url('users/farmasi'); ?>" class="nav-link <?= $menuFarmasi['Status']; ?>">
                             <i class="icon-gear"></i>
                             <span>
                                 Status Pelayanan

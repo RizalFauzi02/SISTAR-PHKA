@@ -18,7 +18,25 @@
        </div>
        <!-- /page header -->
 
-       <?= $this->session->flashdata('pesan'); ?>
+       <?php if ($this->session->flashdata('pesan_sukses')) : ?>
+           <script>
+               Swal.fire({
+                   icon: 'success',
+                   title: 'Berhasil!',
+                   text: "<?= $this->session->flashdata('pesan_sukses'); ?>"
+               });
+           </script>
+       <?php endif; ?>
+
+       <?php if ($this->session->flashdata('pesan_error')) : ?>
+           <script>
+               Swal.fire({
+                   icon: 'error',
+                   title: 'Gagal!',
+                   text: "<?= $this->session->flashdata('pesan_error'); ?>"
+               });
+           </script>
+       <?php endif; ?>
        <!-- Content area -->
        <div class="content">
            <div class="row">

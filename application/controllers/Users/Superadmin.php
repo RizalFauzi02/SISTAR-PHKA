@@ -89,6 +89,31 @@ class Superadmin extends CI_Controller
 
     // ================================= BUTTON KIRIM WHATSAPP ==========================================
 
+    // public function kirim_whatsapp()
+    // {
+    //     // Ambil data user yang sedang login
+    //     $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+    //     $username = $this->session->userdata('username'); // Pastikan session user sudah diset
+    //     $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
+    //     $nomor = $this->input->post('no_whatsapp');
+    //     $pesan = $this->input->post('pesan_status');
+
+    //     $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
+
+    //     if (isset($response['sent']) && $response['sent'] == true) {
+    //         $status = "Sukses";
+    //         $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+    //     } else {
+    //         $status = "Gagal";
+    //         $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+    //     }
+
+    //     // Simpan log ke database dengan user_id
+    //     $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+
+    //     redirect($_SERVER['HTTP_REFERER']);
+    // }
+
     public function kirim_whatsapp()
     {
         // Ambil data user yang sedang login
@@ -98,20 +123,11 @@ class Superadmin extends CI_Controller
         $nomor = $this->input->post('no_whatsapp');
         $pesan = $this->input->post('pesan_status');
 
-        $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
-
-        if (isset($response['sent']) && $response['sent'] == true) {
-            $status = "Sukses";
-            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
-        } else {
-            $status = "Gagal";
-            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
-        }
-
         // Simpan log ke database dengan user_id
-        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role);
 
-        redirect($_SERVER['HTTP_REFERER']);
+        // Kirim response ke AJAX
+        echo "success";
     }
 
     public function log_SendWhatsApp()
@@ -178,8 +194,44 @@ class Superadmin extends CI_Controller
         // WAJIB ADA
 
         $this->data['user'] = $this->M_superadmin->get_all_users();
+        $this->data['status'] = $this->M_superadmin->get_all_status();
+
+        // Loop untuk mendapatkan pengguna terkait setiap status
+        foreach ($this->data['status'] as &$status) {
+            $status['selected_users'] = array_column($this->M_superadmin->get_users_by_status($status['id_status']), 'id_user');
+        }
 
         $this->template->load('template/default/template', 'superadmin/m_status', $this->data);
+    }
+
+    public function updateStatus()
+    {
+        $id_status = $this->input->post('id_status');
+        $status_data = [
+            'nama_status'  => $this->input->post('nama_status'),
+            'pesan_status' => $this->input->post('pesan_status')
+        ];
+        $user_ids = $this->input->post('id_user');
+
+        if ($this->M_superadmin->update_status($id_status, $status_data, $user_ids)) {
+            $this->session->set_flashdata('pesan_sukses', 'Berhasil Update Status!');
+        } else {
+            $this->session->set_flashdata('pesan_error', 'Gagal Update Status!');
+        }
+
+        redirect('Users/superadmin/m_status');
+    }
+
+    public function deleteStatus($id_status)
+    {
+        // Hapus status dari tabel status_user
+        $this->M_superadmin->delete_status_user($id_status);
+
+        // Hapus status dari tabel m_status
+        $this->M_superadmin->delete_status($id_status);
+
+        $this->session->set_flashdata('pesan_berhasil', 'Berhasil Hapus Status!');
+        redirect('Users/superadmin/m_status');
     }
 
     public function m_user()
@@ -293,7 +345,7 @@ class Superadmin extends CI_Controller
         if ($this->form_validation->run() == false) {
             // Simpan error dalam session flashdata
             $this->session->set_flashdata('error', validation_errors());
-            $this->session->set_flashdata('pesan', "
+            $this->session->set_flashdata('pesan_error', "
             <script>
                 Swal.fire({
                     icon: 'error',
@@ -314,15 +366,8 @@ class Superadmin extends CI_Controller
 
             $this->M_superadmin->insertStatus($data, $users); // Kirim ke model
 
-            $this->session->set_flashdata('pesan', "
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: 'Status berhasil ditambahkan.'
-                });
-            </script>
-        ");
+            $this->session->set_flashdata('pesan_sukses', 'Berhasil menambahkan Status!');
+
             redirect('Users/superadmin/m_status');
         }
     }
@@ -372,7 +417,7 @@ class Superadmin extends CI_Controller
         if ($this->form_validation->run() == false) {
             // Simpan error dalam session flashdata
             $this->session->set_flashdata('error', validation_errors());
-            $this->session->set_flashdata('pesan', "
+            $this->session->set_flashdata('pesan_error', "
                 <script>
                     Swal.fire({
                         icon: 'error',
@@ -389,7 +434,7 @@ class Superadmin extends CI_Controller
             $data['created_at']    = date('Y-m-d H:i:s');
 
             $this->M_pasien->insertPasien($data);
-            $this->session->set_flashdata('pesan', "
+            $this->session->set_flashdata('pesan_sukses', "
                 <script>
                     Swal.fire({
                         icon: 'success',

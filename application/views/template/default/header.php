@@ -72,11 +72,14 @@
 
     <!-- Main navbar -->
     <div class="navbar navbar-expand-md navbar-dark">
-        <div class="navbar-brand">
-            <a href="index.html" class="d-inline-block">
-                <img src="<?= base_url('assets/app-assets/Bootstrap 4/Template') ?>/global_assets/images/logo_light.png" alt="">
+        <div class="navbar-brand d-flex align-items-center">
+            <a href="#" class="d-inline-block">
+                <!-- <img src="<?= base_url('assets/app-assets/img/logo-bg.png') ?>" alt=""> -->
             </a>
+            <h5 class="ml-2 font-weight-bold mb-0">SISTAR - PHKA</h5>
         </div>
+
+
 
         <div class="d-md-none">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -96,7 +99,8 @@
                 </li>
             </ul>
 
-            <span class="badge bg-dark ml-md-3 mr-md-auto">-</span>
+            <span class="badge bg-dark ml-md-3 mr-md-auto" id="realTimeClock" style="font-size: 1.2rem; padding: 10px 15px; display: inline-block;">Loading...</span>
+
 
             <ul class="navbar-nav">
                 <li class="nav-item dropdown dropdown-user">
