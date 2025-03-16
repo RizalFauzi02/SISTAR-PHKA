@@ -281,8 +281,16 @@ class Superadmin extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             echo json_encode(['status' => 'error', 'message' => validation_errors()]);
         } else {
+            $username = $this->input->post('username', TRUE);
+
+            // Cek apakah username sudah ada di database
+            if ($this->M_superadmin->check_username_exists($username)) {
+                echo json_encode(['status' => 'error', 'message' => 'Username sudah digunakan!!']);
+                return; // Menghentikan proses lebih lanjut
+            }
+
             $data = [
-                'username'   => $this->input->post('username', TRUE),
+                'username'   => $username,
                 'password'   => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                 'is_active'  => $this->input->post('is_active'),
                 'is_role'    => $this->input->post('is_role'),
@@ -298,6 +306,7 @@ class Superadmin extends CI_Controller
             }
         }
     }
+
 
     public function update_isActive()
     {
@@ -344,10 +353,25 @@ class Superadmin extends CI_Controller
         $is_role = $this->input->post('is_role');
         $password = $this->input->post('password');
 
+        // Cek apakah username sudah digunakan oleh user lain
+        if ($this->M_superadmin->check_username_exists($username, $id_user)) {
+            $this->session->set_flashdata('error', 'Username sudah digunakan');
+            redirect('users/superadmin/m_user');
+            return;
+        }
+
         $update = $this->M_superadmin->update_user($id_user, $username, $is_role, $password);
 
+        // Cek apakah update berhasil
         if ($update) {
-            $this->session->set_flashdata('success', 'Data user berhasil diperbarui');
+            // Jika yang di-edit adalah user yang sedang login dan ada perubahan username atau password
+            if ($_SESSION['id_user'] == $id_user && ($username != $this->session->userdata('username') || !empty($password))) {
+                $this->session->sess_destroy();
+                $this->session->set_flashdata('success', 'Akun sudah diperbarui. Silahkan login ulang.');
+                redirect('auth/logout');
+                return;
+            }
+            $this->session->set_flashdata('success', 'Berhasil memperbarui user.');
         } else {
             $this->session->set_flashdata('error', 'Gagal memperbarui data user');
         }

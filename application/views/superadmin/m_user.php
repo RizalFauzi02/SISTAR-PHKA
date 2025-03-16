@@ -5,18 +5,18 @@
 						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
-					<?php if ($this->session->flashdata('pesan_sukses')) : ?>
+					<?php if ($this->session->flashdata('success')) : ?>
 						<div class="alert alert-success alert-dismissible fade show" role="alert">
-							<?= $this->session->flashdata('pesan_sukses'); ?>
+							<?= $this->session->flashdata('success'); ?>
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 					<?php endif; ?>
 
-					<?php if ($this->session->flashdata('pesan_error')) : ?>
+					<?php if ($this->session->flashdata('error')) : ?>
 						<div class="alert alert-danger alert-dismissible fade show" role="alert">
-							<?= $this->session->flashdata('pesan_error'); ?>
+							<?= $this->session->flashdata('error'); ?>
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -83,22 +83,26 @@
 													<a href="#" class="dropdown-item" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
 														Edit
 													</a>
-													<a href="#" class="dropdown-item" onclick="deleteAkun(<?= $u['id_user'] ?>)">
-														Hapus
-													</a>
-													<?php if ($u['is_active'] == 0) : ?>
-														<a href="#" class="dropdown-item" onclick="ubahStatusAkun(<?= $u['id_user'] ?>, 1)">
-															<span class="badge badge-success">Aktifkan</span>
+
+													<?php if ($_SESSION['id_user'] != $u['id_user']) : ?>
+														<a href="#" class="dropdown-item" onclick="deleteAkun(<?= $u['id_user'] ?>)">
+															Hapus
 														</a>
-													<?php else : ?>
-														<a href="#" class="dropdown-item" onclick="ubahStatusAkun(<?= $u['id_user'] ?>, 0)">
-															<span class="badge badge-danger">Nonaktifkan</span>
-														</a>
+														<?php if ($u['is_active'] == 0) : ?>
+															<a href="#" class="dropdown-item" onclick="ubahStatusAkun(<?= $u['id_user'] ?>, 1)">
+																<span class="badge badge-success">Aktifkan</span>
+															</a>
+														<?php else : ?>
+															<a href="#" class="dropdown-item" onclick="ubahStatusAkun(<?= $u['id_user'] ?>, 0)">
+																<span class="badge badge-danger">Nonaktifkan</span>
+															</a>
+														<?php endif; ?>
 													<?php endif; ?>
 												</div>
 											</div>
 										</div>
 									</td>
+
 									<td></td>
 									<td></td>
 								</tr>
@@ -122,8 +126,8 @@
 													</div>
 
 													<div class="form-group">
-														<label for="is_role">Role</label>
-														<select class="form-control" name="is_role" required>
+														<label for="is_role">Role Akun</label>
+														<select class="form-control" name="is_role" required <?= ($_SESSION['id_user'] == $u['id_user']) ? 'style="pointer-events: none;"' : '' ?>>
 															<option value="1" <?= $u['is_role'] == 1 ? 'selected' : '' ?>>Superadmin</option>
 															<option value="2" <?= $u['is_role'] == 2 ? 'selected' : '' ?>>Admin</option>
 															<option value="3" <?= $u['is_role'] == 3 ? 'selected' : '' ?>>Perawat</option>

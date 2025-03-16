@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Mar 2025 pada 13.42
--- Versi server: 10.4.21-MariaDB
--- Versi PHP: 7.4.26
+-- Waktu pembuatan: 16 Mar 2025 pada 06.56
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,19 +34,34 @@ CREATE TABLE `log_sendwhatsapp` (
   `is_role` int(11) NOT NULL,
   `nomor_pasien` varchar(20) NOT NULL,
   `pesan_whatsapp` text NOT NULL,
-  `status_kirim` varchar(20) NOT NULL,
-  `respon_sistem` varchar(20) NOT NULL,
   `tgl_kirim` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `log_sendwhatsapp`
 --
 
-INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `is_role`, `nomor_pasien`, `pesan_whatsapp`, `status_kirim`, `respon_sistem`, `tgl_kirim`) VALUES
-(1, 'superadmin', 1, 1, '6289664091196', 'Selamat Malam Bapak/Ibu,\r\n\r\nPESAN TIDAK ADA UCAPAN\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:13:26'),
-(2, 'admin', 2, 2, '6289664091196', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \r\n\r\nTerima kasih telah bersedia menunggu.\r\n\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-11 17:40:21'),
-(3, 'admin', 2, 2, '6281310734281', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.\r\n\r\n_[ ini adalah pesan otomatis ]_', 'Sukses', '{\"sent\":\"true\",\"mess', '2025-03-12 03:37:13');
+INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `is_role`, `nomor_pasien`, `pesan_whatsapp`, `tgl_kirim`) VALUES
+(1, 'superadmin', 1, 1, '6289664091196', 'Selamat Malam Bapak/Ibu,\r\n\r\nPESAN TIDAK ADA UCAPAN\r\n\r\n_[ ini adalah pesan otomatis ]_', '2025-03-11 17:13:26'),
+(2, 'admin', 2, 2, '6289664091196', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \r\n\r\nTerima kasih telah bersedia menunggu.\r\n\r\n\r\n_[ ini adalah pesan otomatis ]_', '2025-03-11 17:40:21'),
+(3, 'admin', 2, 2, '6281310734281', 'Selamat Pagi Bapak/Ibu,\r\n\r\nBerkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.\r\n\r\n_[ ini adalah pesan otomatis ]_', '2025-03-12 03:37:13'),
+(4, 'superadmin', 1, 1, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 15:34:42'),
+(5, 'superadmin', 1, 1, '6281310734281', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 15:35:17'),
+(6, 'superadmin', 1, 1, '6289664091196', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 15:40:26'),
+(7, 'admin', 2, 2, '6285956368533', 'Selamat Malam Bapak/Ibu,\n\nBerkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \n\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-15 15:46:28'),
+(8, 'farmasi', 4, 4, '6289664152236', '*Selamat Malam Bapak/Ibu,*\n\nTerima kasih telah bersedia menunggu. \n\nPetugas Farmasi saat ini sedang mempersiapkan obat kepulangan Anda dan akan segera mengantarkannya ke ruang perawatan.', '2025-03-15 15:49:08'),
+(9, 'perawat', 3, 3, '6281310734281', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 15:52:18'),
+(10, 'perawat', 3, 3, '6281310734281', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 15:55:42'),
+(11, 'perawat', 3, 3, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 16:00:37'),
+(12, 'perawat', 3, 3, '628964512556', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Novaaaa*\nTanggal Lahir: *05/12/2006*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 16:03:27'),
+(13, 'perawat', 3, 3, '6289664152236', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Faturrochman*\nTanggal Lahir: *09/07/1989*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 16:04:13'),
+(14, 'perawat', 3, 3, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 16:13:47'),
+(15, 'perawat', 3, 3, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 16:16:50'),
+(16, 'superadmin', 1, 1, '6289664091196', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 16:19:27'),
+(17, 'perawat', 3, 3, '6281310734281', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 19:05:31'),
+(18, 'perawat', 3, 3, '6289664091196', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Fauzi Rizal*\nTanggal Lahir: *05/03/2006*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 19:07:52'),
+(19, 'admin', 2, 2, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 19:36:19'),
+(20, 'admin', 2, 2, '62896541524454', '*Selamat Pagi Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-16 05:01:52');
 
 -- --------------------------------------------------------
 
@@ -60,23 +75,25 @@ CREATE TABLE `m_pasien` (
   `tanggal_lahir` date NOT NULL,
   `no_whatsapp` varchar(15) NOT NULL,
   `created_at` varchar(25) NOT NULL,
-  `updated_at` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `m_pasien`
 --
 
 INSERT INTO `m_pasien` (`id_pasien`, `nama_pasien`, `tanggal_lahir`, `no_whatsapp`, `created_at`, `updated_at`) VALUES
-(1, 'Rizal Fauzi', '2001-03-02', '6281310734281', '2025-03-08 00:39:58', ''),
-(2, 'Syaiful Fikri', '2001-03-02', '6589664019965', '2025-03-08 00:42:54', ''),
-(3, 'Fauzi Rizal', '2006-03-05', '6289664091196', '2025-03-08 00:50:31', ''),
-(4, 'Faturrochman', '1989-07-09', '6289664152236', '2025-03-09 02:20:19', ''),
-(5, 'Novaaaa', '2006-12-05', '628964512556', '2025-03-09 02:28:40', ''),
-(6, 'Upi', '2009-06-05', '6289644515663', '2025-03-09 02:31:01', ''),
-(7, 'HALIMAHATUS', '2007-05-04', '628544635445', '2025-03-09 02:39:06', ''),
-(8, 'TRIASTUTRI', '2001-09-26', '628554153365', '2025-03-09 02:43:43', ''),
-(9, 'Ayu', '2007-03-02', '6289664872217', '2025-03-10 08:28:35', '');
+(1, 'Rizal Fauzi', '2001-03-02', '6281310734281', '2025-03-08 00:39:58', '0000-00-00 00:00:00'),
+(2, 'Syaiful Fikri', '2001-03-02', '6285956368533', '2025-03-08 00:42:54', '0000-00-00 00:00:00'),
+(3, 'Fauzi Rizal', '2006-03-05', '6289664091196', '2025-03-08 00:50:31', '0000-00-00 00:00:00'),
+(4, 'Faturrochman', '1989-07-09', '6289664152236', '2025-03-09 02:20:19', '0000-00-00 00:00:00'),
+(6, 'Upi', '2009-06-05', '6289644515663', '2025-03-09 02:31:01', '0000-00-00 00:00:00'),
+(7, 'HALIMAHATUS', '2007-05-04', '628544635445', '2025-03-09 02:39:06', '0000-00-00 00:00:00'),
+(8, 'TRIASTUTRI', '2001-09-26', '628554153365', '2025-03-09 02:43:43', '0000-00-00 00:00:00'),
+(9, 'Ayu Kepo', '1989-11-17', '6289664872217', '2025-03-10 08:28:35', '2025-03-16 06:26:16'),
+(12, 'TEST', '2002-02-02', '62865442056698', '2025-03-16 06:25:25', '0000-00-00 00:00:00'),
+(13, 'test dari ADMIN DI EDIT SAMA ADMIN', '1965-02-05', '62896541524454', '2025-03-16 06:28:14', '2025-03-16 06:31:17'),
+(15, 'TEST DARI ADMIN', '2335-06-05', '6285664021185', '2025-03-16 12:00:37', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -90,19 +107,18 @@ CREATE TABLE `m_status` (
   `pesan_status` varchar(255) NOT NULL,
   `created_at` varchar(25) NOT NULL,
   `updated_at` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `m_status`
 --
 
 INSERT INTO `m_status` (`id_status`, `nama_status`, `pesan_status`, `created_at`, `updated_at`) VALUES
-(1, 'Menyiapkan Berkas Pulang', 'Saat ini perawat ...', '2025-03-09 00:39:22', ''),
+(1, 'Menyiapkan Berkas Pulang', 'Saat ini perawat sedang menyiapkan berkas kepulangan Anda.\r\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.\r\n', '2025-03-09 00:39:22', ''),
 (2, 'Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \n\nPetugas Farmasi saat ini sedang mempersiapkan obat kepulangan Anda dan akan segera mengantarkannya ke ruang perawatan.\n', '2025-03-09 01:44:59', ''),
 (3, 'Dalam Antrian', 'Berkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.\n', '2025-03-09 01:59:03', ''),
 (4, 'Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \n\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-09 01:59:43', ''),
-(8, 'CONTOH TIDAK ADA UCAPAN', 'PESAN TIDAK ADA UCAPAN', '2025-03-11 00:04:29', ''),
-(10, 'CONTOHH UCAPAN TERBARU', 'Berkas anda sedang di persiapkan dan sedang dalam proses, mohon ditunggu.', '2025-03-11 22:41:14', '');
+(11, 'TEST BUTTON BARU', 'TEST DISINI DONGGG ASAxxxxxCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC', '2025-03-16 00:48:22', '');
 
 -- --------------------------------------------------------
 
@@ -114,7 +130,7 @@ CREATE TABLE `status_user` (
   `id_status_user` int(11) NOT NULL,
   `id_status` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `status_user`
@@ -129,9 +145,8 @@ INSERT INTO `status_user` (`id_status_user`, `id_status`, `id_user`) VALUES
 (6, 3, 2),
 (7, 4, 1),
 (8, 4, 2),
-(15, 8, 1),
-(17, 10, 1),
-(18, 10, 2);
+(58, 11, 1),
+(59, 11, 4);
 
 -- --------------------------------------------------------
 
@@ -147,21 +162,21 @@ CREATE TABLE `tbl_user` (
   `is_role` int(1) NOT NULL,
   `created_at` varchar(25) NOT NULL,
   `updated_at` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `tbl_user`
 --
 
 INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `is_active`, `is_role`, `created_at`, `updated_at`) VALUES
-(1, 'superadmin', '$2y$10$UphUusGOux7Dmj1AwtqzWOrJH8ykkSblfb17hwsxatECNcC6I8IaO', 1, 1, '2025-03-07 21:59:22', ''),
+(1, 'superadmin', '$2y$10$UphUusGOux7Dmj1AwtqzWOrJH8ykkSblfb17hwsxatECNcC6I8IaO', 1, 1, '2025-03-07 21:59:22', '2025-03-16 12:39:30'),
 (2, 'admin', '$2y$10$R325JVmEADszEYGUysKs5ux/dLt8jLaqzW0CZzOjnso7q9.9dU9aW', 1, 2, '2025-03-08 23:47:03', ''),
 (3, 'perawat', '$2y$10$qOnhe6pmrs60YMdfHJCYh.kxRTL.EGJh05sPWHLkvHGavKI8Bbagi', 1, 3, '2025-03-08 23:47:37', ''),
 (4, 'farmasi', '$2y$10$We2NvUM0cmCOW4j/WyQS4uLxu.QXfamtIg/xkWbxmvFwFsXKwPyvm', 1, 4, '2025-03-08 23:48:07', '2025-03-11 23:07:20'),
 (5, 'admin2', '$2y$10$AoZ65NLRD4atC.JiA11iEuiEu12aeGPVeS8uRHFKesnFnFk1AAigi', 0, 2, '2025-03-09 23:41:40', '2025-03-10 00:25:41'),
-(6, 'farmasi2', '$2y$10$efIv.P.z.M7lLKVzvPzgCuWOOTQIqdmGx/S9t1dYHgVu.engtvxtS', 0, 4, '2025-03-09 23:43:19', '2025-03-10 00:22:27'),
-(7, 'perawat2', '$2y$10$KzQDTS0IkZF6i0z97yJqV.TGPr5143nFsPoLlsq6AHG.gIFJ4BH9i', 0, 3, '2025-03-09 23:45:10', '2025-03-10 00:21:19'),
-(9, 'drRatnah', '$2y$10$XxQOWf7ba11e8R8kxO5F8u8MwSFhRFrZc8hThapBuX4Gr1V4Z6sNO', 1, 1, '2025-03-10 11:25:58', '');
+(7, 'perawat2', '$2y$10$KzQDTS0IkZF6i0z97yJqV.TGPr5143nFsPoLlsq6AHG.gIFJ4BH9i', 0, 3, '2025-03-09 23:45:10', '2025-03-16 12:41:48'),
+(9, 'drRatnah', '$2y$10$XxQOWf7ba11e8R8kxO5F8u8MwSFhRFrZc8hThapBuX4Gr1V4Z6sNO', 0, 1, '2025-03-10 11:25:58', '2025-03-16 12:14:27'),
+(10, 'farmasi2', '$2y$10$g4Dwzf9r9ynv7OU6Ni0QgucDWuCw2ii0By.G/7ef3vIvm.Q/8PQnC', 1, 4, '2025-03-16 12:52:25', '2025-03-16 12:53:22');
 
 --
 -- Indexes for dumped tables
@@ -207,31 +222,31 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `log_sendwhatsapp`
 --
 ALTER TABLE `log_sendwhatsapp`
-  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_pasien`
 --
 ALTER TABLE `m_pasien`
-  MODIFY `id_pasien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_pasien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_status`
 --
 ALTER TABLE `m_status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_user`
 --
 ALTER TABLE `status_user`
-  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

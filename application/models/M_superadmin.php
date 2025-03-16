@@ -224,4 +224,21 @@ class M_superadmin extends CI_Model
     {
         return $this->db->get_where('m_pasien', ['no_whatsapp' => $no_whatsapp])->row_array();
     }
+
+    public function check_username_exists($username, $exclude_user_id = NULL)
+    {
+        // Membuat query untuk memeriksa apakah username sudah ada
+        $this->db->where('username', $username);
+
+        // Jika ada user yang ingin dikecualikan (misalnya saat update user), tambahkan kondisi untuk mengecualikan ID tersebut
+        if ($exclude_user_id) {
+            $this->db->where('id_user !=', $exclude_user_id);
+        }
+
+        $query = $this->db->get('tbl_user'); // Ganti 'users' dengan nama tabel yang sesuai
+        if ($query->num_rows() > 0) {
+            return true; // Username sudah ada
+        }
+        return false; // Username belum ada
+    }
 }

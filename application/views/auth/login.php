@@ -1,5 +1,4 @@
 <div class="content d-flex justify-content-center align-items-center">
-    <?= $this->session->flashdata('pesan'); ?>
     <!-- Login form -->
     <form class="login-form" action="<?= base_url('auth/ProsesLogin'); ?>" method="POST">
         <div class="card mb-0">
@@ -22,6 +21,18 @@
                     <h1 class="mb-0">SISTAR</h1>
                     <span class="d-block text-muted"><b>S</b>istem <b>I</b>nformasi <b>S</b>tatus <b>T</b>indak lanjut <b>A</b>dministrasi <b>R</b>awat inap</span>
                 </div>
+
+                <?php if ($this->session->flashdata('success')): ?>
+                    <div class="alert alert-success">
+                        <?= $this->session->flashdata('success') ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($this->session->flashdata('error')): ?>
+                    <div class="alert alert-danger">
+                        <?= $this->session->flashdata('error') ?>
+                    </div>
+                <?php endif; ?>
 
                 <div class="form-group form-group-feedback form-group-feedback-left">
                     <input type="text" name="username" class="form-control" placeholder="Username" autocomplete>
