@@ -88,7 +88,7 @@ class Admin extends CI_Controller
         // Aturan Validasi
         $this->form_validation->set_rules('nama_pasien', 'Nama Pasien', 'trim|required');
         $this->form_validation->set_rules('tanggal_lahir', 'Tanggal Lahir', 'required');
-        $this->form_validation->set_rules('no_whatsapp_pasien', 'No WhatsApp', 'required|regex_match[/^628[0-9]{8,}$/]', [
+        $this->form_validation->set_rules('no_whatsapp', 'No WhatsApp', 'required|regex_match[/^628[0-9]{8,}$/]', [
             'required' => 'No WhatsApp wajib diisi!',
             'regex_match' => 'No WhatsApp harus diawali dengan 628 !!!'
         ]);
@@ -107,21 +107,26 @@ class Admin extends CI_Controller
             ");
             redirect('Users/admin');
         } else {
-            $data['nama_pasien']   = $this->input->post('nama_pasien');
-            $data['tanggal_lahir'] = $this->input->post('tanggal_lahir');
-            $data['no_whatsapp']   = $this->input->post('no_whatsapp_pasien');
-            $data['created_at']    = date('Y-m-d H:i:s');
+            $no_whatsapp = $this->input->post('no_whatsapp');
 
+            // Cek apakah nomor WhatsApp sudah terdaftar
+            $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
+            if ($cek_pasien) {
+                $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
+                redirect('Users/admin');
+            }
+
+            // Data yang akan disimpan
+            $data = [
+                'nama_pasien'   => $this->input->post('nama_pasien'),
+                'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+                'no_whatsapp'   => $no_whatsapp,
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
+
+            // Simpan ke database
             $this->M_pasien->insertPasien($data);
-            $this->session->set_flashdata('pesan', "
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Anda Berhasil Mendaftar.'
-                    });
-                </script>
-            ");
+            $this->session->set_flashdata('success', 'Data pasien berhasil ditambahkan!');
             redirect('Users/admin');
         }
     }

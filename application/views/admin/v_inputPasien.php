@@ -14,11 +14,36 @@
             <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></span></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('success'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('error'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('info')): ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('info'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <!-- /page header -->
 
-<?= $this->session->flashdata('pesan'); ?>
 <!-- Content area -->
 <div class="content">
     <div class="row">
@@ -28,12 +53,33 @@
                 <div class="card-header text-center">
                     <h5 class="card-title mb-0"> <?= $title; ?> </h5>
                 </div>
-                <?php if ($this->session->flashdata('error')) : ?>
-                    <div class="alert alert-danger">
-                        <?= $this->session->flashdata('error'); ?>
-                    </div>
-                <?php endif; ?>
                 <div class="card-body">
+                    <?php if ($this->session->flashdata('success')): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <?= $this->session->flashdata('success'); ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($this->session->flashdata('error')): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $this->session->flashdata('error'); ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($this->session->flashdata('info')): ?>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <?= $this->session->flashdata('info'); ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
                     <form action="<?= base_url('Users/admin/prosesAddPasien'); ?>" method="POST" onsubmit="return validateWhatsApp()">
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Data Pasien</span>
@@ -72,7 +118,8 @@
                             <th>Nama Pasien</th>
                             <th>Tanggal Lahir</th>
                             <th>Nomor WhatsApp</th>
-                            <th>Date Input</th>
+                            <th>Tanggal Input</th>
+                            <th>Tanggal Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +130,11 @@
                                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($p['tanggal_lahir']))); ?></td>
                                     <td><?= htmlspecialchars($p['no_whatsapp']); ?></td>
                                     <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['created_at']))); ?></td>
-                                    <td></td>
+                                    <td>
+                                        <?= !empty($p['updated_at']) && $p['updated_at'] !== '0000-00-00 00:00:00'
+                                            ? htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['updated_at'])))
+                                            : ''; ?>
+                                    </td>
                                     <td></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -100,6 +151,10 @@
 </div>
 
 <script>
+    setTimeout(function() {
+        $(".alert").fadeOut("slow");
+    }, 2000);
+
     function validateWhatsApp() {
         var no_wa = document.getElementById("no_whatsapp").value;
 

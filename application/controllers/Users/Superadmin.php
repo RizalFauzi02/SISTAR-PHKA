@@ -166,7 +166,6 @@ class Superadmin extends CI_Controller
 
     public function m_status()
     {
-        ob_start();
         // Default
         $this->data['title'] = 'Master Status Pelayanan';
         $this->data['menuSuperAdmin'] = [
@@ -203,12 +202,10 @@ class Superadmin extends CI_Controller
         }
 
         $this->template->load('template/default/template', 'superadmin/m_status', $this->data);
-        ob_end_flush();
     }
 
     public function updateStatus()
     {
-        ob_start(); // Hindari output sebelum redirect
         $id_status = $this->input->post('id_status');
         $status_data = [
             'nama_status'  => $this->input->post('nama_status'),
@@ -217,12 +214,11 @@ class Superadmin extends CI_Controller
         $user_ids = $this->input->post('id_user');
 
         if ($this->M_superadmin->update_status($id_status, $status_data, $user_ids)) {
-            // $this->session->set_flashdata('pesan_sukses', 'Berhasil Update Status!');
+            $this->session->set_flashdata('success', 'Berhasil Update Status!');
         } else {
-            // $this->session->set_flashdata('pesan_error', 'Gagal Update Status!');
+            $this->session->set_flashdata('error', 'Gagal Update Status!');
         }
         redirect('Users/superadmin/m_status');
-        ob_end_flush();
     }
 
     public function deleteStatus($id_status)
@@ -234,10 +230,9 @@ class Superadmin extends CI_Controller
         // Hapus status dari tabel m_status
         $this->M_superadmin->delete_status($id_status);
 
-        // $this->session->set_flashdata('pesan_berhasil', 'Berhasil Hapus Status!');
+        $this->session->set_flashdata('success', 'Berhasil Hapus Status!');
 
         redirect('Users/superadmin/m_status');
-        ob_end_flush();
     }
 
     public function m_user()
@@ -352,9 +347,9 @@ class Superadmin extends CI_Controller
         $update = $this->M_superadmin->update_user($id_user, $username, $is_role, $password);
 
         if ($update) {
-            $this->session->set_flashdata('pesan_sukses', 'Data user berhasil diperbarui');
+            $this->session->set_flashdata('success', 'Data user berhasil diperbarui');
         } else {
-            $this->session->set_flashdata('pesan_error', 'Gagal memperbarui data user');
+            $this->session->set_flashdata('error', 'Gagal memperbarui data user');
         }
 
         redirect('users/superadmin/m_user');
@@ -370,7 +365,7 @@ class Superadmin extends CI_Controller
         if ($this->form_validation->run() == false) {
             // Simpan error dalam session flashdata
             $this->session->set_flashdata('error', validation_errors());
-            $this->session->set_flashdata('pesan_error', "
+            $this->session->set_flashdata('error', "
             <script>
                 Swal.fire({
                     icon: 'error',
@@ -391,7 +386,7 @@ class Superadmin extends CI_Controller
 
             $this->M_superadmin->insertStatus($data, $users); // Kirim ke model
 
-            $this->session->set_flashdata('pesan_sukses', 'Berhasil menambahkan Status!');
+            $this->session->set_flashdata('success', 'Berhasil menambahkan Status!');
 
             redirect('Users/superadmin/m_status');
         }
@@ -442,7 +437,7 @@ class Superadmin extends CI_Controller
         if ($this->form_validation->run() == false) {
             // Simpan error dalam session flashdata
             $this->session->set_flashdata('error', validation_errors());
-            $this->session->set_flashdata('pesan_error', "
+            $this->session->set_flashdata('pesan', "
                 <script>
                     Swal.fire({
                         icon: 'error',
@@ -453,24 +448,30 @@ class Superadmin extends CI_Controller
             ");
             redirect('Users/superadmin/add_pasien');
         } else {
-            $data['nama_pasien']   = $this->input->post('nama_pasien');
-            $data['tanggal_lahir'] = $this->input->post('tanggal_lahir');
-            $data['no_whatsapp']   = $this->input->post('no_whatsapp');
-            $data['created_at']    = date('Y-m-d H:i:s');
+            $no_whatsapp = $this->input->post('no_whatsapp');
 
+            // Cek apakah nomor WhatsApp sudah terdaftar
+            $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
+            if ($cek_pasien) {
+                $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
+                redirect('Users/superadmin/add_pasien');
+            }
+
+            // Data yang akan disimpan
+            $data = [
+                'nama_pasien'   => $this->input->post('nama_pasien'),
+                'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+                'no_whatsapp'   => $no_whatsapp,
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
+
+            // Simpan ke database
             $this->M_pasien->insertPasien($data);
-            $this->session->set_flashdata('pesan_sukses', "
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: 'Anda Berhasil Mendaftar.'
-                    });
-                </script>
-            ");
+            $this->session->set_flashdata('success', 'Data pasien berhasil ditambahkan!');
             redirect('Users/superadmin/add_pasien');
         }
     }
+
 
     public function get_pasien_by_id()
     {
@@ -488,5 +489,46 @@ class Superadmin extends CI_Controller
         } else {
             echo json_encode(['error' => 'ID Pasien tidak valid']);
         }
+    }
+
+    public function editPasien()
+    {
+        $id_pasien = $this->input->post('id_pasien');
+
+        // Ambil data dari input form
+        $data = [
+            'nama_pasien'   => $this->input->post('nama_pasien'),
+            'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+            'no_whatsapp'   => $this->input->post('no_whatsapp')
+        ];
+
+        // Hapus field yang kosong agar tidak memperbarui dengan NULL
+        $data = array_filter($data, function ($value) {
+            return !empty($value);
+        });
+
+        // Cek jika ada perubahan data
+        if (!empty($data)) {
+            if ($this->M_superadmin->update_pasien($id_pasien, $data)) {
+                $this->session->set_flashdata('success', 'Data pasien berhasil diperbarui!');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal memperbarui data pasien.');
+            }
+        } else {
+            $this->session->set_flashdata('info', 'Tidak ada perubahan data.');
+        }
+
+        redirect('Users/superadmin/add_pasien');
+    }
+
+    public function deletePasien($id_pasien)
+    {
+        if ($this->M_superadmin->delete_pasien($id_pasien)) {
+            $this->session->set_flashdata('success', 'Data pasien berhasil dihapus!');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal menghapus data pasien.');
+        }
+
+        redirect('Users/superadmin/add_pasien');
     }
 }

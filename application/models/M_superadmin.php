@@ -74,7 +74,7 @@ class M_superadmin extends CI_Model
 
     public function get_all_pasien()
     {
-        $this->db->select('id_pasien, nama_pasien, tanggal_lahir, no_whatsapp, created_at');
+        $this->db->select('id_pasien, nama_pasien, tanggal_lahir, no_whatsapp, created_at, updated_at');
         $this->db->from('m_pasien');
         $query = $this->db->get();
         return $query->result_array();
@@ -204,5 +204,24 @@ class M_superadmin extends CI_Model
     {
         $this->db->where('id_status', $id_status);
         $this->db->delete('m_status');
+    }
+
+    public function update_pasien($id_pasien, $data)
+    {
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $this->db->where('id_pasien', $id_pasien);
+        return $this->db->update('m_pasien', $data);
+    }
+
+    public function delete_pasien($id)
+    {
+        $this->db->where('id_pasien', $id);
+        return $this->db->delete('m_pasien');
+    }
+
+    public function cekNomorWhatsApp($no_whatsapp)
+    {
+        return $this->db->get_where('m_pasien', ['no_whatsapp' => $no_whatsapp])->row_array();
     }
 }

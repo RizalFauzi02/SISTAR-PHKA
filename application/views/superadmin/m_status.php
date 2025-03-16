@@ -5,6 +5,32 @@
             <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></span></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
+        <?php if ($this->session->flashdata('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('success'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('error'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('info')): ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <?= $this->session->flashdata('info'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <!-- /page header -->
@@ -101,7 +127,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="modalPesanLabel<?= $status['id_status']; ?>">Detail Pesan Status</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div class="modal-body">
                                                 <?= nl2br(htmlspecialchars($status['pesan_status'])); ?>
@@ -121,7 +147,7 @@
                                             <form action="<?= base_url('Users/superadmin/updateStatus'); ?>" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Edit Status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="hidden" name="id_status" value="<?= $status['id_status']; ?>">
@@ -166,7 +192,7 @@
                                             <form action="<?= base_url('Users/superadmin/deleteStatus/' . $status['id_status']); ?>" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     Apakah Anda yakin ingin menghapus Status Pelayanan: <br><strong><?= htmlspecialchars($status['nama_status']); ?></strong>
@@ -191,6 +217,9 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    setTimeout(function() {
+        $(".alert").fadeOut("slow");
+    }, 2000);
     $(document).ready(function() {
         $('.select-search').select2({
             placeholder: "Pilih Pengguna",

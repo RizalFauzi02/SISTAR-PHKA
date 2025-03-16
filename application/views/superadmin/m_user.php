@@ -5,27 +5,27 @@
 						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></h4>
 						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 					</div>
+					<?php if ($this->session->flashdata('pesan_sukses')) : ?>
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<?= $this->session->flashdata('pesan_sukses'); ?>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					<?php endif; ?>
+
+					<?php if ($this->session->flashdata('pesan_error')) : ?>
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<?= $this->session->flashdata('pesan_error'); ?>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<!-- /page header -->
 
-			<?php if ($this->session->flashdata('pesan_sukses')) : ?>
-				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<?= $this->session->flashdata('pesan_sukses'); ?>
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			<?php endif; ?>
-
-			<?php if ($this->session->flashdata('pesan_error')) : ?>
-				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<?= $this->session->flashdata('pesan_error'); ?>
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			<?php endif; ?>
 
 			<!-- Content area -->
 			<div class="content">
@@ -99,6 +99,8 @@
 											</div>
 										</div>
 									</td>
+									<td></td>
+									<td></td>
 								</tr>
 								<!-- Modal Edit -->
 								<div class="modal fade" id="editModal<?= $u['id_user'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?= $u['id_user'] ?>" aria-hidden="true">
