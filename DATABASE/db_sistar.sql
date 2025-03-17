@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Mar 2025 pada 06.56
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Waktu pembuatan: 17 Mar 2025 pada 11.24
+-- Versi server: 10.4.21-MariaDB
+-- Versi PHP: 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,7 +35,7 @@ CREATE TABLE `log_sendwhatsapp` (
   `nomor_pasien` varchar(20) NOT NULL,
   `pesan_whatsapp` text NOT NULL,
   `tgl_kirim` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `log_sendwhatsapp`
@@ -61,7 +61,11 @@ INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `is_
 (17, 'perawat', 3, 3, '6281310734281', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 19:05:31'),
 (18, 'perawat', 3, 3, '6289664091196', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Fauzi Rizal*\nTanggal Lahir: *05/03/2006*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-15 19:07:52'),
 (19, 'admin', 2, 2, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-15 19:36:19'),
-(20, 'admin', 2, 2, '62896541524454', '*Selamat Pagi Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-16 05:01:52');
+(20, 'admin', 2, 2, '62896541524454', '*Selamat Pagi Bapak/Ibu,*\n\nBerkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.', '2025-03-16 05:01:52'),
+(21, 'perawat', 3, 3, '6281310734281', '*Selamat Pagi Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-17 01:05:52'),
+(22, 'perawat', 3, 3, '6281310734281', '*Selamat Siang Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-17 06:15:03'),
+(23, 'perawat', 3, 3, '6281310734281', '*Selamat Siang Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-17 06:15:41'),
+(24, 'perawat', 3, 3, '6285956368533', '*Selamat Siang Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nSaat ini perawat sedang menyiapkan berkas kepulangan Anda.\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.', '2025-03-17 06:16:59');
 
 -- --------------------------------------------------------
 
@@ -76,7 +80,7 @@ CREATE TABLE `m_pasien` (
   `no_whatsapp` varchar(15) NOT NULL,
   `created_at` varchar(25) NOT NULL,
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `m_pasien`
@@ -86,7 +90,7 @@ INSERT INTO `m_pasien` (`id_pasien`, `nama_pasien`, `tanggal_lahir`, `no_whatsap
 (1, 'Rizal Fauzi', '2001-03-02', '6281310734281', '2025-03-08 00:39:58', '0000-00-00 00:00:00'),
 (2, 'Syaiful Fikri', '2001-03-02', '6285956368533', '2025-03-08 00:42:54', '0000-00-00 00:00:00'),
 (3, 'Fauzi Rizal', '2006-03-05', '6289664091196', '2025-03-08 00:50:31', '0000-00-00 00:00:00'),
-(4, 'Faturrochman', '1989-07-09', '6289664152236', '2025-03-09 02:20:19', '0000-00-00 00:00:00'),
+(4, 'Faturrochmankkkkkk', '1989-07-09', '6289664152236', '2025-03-09 02:20:19', '2025-03-17 13:27:45'),
 (6, 'Upi', '2009-06-05', '6289644515663', '2025-03-09 02:31:01', '0000-00-00 00:00:00'),
 (7, 'HALIMAHATUS', '2007-05-04', '628544635445', '2025-03-09 02:39:06', '0000-00-00 00:00:00'),
 (8, 'TRIASTUTRI', '2001-09-26', '628554153365', '2025-03-09 02:43:43', '0000-00-00 00:00:00'),
@@ -107,18 +111,18 @@ CREATE TABLE `m_status` (
   `pesan_status` varchar(255) NOT NULL,
   `created_at` varchar(25) NOT NULL,
   `updated_at` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `m_status`
 --
 
 INSERT INTO `m_status` (`id_status`, `nama_status`, `pesan_status`, `created_at`, `updated_at`) VALUES
-(1, 'Menyiapkan Berkas Pulang', 'Saat ini perawat sedang menyiapkan berkas kepulangan Anda.\r\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.\r\n', '2025-03-09 00:39:22', ''),
-(2, 'Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \n\nPetugas Farmasi saat ini sedang mempersiapkan obat kepulangan Anda dan akan segera mengantarkannya ke ruang perawatan.\n', '2025-03-09 01:44:59', ''),
-(3, 'Dalam Antrian', 'Berkas kepulangan Anda saat ini sedang dalam antrian di Kasir Rawat Inap. \n\nTerima kasih telah bersedia menunggu.\n', '2025-03-09 01:59:03', ''),
-(4, 'Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \n\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-09 01:59:43', ''),
-(11, 'TEST BUTTON BARU', 'TEST DISINI DONGGG ASAxxxxxCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC', '2025-03-16 00:48:22', '');
+(1, '1. Menyiapkan Berkas Pulang', 'Saat ini perawat sedang menyiapkan berkas kepulangan Anda.\r\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.\r\n', '2025-03-09 00:39:22', ''),
+(2, '4. Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \r\n\r\nPetugas Farmasi akan segera mengantarkan obat ke ruang perawatan\r\n\r\n\r\n', '2025-03-09 01:44:59', ''),
+(3, '3. Penyelesaian Administrasi', 'Berkas kepulangan Anda saat ini sudah selesai,\r\n\r\nsilahkan ke kasir rawat inap untuk menyelesaikan administrasi\r\nMohon untuk menunggu obat pulang (JKN)\r\n\r\nTerima kasih telah bersedia menunggu.\r\n', '2025-03-09 01:59:03', ''),
+(4, '2. Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-09 01:59:43', ''),
+(11, 'TEST BUTTON BARU', 'TEST DISINI DONGGG ASAHZHZHZHZHZHbbbbbbbb', '2025-03-16 00:48:22', '');
 
 -- --------------------------------------------------------
 
@@ -130,23 +134,22 @@ CREATE TABLE `status_user` (
   `id_status_user` int(11) NOT NULL,
   `id_status` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `status_user`
 --
 
 INSERT INTO `status_user` (`id_status_user`, `id_status`, `id_user`) VALUES
-(1, 1, 1),
-(2, 1, 3),
-(3, 2, 1),
-(4, 2, 4),
-(5, 3, 1),
-(6, 3, 2),
-(7, 4, 1),
-(8, 4, 2),
-(58, 11, 1),
-(59, 11, 4);
+(64, 11, 1),
+(69, 1, 1),
+(70, 1, 3),
+(73, 4, 1),
+(74, 4, 2),
+(77, 2, 1),
+(78, 2, 4),
+(79, 3, 1),
+(80, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -162,7 +165,7 @@ CREATE TABLE `tbl_user` (
   `is_role` int(1) NOT NULL,
   `created_at` varchar(25) NOT NULL,
   `updated_at` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `tbl_user`
@@ -170,13 +173,14 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `is_active`, `is_role`, `created_at`, `updated_at`) VALUES
 (1, 'superadmin', '$2y$10$UphUusGOux7Dmj1AwtqzWOrJH8ykkSblfb17hwsxatECNcC6I8IaO', 1, 1, '2025-03-07 21:59:22', '2025-03-16 12:39:30'),
-(2, 'admin', '$2y$10$R325JVmEADszEYGUysKs5ux/dLt8jLaqzW0CZzOjnso7q9.9dU9aW', 1, 2, '2025-03-08 23:47:03', ''),
+(2, 'admin', '$2y$10$R325JVmEADszEYGUysKs5ux/dLt8jLaqzW0CZzOjnso7q9.9dU9aW', 1, 2, '2025-03-08 23:47:03', '2025-03-17 13:34:55'),
 (3, 'perawat', '$2y$10$qOnhe6pmrs60YMdfHJCYh.kxRTL.EGJh05sPWHLkvHGavKI8Bbagi', 1, 3, '2025-03-08 23:47:37', ''),
 (4, 'farmasi', '$2y$10$We2NvUM0cmCOW4j/WyQS4uLxu.QXfamtIg/xkWbxmvFwFsXKwPyvm', 1, 4, '2025-03-08 23:48:07', '2025-03-11 23:07:20'),
 (5, 'admin2', '$2y$10$AoZ65NLRD4atC.JiA11iEuiEu12aeGPVeS8uRHFKesnFnFk1AAigi', 0, 2, '2025-03-09 23:41:40', '2025-03-10 00:25:41'),
 (7, 'perawat2', '$2y$10$KzQDTS0IkZF6i0z97yJqV.TGPr5143nFsPoLlsq6AHG.gIFJ4BH9i', 0, 3, '2025-03-09 23:45:10', '2025-03-16 12:41:48'),
 (9, 'drRatnah', '$2y$10$XxQOWf7ba11e8R8kxO5F8u8MwSFhRFrZc8hThapBuX4Gr1V4Z6sNO', 0, 1, '2025-03-10 11:25:58', '2025-03-16 12:14:27'),
-(10, 'farmasi2', '$2y$10$g4Dwzf9r9ynv7OU6Ni0QgucDWuCw2ii0By.G/7ef3vIvm.Q/8PQnC', 1, 4, '2025-03-16 12:52:25', '2025-03-16 12:53:22');
+(10, 'farmasi2', '$2y$10$g4Dwzf9r9ynv7OU6Ni0QgucDWuCw2ii0By.G/7ef3vIvm.Q/8PQnC', 1, 4, '2025-03-16 12:52:25', '2025-03-16 12:53:22'),
+(11, 'EVI', '$2y$10$dzMY40cdG5rxVnwWVlecI.ob3cOB6FQk4YkSB0DQLWEF4OFIwqora', 1, 2, '2025-03-17 13:36:54', '2025-03-17 13:37:12');
 
 --
 -- Indexes for dumped tables
@@ -222,7 +226,7 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `log_sendwhatsapp`
 --
 ALTER TABLE `log_sendwhatsapp`
-  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_pasien`
@@ -240,13 +244,13 @@ ALTER TABLE `m_status`
 -- AUTO_INCREMENT untuk tabel `status_user`
 --
 ALTER TABLE `status_user`
-  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
