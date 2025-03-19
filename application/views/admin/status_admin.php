@@ -23,10 +23,10 @@
                             <div class="form-group text-center text-muted content-divider">
                                 <span class="px-2">Data Pasien</span>
                             </div>
-                            <!-- Tambahkan ini di dalam form -->
                             <div class="form-group">
+                                <input type="hidden" id="id_status" name="id_status">
                                 <label for="nama_pasien">Nama Pasien</label>
-                                <select class="form-control select-search" id="nama_pasien">
+                                <select class="form-control select-search" id="nama_pasien" name="nama_pasien">
                                     <?php if (!empty($pasien)) : ?>
                                         <option value="" disabled selected>-- Pilih Pasien --</option>
                                         <?php foreach ($pasien as $p) : ?>
@@ -49,6 +49,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="jaminan">Jaminan</label>
+                                <select class="form-control select-search" id="jaminan" name="jaminan" required>
+                                    <option value="" disabled selected>-- Pilih Jaminan --</option>
+                                    <option value="JKN">JKN</option>
+                                    <option value="NON JKN">NON JKN</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="ucapan">Ucapan</label>
                                 <select class="form-control select-search" id="ucapan">
                                     <option value="" disabled selected>-- Pilih Ucapan --</option>
@@ -61,8 +70,17 @@
 
                             <?php if (!empty($status)) : ?>
                                 <?php foreach ($status as $s) : ?>
-                                    <div class="text-center mt-2">
-                                        <button type="button" class="btn btn-primary btn-status" data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
+                                    <?php
+                                    $jaminan = strtoupper($s['jaminan'] ?? 'NULL');
+                                    $hide = ($jaminan === 'JKN' || $jaminan === 'NON JKN') ? 'style="display: none;"' : '';
+                                    ?>
+                                    <div class="text-center mt-2 status-btn-container"
+                                        data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>" <?= $hide; ?>>
+                                        <button type="button"
+                                            class="btn btn-primary btn-status"
+                                            data-id="<?= $s['id_status']; ?>"
+                                            data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>"
+                                            data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
                                             <?= $s['nama_status']; ?>
                                         </button>
                                     </div>
@@ -135,6 +153,7 @@
                                 if (data) {
                                     $('#tanggal_lahir').val(data.tanggal_lahir);
                                     $('#no_whatsapp').val(data.no_whatsapp);
+                                    $('#jaminan').val(data.jaminan);
                                 } else {
                                     alert('Data tidak ditemukan!');
                                 }
@@ -146,90 +165,90 @@
                     } else {
                         $('#tanggal_lahir').val('');
                         $('#no_whatsapp').val('');
+                        $('#jaminan').val('');
                     }
                 });
             });
 
             // SCRIPT UNTUK CHAT DENGAN REDIRECT WA.ME
             document.getElementById('kirimWa').addEventListener('click', function() {
-                var button = this; // Simpan referensi tombol
+                var button = this;
                 var noWhatsApp = document.getElementById('no_whatsapp').value.trim();
                 var pesan = document.getElementById('pesan_status').value.trim();
+                var idPasien = document.getElementById('nama_pasien').value.trim();
+                var idStatus = document.getElementById('id_status').value.trim();
 
-                if (noWhatsApp === "" || pesan === "") {
+                if (noWhatsApp === "" || pesan === "" || idPasien === "" || idStatus === "") {
                     Swal.fire({
-                        title: "Oops...",
-                        text: "Nomor WhatsApp atau pesan tidak boleh kosong!",
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "OK"
+                        title: 'Oops...',
+                        text: 'ID Status, ID Pasien, Nomor WhatsApp, dan Pesan tidak boleh kosong!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
                     });
                     return;
                 }
 
-                // Ubah 0 di awal menjadi 62 (kode negara Indonesia)
-                noWhatsApp = noWhatsApp.replace(/^0/, "62");
-
-                // Encode pesan agar sesuai format URL
-                var encodedPesan = encodeURIComponent(pesan);
-
-                // Buat URL WhatsApp dari input user
-                var urlUserInput = "https://wa.me/" + noWhatsApp + "?text=" + encodedPesan;
-
-                // Tampilkan loading
-                Swal.fire({
-                    title: "Mengirim...",
-                    text: "Mohon tunggu sebentar..!",
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                // Disable tombol untuk mencegah spam klik
-                button.disabled = true;
-                button.innerText = "Sedang Mengirim...";
-
-                // Kirim data ke database menggunakan fetch()
-                fetch("<?= base_url('users/admin/kirim_whatsapp') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}`
-                    })
-                    .then(response => response.text()) // Ubah response ke text
-                    .then(data => {
-                        // Notifikasi berhasil
-                        Swal.fire({
-                            icon: "success",
-                            title: "Berhasil!",
-                            text: "Pesan berhasil dikirim dan disimpan ke database!",
-                            confirmButtonColor: "#28a745",
-                            confirmButtonText: "OK"
-                        }).then(() => {
-                            // Buka WhatsApp di tab baru setelah user menekan "OK"
-                            window.open(urlUserInput, '_blank');
-                        });
-
-                        // Kembalikan tombol ke kondisi awal
-                        button.disabled = false;
-                        button.innerText = "Kirim WhatsApp";
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops!",
-                            text: "Terjadi kesalahan saat menyimpan data ke database!",
-                            confirmButtonColor: "#d33",
-                            confirmButtonText: "OK"
-                        });
-
-                        // Kembalikan tombol ke kondisi awal jika gagal
-                        button.disabled = false;
-                        button.innerText = "Kirim WhatsApp";
+                // Salin teks ke clipboard
+                navigator.clipboard.writeText(pesan).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Tersalin!',
+                        text: 'Pesan berhasil disalin ke clipboard.',
+                        timer: 2000,
+                        showConfirmButton: false
                     });
+
+                    noWhatsApp = noWhatsApp.replace(/^0/, "62");
+                    var encodedPesan = encodeURIComponent(pesan);
+                    var urlUserInput = "https://wa.me/" + noWhatsApp + "?text=" + encodedPesan;
+
+                    // Disable tombol untuk mencegah spam klik
+                    button.disabled = true;
+                    button.innerText = "Sedang Mengirim...";
+
+                    // Kirim data ke database
+                    fetch("<?= base_url('users/admin/kirim_whatsapp') ?>", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}&nama_pasien=${encodeURIComponent(idPasien)}&id_status=${encodeURIComponent(idStatus)}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: data.message,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK'
+                                });
+
+                                setTimeout(() => {
+                                    window.open(urlUserInput, '_blank');
+                                }, 1500);
+                            } else {
+                                throw new Error(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: error.message || 'Terjadi kesalahan!',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'OK'
+                            });
+                        })
+                        .finally(() => {
+                            button.disabled = false;
+                            button.innerText = "Kirim WhatsApp";
+                        });
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                });
             });
 
 
@@ -264,6 +283,32 @@
 
                     $("#pesan_status").val(pesanFinal);
                 }
+            });
+
+            $(document).ready(function() {
+                $(".status-btn-container").hide();
+                $(".status-btn-container[data-jaminan='NULL']").show();
+
+                var selectedIdStatus = null;
+
+                // Event saat select jaminan berubah
+                $("#jaminan").change(function() {
+                    var selectedJaminan = $(this).val();
+
+                    $(".status-btn-container").hide();
+                    $(".status-btn-container[data-jaminan='NULL']").show();
+
+                    if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
+                        $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
+                    }
+                });
+
+                // Event saat tombol status diklik untuk menyimpan id_status ke input form
+                $(".btn-status").click(function() {
+                    selectedIdStatus = $(this).data("id");
+                    // Simpan ID Status ke dalam input form dengan id #id_status
+                    $("#id_status").val(selectedIdStatus);
+                });
             });
         </script>
 

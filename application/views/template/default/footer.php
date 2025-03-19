@@ -14,7 +14,7 @@
 
             <div class="navbar-collapse collapse" id="navbar-footer">
                 <span class="navbar-text">
-                    &copy; <?= date('Y'); ?>. <a href="https://github.com/RizalFauzi02/SISTAR-PHKA">SISTAR.V.3</a> by <a href="https://github.com/RizalFauzi02/SISTAR-PHKA" target="_blank">UnderSky</a>
+                    &copy; <?= date('Y'); ?>. <a href="https://github.com/RizalFauzi02/SISTAR-PHKA">SISTAR.V.3.1</a> by <a href="https://github.com/RizalFauzi02/SISTAR-PHKA" target="_blank">UnderSky</a>
                 </span>
             </div>
         </div>

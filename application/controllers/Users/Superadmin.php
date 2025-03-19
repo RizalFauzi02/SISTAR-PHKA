@@ -116,18 +116,28 @@ class Superadmin extends CI_Controller
 
     public function kirim_whatsapp()
     {
-        // Ambil data user yang sedang login
-        $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
-        $username = $this->session->userdata('username'); // Pastikan session user sudah diset
-        $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
+        $user_id = $this->session->userdata('id_user');
+        $username = $this->session->userdata('username');
+
+        $id_status = $this->input->post('id_status');
+        $id_pasien = $this->input->post('nama_pasien');
         $nomor = $this->input->post('no_whatsapp');
         $pesan = $this->input->post('pesan_status');
 
-        // Simpan log ke database dengan user_id
-        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role);
+        // Validasi input agar tidak kosong
+        if (empty($id_pasien) || empty($nomor) || empty($pesan)) {
+            echo json_encode(['status' => 'error', 'message' => 'Nama Pasien, Nomor WhatsApp, dan Pesan tidak boleh kosong!']);
+            return;
+        }
 
-        // Kirim response ke AJAX
-        echo "success";
+        // Simpan log ke database dengan user_id
+        $insert_log = $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status);
+
+        if ($insert_log) {
+            echo json_encode(['status' => 'success', 'message' => 'Pesan WA berhasil dikirim dan log tersimpan.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan log WhatsApp.']);
+        }
     }
 
     public function log_SendWhatsApp()
@@ -163,6 +173,63 @@ class Superadmin extends CI_Controller
 
         $this->template->load('template/default/template', 'superadmin/log_sendWA', $this->data);
     }
+
+    public function get_log_WhatsApp()
+    {
+        header('Content-Type: application/json');
+
+        $this->load->model('M_superadmin');
+        $logs = $this->M_superadmin->get_log_WhatsApp();
+
+        if (!$logs) {
+            echo json_encode(["data" => []]);
+            return;
+        }
+
+        // Ubah dari array biasa ke format JSON yang benar
+        $data = [];
+        foreach ($logs as $log) {
+            $data[] = [
+                "tgl_kirim" => date('d/m/Y H:i:s', strtotime($log['tgl_kirim'])),
+                "nama_pasien" => htmlspecialchars($log['nama_pasien']),
+                "kamar" => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
+                "nomor_pasien" => htmlspecialchars($log['nomor_pasien']),
+                "username_pengirim" => htmlspecialchars($log['username_pengirim']),
+                "nama_status" => htmlspecialchars($log['nama_status'])
+            ];
+        }
+
+        echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
+    }
+
+    public function get_pasien()
+    {
+        header('Content-Type: application/json');
+
+        $logs = $this->M_superadmin->get_pasien();
+
+        if (!$logs) {
+            echo json_encode(["data" => []]);
+            return;
+        }
+
+        // Ubah dari array biasa ke format JSON yang benar
+        $data = [];
+        foreach ($logs as $log) {
+            $data[] = [
+                "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
+                "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
+                "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+                "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
+                "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
+                "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),
+                "id_pasien"       => $log['id_pasien']
+            ];
+        }
+
+        echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
+    }
+
 
     public function m_status()
     {
@@ -207,10 +274,18 @@ class Superadmin extends CI_Controller
     public function updateStatus()
     {
         $id_status = $this->input->post('id_status');
+        $jaminan = $this->input->post('jaminan');
+
+        if ($jaminan === "hapus") {
+            $jaminan = NULL;
+        }
+
         $status_data = [
             'nama_status'  => $this->input->post('nama_status'),
-            'pesan_status' => $this->input->post('pesan_status')
+            'pesan_status' => $this->input->post('pesan_status'),
+            'jaminan'      => $jaminan
         ];
+
         $user_ids = $this->input->post('id_user');
 
         if ($this->M_superadmin->update_status($id_status, $status_data, $user_ids)) {
@@ -218,8 +293,10 @@ class Superadmin extends CI_Controller
         } else {
             $this->session->set_flashdata('error', 'Gagal Update Status!');
         }
+
         redirect('Users/superadmin/m_status');
     }
+
 
     public function deleteStatus($id_status)
     {
@@ -403,6 +480,7 @@ class Superadmin extends CI_Controller
             $data = [
                 'nama_status'    => $this->input->post('nama_status'),
                 'pesan_status'   => $this->input->post('pesan_status'),
+                'jaminan'        => $this->input->post('jaminan'),
                 'created_at'     => date('Y-m-d H:i:s')
             ];
 
@@ -523,7 +601,8 @@ class Superadmin extends CI_Controller
         $data = [
             'nama_pasien'   => $this->input->post('nama_pasien'),
             'tanggal_lahir' => $this->input->post('tanggal_lahir'),
-            'no_whatsapp'   => $this->input->post('no_whatsapp')
+            'no_whatsapp'   => $this->input->post('no_whatsapp'),
+            'kamar'   => $this->input->post('kamar')
         ];
 
         // Hapus field yang kosong agar tidak memperbarui dengan NULL

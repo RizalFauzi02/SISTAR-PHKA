@@ -15,41 +15,68 @@
 
 				<!-- Basic datatable -->
 				<div class="card">
-					<table class="table datatable-basic">
+					<table id="logTable" class="table datatable-basic">
 						<thead>
-							<tr>
-								<th>Username Pengirim</th>
-								<th>Role Akun Pengirim</th>
-								<th>Nomor WA Pasien</th>
-								<th>Tanggal Kirim WA</th>
-							</tr>
+							<!-- MENGGUNAKAN JS DATATABLE -->
 						</thead>
 						<tbody>
-							<?php foreach ($log_WA as $log) : ?>
-								<tr>
-									<td><?= htmlspecialchars($log['username_pengirim']); ?></td>
-									<td> <?php
-											if ($log['is_role'] == 1) {
-												echo "Superadmin";
-											} elseif ($log['is_role'] == 2) {
-												echo "Administrasi";
-											} elseif ($log['is_role'] == 3) {
-												echo "Perawat";
-											} elseif ($log['is_role'] == 4) {
-												echo "Farmasi";
-											} else {
-												echo "Tidak Diketahui";
-											}
-											?></td>
-									<td><?= htmlspecialchars($log['nomor_pasien']); ?></td>
-									<td><?= date('d/m/Y H:i:s', strtotime($log['tgl_kirim'])); ?></td>
-									<td></td>
-									<td></td>
-								</tr>
-							<?php endforeach; ?>
+							<!-- MENGGUNAKAN JS DATATABLE -->
 						</tbody>
 					</table>
 				</div>
 				<!-- /basic datatable -->
 			</div>
 			<!-- /content area -->
+
+			<script>
+				$(document).ready(function() {
+					if ($.fn.DataTable.isDataTable("#logTable")) {
+						$('#logTable').DataTable().destroy();
+					}
+
+					let table = $('#logTable').DataTable({
+						"processing": true,
+						"serverSide": false,
+						"destroy": true,
+						"ajax": {
+							"url": "<?= base_url('users/superadmin/get_log_WhatsApp') ?>",
+							"type": "GET",
+							"dataSrc": function(json) {
+								return json.data;
+							}
+						},
+						"order": [
+							[0, "desc"]
+						],
+						"columns": [{
+								"title": "Tanggal Kirim WA",
+								"data": "tgl_kirim"
+							},
+							{
+								"title": "Nama Pasien",
+								"data": "nama_pasien"
+							},
+							{
+								"title": "Kamar",
+								"data": "kamar"
+							},
+							{
+								"title": "Nomor WA Pasien",
+								"data": "nomor_pasien"
+							},
+							{
+								"title": "Pesan Status",
+								"data": "nama_status"
+							},
+							{
+								"title": "Pengirim Pesan",
+								"data": "username_pengirim"
+							}
+						]
+					});
+				});
+
+				// setInterval(function() {
+				// 	location.reload();
+				// }, 10000);
+			</script>

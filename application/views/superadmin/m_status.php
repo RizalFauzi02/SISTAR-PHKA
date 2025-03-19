@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nama_status">Nama Status</label>
-                            <input type="text" name="nama_status" class="form-control" autocomplete="off">
+                            <input type="text" name="nama_status" class="form-control" autocomplete="off" placeholder="Nama Button Status" required>
                         </div>
 
                         <div class="form-group">
@@ -65,8 +65,17 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="jaminan">Jaminan</label>
+                            <select class="form-control select-search" id="jaminan" name="jaminan">
+                                <option value="" disabled selected>-- Pilih Jaminan --</option>
+                                <option value="JKN">JKN</option>
+                                <option value="NON JKN">NON JKN</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="exampleTextarea">Pesan Status</label>
-                            <textarea class="form-control" name="pesan_status" id="exampleTextarea" rows="8" placeholder="Tulis Pesan disini...."></textarea>
+                            <textarea class="form-control" name="pesan_status" id="exampleTextarea" rows="8" placeholder="Tulis Pesan disini...." required></textarea>
                         </div>
 
                         <div class="text-right">
@@ -90,6 +99,7 @@
                             <th>Nama Status</th>
                             <th>Pengguna Status</th>
                             <th>Pesan Status</th>
+                            <th>Jaminan</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -104,6 +114,7 @@
                                             <?= htmlspecialchars(mb_strimwidth($status['pesan_status'], 0, 30, "...")); ?>
                                         </a>
                                     </td>
+                                    <td><?= htmlspecialchars($status['jaminan']); ?></td>
                                     <td class="text-center">
                                         <div class="list-icons">
                                             <div class="dropdown">
@@ -117,7 +128,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td></td>
                                     <td></td>
                                 </tr>
 
@@ -147,7 +157,9 @@
                                             <form action="<?= base_url('Users/superadmin/updateStatus'); ?>" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Edit Status</h5>
-                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="hidden" name="id_status" value="<?= $status['id_status']; ?>">
@@ -161,13 +173,25 @@
                                                         <label>Pilih Pengguna</label>
                                                         <select class="form-control select-search" id="id_user" name="id_user[]" multiple required>
                                                             <?php foreach ($user as $us) : ?>
-                                                                <option value="<?= $us['id_user']; ?>"
-                                                                    <?= in_array($us['id_user'], $status['selected_users']) ? 'selected' : ''; ?>>
+                                                                <option value="<?= $us['id_user']; ?>" <?= in_array($us['id_user'], $status['selected_users']) ? 'selected' : ''; ?>>
                                                                     <?= $us['username']; ?>
                                                                 </option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
+
+                                                    <div class="mb-3">
+                                                        <label>Jaminan</label>
+                                                        <select class="form-control select-search" id="jaminan" name="jaminan">
+                                                            <option value="" disabled <?= (!isset($status['jaminan']) || empty($status['jaminan']) || !in_array($status['jaminan'], ['NON JKN', 'JKN', 'hapus'])) ? 'selected' : ''; ?>>
+                                                                -- Pilih Jaminan --
+                                                            </option>
+                                                            <option value="NON JKN" <?= (isset($status['jaminan']) && $status['jaminan'] == 'NON JKN') ? 'selected' : ''; ?>>NON JKN</option>
+                                                            <option value="JKN" <?= (isset($status['jaminan']) && $status['jaminan'] == 'JKN') ? 'selected' : ''; ?>>JKN</option>
+                                                            <option value="hapus" <?= (isset($status['jaminan']) && $status['jaminan'] === 'hapus') ? 'selected' : ''; ?>>hapus</option>
+                                                        </select>
+                                                    </div>
+
 
                                                     <div class="mb-3">
                                                         <label>Pesan Status</label>
@@ -184,6 +208,9 @@
                                     </div>
                                 </div>
                                 <!-- Akhir Modal Edit -->
+
+
+
 
                                 <!-- Modal Hapus -->
                                 <div class="modal fade" id="modalDelete<?= $status['id_status']; ?>" tabindex="-1" aria-hidden="true">
@@ -222,7 +249,12 @@
     }, 2000);
     $(document).ready(function() {
         $('.select-search').select2({
-            placeholder: "Pilih Pengguna",
+            allowClear: true
+        });
+    });
+    $(document).ready(function() {
+        $('#id_user').select2({
+            placeholder: "-- Pilih Pengguna --",
             allowClear: true
         });
     });

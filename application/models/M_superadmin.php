@@ -30,15 +30,18 @@ class M_superadmin extends CI_Model
     //     return json_decode($response, true);
     // }
 
-    public function simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role)
+    // Fungsi untuk menyimpan log WhatsApp
+    public function simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status)
     {
         $data = [
             'nomor_pasien' => $nomor,
             'pesan_whatsapp' => $pesan,
             'username_pengirim' => $username,
             'id_user' => $user_id,
-            'is_role' => $is_role,
+            'id_pasien' => $id_pasien,
+            'id_status' => $id_status,
         ];
+
         $insert = $this->db->insert('log_sendwhatsapp', $data);
 
         if (!$insert) {
@@ -48,14 +51,24 @@ class M_superadmin extends CI_Model
         return true;
     }
 
+    // Fungsi untuk mengupdate kamar pasien
+    public function update_kamar($id_pasien, $kamar)
+    {
+        $this->db->where('id_pasien', $id_pasien);
+        return $this->db->update('m_pasien', ['kamar' => $kamar]);
+    }
+
     public function get_log_WhatsApp()
     {
-        return $this->db->select('*')
+        return $this->db->select('log_sendwhatsapp.*, m_pasien.nama_pasien, m_pasien.tanggal_lahir, m_pasien.kamar, m_status.nama_status')
             ->from('log_sendwhatsapp')
-            ->order_by('tgl_kirim', 'DESC')
+            ->join('m_pasien', 'm_pasien.id_pasien = log_sendwhatsapp.id_pasien', 'inner')
+            ->join('m_status', 'm_status.id_status = log_sendwhatsapp.id_status', 'inner')
+            ->order_by('log_sendwhatsapp.tgl_kirim', 'DESC')
             ->get()
             ->result_array();
     }
+
 
     function getuser($session)
     {
@@ -78,6 +91,15 @@ class M_superadmin extends CI_Model
         $this->db->from('m_pasien');
         $query = $this->db->get();
         return $query->result_array();
+    }
+
+    public function get_pasien()
+    {
+        return $this->db->select('m_pasien.*') // Ambil semua field dari tabel m_pasien
+            ->from('m_pasien')
+            ->order_by('m_pasien.created_at', 'DESC') // Urutkan berdasarkan created_at terbaru
+            ->get()
+            ->result_array();
     }
 
     public function update_user($id_user, $username, $is_role, $password = null)
@@ -147,7 +169,7 @@ class M_superadmin extends CI_Model
 
     public function getStatusByRole($role)
     {
-        $this->db->select('m_status.nama_status, m_status.pesan_status, tbl_user.username');
+        $this->db->select('m_status.nama_status, m_status.id_status, m_status.jaminan, m_status.pesan_status, tbl_user.username');
         $this->db->from('m_status');
         $this->db->join('status_user', 'status_user.id_status = m_status.id_status');
         $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user');
@@ -157,7 +179,7 @@ class M_superadmin extends CI_Model
 
     public function get_all_status()
     {
-        $this->db->select('m_status.id_status, m_status.nama_status, m_status.pesan_status, GROUP_CONCAT(tbl_user.username SEPARATOR ", ") as pengguna_status');
+        $this->db->select('m_status.id_status, m_status.nama_status, m_status.pesan_status, m_status.jaminan, GROUP_CONCAT(tbl_user.username SEPARATOR ", ") as pengguna_status');
         $this->db->from('status_user');
         $this->db->join('m_status', 'status_user.id_status = m_status.id_status');
         $this->db->join('tbl_user', 'status_user.id_user = tbl_user.id_user');

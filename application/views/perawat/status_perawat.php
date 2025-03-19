@@ -11,88 +11,189 @@
         <?= $this->session->flashdata('pesan'); ?>
         <!-- Content area -->
         <div class="content">
-            <div class="col-md-4">
-                <!-- TAMBAHIN card-collapsed di samping CARD -->
-                <div class="card">
-                    <div class=" card-header header-elements-inline d-flex justify-content-center w-100">
-                        <h5 class="card-title">Status Pelayanan Pasien</h5>
-                    </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- TAMBAHIN card-collapsed di samping CARD -->
+                    <div class="card">
+                        <div class=" card-header header-elements-inline d-flex justify-content-center w-100">
+                            <h5 class="card-title">Status Pelayanan Pasien</h5>
+                        </div>
 
-                    <div class="card-body">
-                        <form action="<?= base_url('users/superadmin/kirim_whatsapp'); ?>" method="POST">
-                            <div class="form-group text-center text-muted content-divider">
-                                <span class="px-2">Data Pasien</span>
-                            </div>
-                            <!-- Tambahkan ini di dalam form -->
-                            <div class="form-group">
-                                <label for="nama_pasien">Nama Pasien</label>
-                                <select class="form-control select-search" id="nama_pasien">
-                                    <?php if (!empty($pasien)) : ?>
-                                        <option value="" disabled selected>-- Pilih Pasien --</option>
-                                        <?php foreach ($pasien as $p) : ?>
-                                            <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
-                                        <?php endforeach; ?>
-                                    <?php else : ?>
-                                        <option value="" disabled selected>Tidak ada pasien tersedia</option>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-
-                            <div class="form-group mt-3">
-                                <label>Tanggal Lahir:</label>
-                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" readonly>
-                            </div>
-
-                            <div class="form-group">
-                                <label>No Whatsapp Pasien:</label>
-                                <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ucapan">Ucapan</label>
-                                <select class="form-control select-search" id="ucapan">
-                                    <option value="" disabled selected>-- Pilih Ucapan --</option>
-                                    <option value="Pagi">Pagi</option>
-                                    <option value="Siang">Siang</option>
-                                    <option value="Sore">Sore</option>
-                                    <option value="Malam">Malam</option>
-                                </select>
-                            </div>
-
-                            <?php if (!empty($status)) : ?>
-                                <?php foreach ($status as $s) : ?>
-                                    <div class="text-center mt-2">
-                                        <button type="button" class="btn btn-primary btn-status" data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
-                                            <?= $s['nama_status']; ?>
-                                        </button>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <div class="text-center mt-2">
-                                    <p class="text-muted">Belum ada status tersedia.</p>
+                        <div class="card-body">
+                            <form action="<?= base_url('users/superadmin/kirim_whatsapp'); ?>" method="POST">
+                                <input type="hidden" id="id_status" name="id_status">
+                                <div class="form-group text-center text-muted content-divider">
+                                    <span class="px-2">Data Pasien</span>
                                 </div>
-                            <?php endif; ?>
+                                <!-- Tambahkan ini di dalam form -->
+                                <div class="form-group">
+                                    <label for="nama_pasien">Nama Pasien</label>
+                                    <select class="form-control select-search" id="nama_pasien" name="nama_pasien">
+                                        <?php if (!empty($pasien)) : ?>
+                                            <option value="" disabled selected>-- Pilih Pasien --</option>
+                                            <?php foreach ($pasien as $p) : ?>
+                                                <option value="<?= $p['id_pasien']; ?>"><?= $p['nama_pasien']; ?></option>
+                                            <?php endforeach; ?>
+                                        <?php else : ?>
+                                            <option value="" disabled selected>Tidak ada pasien tersedia</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label>Tanggal Lahir:</label>
+                                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>No Whatsapp Pasien:</label>
+                                    <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="kamar">Kamar</label>
+                                    <select class="form-control select-search" id="kamar" name="kamar" required>
+                                        <option value="" disabled selected>-- Pilih Kamar --</option>
+                                        <option value="NICU/PICU">NICU/PICU</option>
+                                        <option value="VK">VK</option>
+                                        <option value="ICU/HCU">ICU/HCU</option>
+                                        <option value="SAPPHIRE">SAPPHIRE</option>
+                                        <option value="EMERALD">EMERALD</option>
+                                        <option value="RUBBY">RUBBY</option>
+                                        <option value="DIAMOND">DIAMOND</option>
+                                        <option value="TOPAZ">TOPAZ</option>
+                                        <option value="CRYSTAL">CRYSTAL</option>
+                                        <option value="ENDOSCOPY">ENDOSCOPY</option>
+                                        <option value="UKB">UKB</option>
+                                        <option value="Malam">Malam</option>
+                                        <option value="Malam">Malam</option>
+                                        <option value="Malam">Malam</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ucapan">Ucapan</label>
+                                    <select class="form-control select-search" id="ucapan">
+                                        <option value="" disabled selected>-- Pilih Ucapan --</option>
+                                        <option value="Pagi">Pagi</option>
+                                        <option value="Siang">Siang</option>
+                                        <option value="Sore">Sore</option>
+                                        <option value="Malam">Malam</option>
+                                    </select>
+                                </div>
+
+                                <?php if (!empty($status)) : ?>
+                                    <?php foreach ($status as $s) : ?>
+                                        <?php
+                                        $jaminan = strtoupper($s['jaminan'] ?? 'NULL');
+                                        $hide = ($jaminan === 'JKN' || $jaminan === 'NON JKN') ? 'style="display: none;"' : '';
+                                        ?>
+                                        <div class="text-center mt-2 status-btn-container"
+                                            data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>" <?= $hide; ?>>
+                                            <button type="button"
+                                                class="btn btn-primary btn-status"
+                                                data-id="<?= $s['id_status']; ?>"
+                                                data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>"
+                                                data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
+                                                <?= $s['nama_status']; ?>
+                                            </button>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <div class="text-center mt-2">
+                                        <p class="text-muted">Belum ada status tersedia.</p>
+                                    </div>
+                                <?php endif; ?>
 
 
-                            <div class="form-group text-center text-muted content-divider mt-2">
-                                <span class="px-2">Pesan WhatsApp</span>
-                            </div>
+                                <div class="form-group text-center text-muted content-divider mt-2">
+                                    <span class="px-2">Pesan WhatsApp</span>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="pesan_status">Pesan</label>
-                                <textarea class="form-control" id="pesan_status" name="pesan_status" rows="5" readonly></textarea>
-                            </div>
+                                <div class="form-group">
+                                    <label for="pesan_status">Pesan</label>
+                                    <textarea class="form-control" id="pesan_status" name="pesan_status" rows="5" readonly></textarea>
+                                </div>
 
 
-                            <div class="text-right">
-                                <button type="button" class="btn btn-info" id="kirimWa">Kirim WhatsApp</button>
-                            </div>
-                        </form>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-info" id="kirimWa">Kirim WhatsApp</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Table -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header header-elements-inline">
+                            <h5 class="card-title">Data Pasien</h5>
+                        </div>
+
+                        <table class="table datatable-basic">
+                            <thead>
+                                <tr>
+                                    <th>Nama Pasien</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>Nomor WhatsApp</th>
+                                    <th>Tanggal Input</th>
+                                    <th>Tanggal Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($pasien)) : ?>
+                                    <?php foreach ($pasien as $p) : ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($p['nama_pasien']); ?></td>
+                                            <td><?= htmlspecialchars(date('d/m/Y', strtotime($p['tanggal_lahir']))); ?></td>
+                                            <td><?= htmlspecialchars($p['no_whatsapp']); ?></td>
+                                            <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['created_at']))); ?></td>
+                                            <td>
+                                                <?= !empty($p['updated_at']) && $p['updated_at'] !== '0000-00-00 00:00:00'
+                                                    ? htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['updated_at'])))
+                                                    : ''; ?>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center">Tidak ada data pasien.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
         <script>
+            $(document).ready(function() {
+                $(".status-btn-container").hide();
+                $(".status-btn-container[data-jaminan='NULL']").show();
+
+                var selectedIdStatus = null;
+
+                // Event saat select jaminan berubah
+                $("#jaminan").change(function() {
+                    var selectedJaminan = $(this).val();
+
+                    $(".status-btn-container").hide();
+                    $(".status-btn-container[data-jaminan='NULL']").show();
+
+                    if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
+                        $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
+                    }
+                });
+
+                // Event saat tombol status diklik untuk menyimpan id_status ke input form
+                $(".btn-status").click(function() {
+                    selectedIdStatus = $(this).data("id");
+                    // Simpan ID Status ke dalam input form dengan id #id_status
+                    $("#id_status").val(selectedIdStatus);
+                });
+            });
+
             $(document).ready(function() {
                 let pesanDariButton = "";
 
@@ -135,6 +236,7 @@
                 $("#nama_pasien").change(function() {
                     pesanDariButton = "";
                     $("#ucapan").val("").trigger("change");
+                    $("#kamar").val("").trigger("change");
 
                     setTimeout(() => {
                         $("#pesan_status").val("").trigger("input");
@@ -185,11 +287,14 @@
                 var button = this;
                 var noWhatsApp = document.getElementById('no_whatsapp').value.trim();
                 var pesan = document.getElementById('pesan_status').value.trim();
+                var namaPasien = document.getElementById('nama_pasien').value.trim();
+                var kamar = document.getElementById('kamar').value.trim(); // Ambil kamar dari select
+                var idStatus = document.getElementById('id_status').value.trim();
 
-                if (noWhatsApp === "" || pesan === "") {
+                if (noWhatsApp === "" || pesan === "" || namaPasien === "" || kamar === "" || idStatus === "") {
                     Swal.fire({
                         title: 'Oops...',
-                        text: 'Nomor WhatsApp atau pesan tidak boleh kosong!',
+                        text: 'Nama Pasien, Nomor WhatsApp, Pesan, atau Kamar tidak boleh kosong!',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'OK'
                     });
@@ -207,7 +312,6 @@
                     });
 
                     noWhatsApp = noWhatsApp.replace(/^0/, "62");
-
                     var encodedPesan = encodeURIComponent(pesan);
                     var urlUserInput = "https://wa.me/" + noWhatsApp + "?text=" + encodedPesan;
 
@@ -221,12 +325,10 @@
                             headers: {
                                 "Content-Type": "application/x-www-form-urlencoded"
                             },
-                            body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}`
+                            body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}&nama_pasien=${encodeURIComponent(namaPasien)}&kamar=${encodeURIComponent(kamar)}&id_status=${encodeURIComponent(idStatus)}`
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log("Response JSON:", data);
-
                             if (data.status === 'success') {
                                 Swal.fire({
                                     icon: 'success',
@@ -248,7 +350,7 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal!',
-                                text: error.message || 'Terjadi kesalahan saat menyimpan data ke database!',
+                                text: error.message || 'Terjadi kesalahan!',
                                 confirmButtonColor: '#d33',
                                 confirmButtonText: 'OK'
                             });

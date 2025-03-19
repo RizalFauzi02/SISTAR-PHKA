@@ -114,6 +114,14 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/admin/log_SendWhatsApp'); ?>" class="nav-link <?= $menuAdmin['log_WA']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
                 <?php } elseif ($_SESSION['is_role'] == 3) { ?>
                     <!-- PERAWAT -->
                     <li class="nav-item">
@@ -124,6 +132,14 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/perawat/log_SendWhatsApp'); ?>" class="nav-link <?= $menuPerawat['log_WA']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
                 <?php } elseif ($_SESSION['is_role'] == 4) { ?>
                     <!-- FARMASI -->
                     <li class="nav-item">
@@ -131,6 +147,14 @@
                             <i class="icon-gear"></i>
                             <span>
                                 Status Pelayanan
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/farmasi/log_SendWhatsApp'); ?>" class="nav-link <?= $menuFarmasi['log_WA']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                History Pengiriman WhatsApp
                             </span>
                         </a>
                     </li>

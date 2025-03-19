@@ -21,7 +21,8 @@ class Perawat extends CI_Controller
         $this->data['menuPerawat'] = [
             'Dashboard'     => '',
             'Status'       => 'active',
-            'PasienPulang'       => ''
+            'PasienPulang'       => '',
+            'log_WA'        => ''
         ];
 
         $this->data['dropdownPerawat'] = [
@@ -50,38 +51,72 @@ class Perawat extends CI_Controller
 
         // Ambil status berdasarkan role user
         $this->data['status'] = $this->M_superadmin->getStatusByRole($is_role);
+        $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
 
         $this->template->load('template/default/template', 'perawat/status_perawat', $this->data);
     }
 
     public function kirim_whatsapp()
     {
-        header('Content-Type: application/json'); // Pastikan response dalam format JSON
+        $id_status = $this->input->post('id_status');
+        $no_whatsapp = $this->input->post('no_whatsapp');
+        $pesan_status = $this->input->post('pesan_status');
+        $id_pasien = $this->input->post('nama_pasien');
+        $kamar = $this->input->post('kamar');
 
-        // Ambil data dari request
-        $nomor = $this->input->post('no_whatsapp');
-        $pesan = $this->input->post('pesan_status');
+        // Ambil informasi pengguna dari sesi
+        $user_id = $this->session->userdata('id_user');
+        $username = $this->session->userdata('username');
 
-        // Validasi input
-        if (empty($nomor) || empty($pesan)) {
-            echo json_encode(['status' => 'error', 'message' => 'Nomor atau pesan tidak boleh kosong']);
+        if (empty($no_whatsapp) || empty($pesan_status) || empty($id_pasien) || empty($kamar)) {
+            echo json_encode(['status' => 'error', 'message' => 'Pastikan no Whatsapp, pesan, nama pasien, dan kamar sudah terisi...!!!']);
             return;
         }
 
-        // Ambil data user yang sedang login
-        $user_id = $this->session->userdata('id_user');
-        $username = $this->session->userdata('username');
-        $is_role = $this->session->userdata('is_role');
+        // Simpan log WhatsApp
+        $insert_log = $this->M_superadmin->simpan_log_WhatsApp($no_whatsapp, $pesan_status, $user_id, $username, $id_pasien, $id_status);
 
-        // Simpan ke database
-        $this->load->model('M_superadmin');
-        $simpan = $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $is_role);
+        // Update data kamar pasien
+        $update_kamar = $this->M_superadmin->update_kamar($id_pasien, $kamar);
 
-        // Cek apakah penyimpanan berhasil
-        if ($simpan) {
-            echo json_encode(['status' => 'success', 'message' => 'Pesan berhasil disimpan']);
+        if ($insert_log && $update_kamar) {
+            echo json_encode(['status' => 'success', 'message' => 'Pesan WA berhasil dikirim dan kamar pasien diperbarui.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan data ke database']);
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan log atau memperbarui kamar pasien.']);
         }
+    }
+
+    public function log_SendWhatsApp()
+    {
+        // Default
+        $this->data['title'] = 'Perawat';
+        $this->data['menuPerawat'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => 'active'
+        ];
+
+        $this->data['dropdownPerawat'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkPerawat'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->data['log_WA'] = $this->M_superadmin->get_log_WhatsApp();
+
+        $this->template->load('template/default/template', 'perawat/log_sendWA', $this->data);
     }
 }

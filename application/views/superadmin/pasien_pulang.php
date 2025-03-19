@@ -112,19 +112,20 @@
                            <h5 class="card-title">Data Pasien</h5>
                        </div>
 
-                       <table class="table datatable-basic">
+                       <table id="logTable" class="table datatable-basic">
                            <thead>
                                <tr>
                                    <th>Nama Pasien</th>
                                    <th>Tanggal Lahir</th>
                                    <th>Nomor WhatsApp</th>
+                                   <th>Ruangan</th>
                                    <th>Tanggal Input</th>
                                    <th>Tanggal Edit</th>
                                    <th class="text-center">Actions</th>
                                </tr>
                            </thead>
                            <tbody>
-                               <?php if (!empty($pasien)) : ?>
+                               <!-- <?php if (!empty($pasien)) : ?>
                                    <?php foreach ($pasien as $p) : ?>
                                        <tr>
                                            <td><?= htmlspecialchars($p['nama_pasien']); ?></td>
@@ -151,7 +152,7 @@
                                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#confirmDeleteModal"
                                                            data-id="<?= $p['id_pasien']; ?>"
                                                            data-nama="<?= htmlspecialchars($p['nama_pasien']); ?>"
-                                                           data-tgl="<?= date('Y-m-d', strtotime($p['tanggal_lahir'])); ?>"> <!-- Format ke Y-m-d untuk JS -->
+                                                           data-tgl="<?= date('Y-m-d', strtotime($p['tanggal_lahir'])); ?>">
                                                            Hapus
                                                        </a>
                                                    </div>
@@ -163,7 +164,7 @@
                                    <tr>
                                        <td colspan="5" class="text-center">Tidak ada data pasien.</td>
                                    </tr>
-                               <?php endif; ?>
+                               <?php endif; ?> -->
                            </tbody>
                        </table>
                    </div>
@@ -197,6 +198,26 @@
                                <input type="text" class="form-control" id="edit_whatsapp" name="no_whatsapp">
                                <p>*Penulisan nomor WhatsApp: <b>6285956xxxxxx</b></p>
                            </div>
+                           <div class="form-group">
+                               <label for="kamar">Ruangan</label>
+                               <select class="form-control select-search" id="kamar" name="kamar" required>
+                                   <option value="" disabled selected>-- Pilih Kamar --</option>
+                                   <option value="NICU/PICU">NICU/PICU</option>
+                                   <option value="VK">VK</option>
+                                   <option value="ICU/HCU">ICU/HCU</option>
+                                   <option value="SAPPHIRE">SAPPHIRE</option>
+                                   <option value="EMERALD">EMERALD</option>
+                                   <option value="RUBBY">RUBBY</option>
+                                   <option value="DIAMOND">DIAMOND</option>
+                                   <option value="TOPAZ">TOPAZ</option>
+                                   <option value="CRYSTAL">CRYSTAL</option>
+                                   <option value="ENDOSCOPY">ENDOSCOPY</option>
+                                   <option value="UKB">UKB</option>
+                                   <option value="Malam">Malam</option>
+                                   <option value="Malam">Malam</option>
+                                   <option value="Malam">Malam</option>
+                               </select>
+                           </div>
                        </div>
                        <div class="modal-footer">
                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -218,7 +239,7 @@
                        </button>
                    </div>
                    <div class="modal-body">
-                       Apakah Anda yakin ingin menghapus pasien sebagai berikut: <br><br>Nama : <strong id="namaPasien"></strong> <br>Tanggal Lahir : <strong id="tglLahir"></strong>
+                       Apakah Anda yakin ingin menghapus pasien sebagai berikut: <br><br>Nama : <strong id="namaPasien"></strong> <br>Tanggal Lahir : <strong id="tLahir"></strong>
                    </div>
                    <div class="modal-footer">
                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -231,6 +252,136 @@
 
 
        <script>
+           // ================== PROSES MEMUNCULKAN DATA PASIEN DENGAN DATATABLE ==================================
+           function formatTanggal(tanggal) {
+               let parts = tanggal.split("/");
+               if (parts.length === 3) {
+                   return `${parts[2]}-${parts[1]}-${parts[0]}`;
+               }
+               return tanggal;
+           }
+
+           // Saat tombol edit diklik
+           $(document).on("click", ".edit-btn", function() {
+               let id = $(this).data("id");
+               let nama = $(this).data("nama");
+               let tanggal = $(this).data("tanggal");
+               let whatsapp = $(this).data("whatsapp");
+               let kamar = $(this).data("kamar");
+
+               let tanggalFormatted = formatTanggal(tanggal); // Konversi tanggal
+
+               // Masukkan data ke dalam modal
+               $("#edit_id").val(id);
+               $("#edit_nama").val(nama);
+               $("#edit_tanggal").val(tanggalFormatted);
+               $("#edit_whatsapp").val(whatsapp);
+
+               // Pilih kamar yang sesuai di dalam select dropdown
+               $("#kamar").val(kamar).trigger("change");
+
+               // Tampilkan modal
+               $("#editModal").modal("show");
+           });
+
+
+           $(document).on("click", ".dropdown-item[data-target='#confirmDeleteModal']", function() {
+               let id = $(this).data("id");
+               let nama = $(this).data("nama");
+               let tanggal = $(this).data("tgl");
+
+               // Masukkan data ke dalam modal
+               $("#namaPasien").text(nama);
+               $("#tLahir").text(tanggal);
+
+               // Perbarui href tombol hapus dengan ID pasien
+               $("#deleteConfirmButton").attr("href", "<?= base_url('Users/superadmin/deletePasien/') ?>" + id);
+           });
+
+           $(document).ready(function() {
+
+               // Cek jika DataTable sudah ada, hancurkan dulu
+               if ($.fn.DataTable.isDataTable("#logTable")) {
+                   $('#logTable').DataTable().destroy();
+               }
+
+               // Inisialisasi ulang DataTable
+               let table = $('#logTable').DataTable({
+                   "processing": true,
+                   "serverSide": false,
+                   "destroy": true,
+                   "ajax": {
+                       "url": "<?= base_url('users/superadmin/get_pasien') ?>",
+                       "type": "GET",
+                       "dataSrc": function(json) {
+                           return json.data;
+                       }
+                   },
+                   "order": [
+                       [4, "desc"]
+                   ], // Urutkan berdasarkan "Tanggal Input" (created_at)
+                   "columns": [{
+                           "title": "Nama Pasien",
+                           "data": "nama_pasien"
+                       },
+                       {
+                           "title": "Tanggal Lahir",
+                           "data": "tanggal_lahir"
+                       },
+                       {
+                           "title": "Nomor WhatsApp",
+                           "data": "no_whatsapp"
+                       },
+                       {
+                           "title": "Ruangan",
+                           "data": "kamar"
+                       },
+                       {
+                           "title": "Tanggal Input",
+                           "data": "created_at"
+                       },
+                       {
+                           "title": "Tanggal Edit",
+                           "data": "updated_at",
+                           "render": function(data, type, row) {
+                               return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
+                           }
+                       },
+                       {
+                           "title": "Actions",
+                           "data": null,
+                           "render": function(data, type, row) {
+                               return `
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                    <i class="icon-menu9"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item edit-btn"
+                                    data-id="${row.id_pasien}"
+                                    data-nama="${row.nama_pasien}"
+                                    data-tanggal="${row.tanggal_lahir}"
+                                    data-whatsapp="${row.no_whatsapp}"
+                                    data-kamar="${row.kamar}"
+                                    data-toggle="modal" data-target="#editModal">Edit</a>
+                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#confirmDeleteModal"
+                                       data-id="${row.id_pasien}"
+                                       data-nama="${row.nama_pasien}"
+                                       data-tgl="${row.tanggal_lahir}">
+                                       Hapus
+                                    </a>
+                                </div>
+                            </div>
+                        </td>`;
+                           }
+                       }
+                   ]
+               });
+           });
+           //    ================================== END ======================================
+
+
            setTimeout(function() {
                $(".alert").fadeOut("slow");
            }, 2000);
@@ -283,5 +434,12 @@
                }
                return true; // Lanjutkan submit jika valid
            }
+
+           $(document).ready(function() {
+               // Inisialisasi select2 saat halaman dimuat
+               $(".select-search").select2({
+                   dropdownParent: $("#editModal") // Pastikan dropdown muncul dalam modal
+               });
+           });
        </script>
        <!-- /content area -->
