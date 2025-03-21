@@ -110,37 +110,12 @@
                             <h5 class="card-title">Data Pasien</h5>
                         </div>
 
-                        <table class="table datatable-basic">
+                        <table id="logTable" class="table datatable-basic">
                             <thead>
-                                <tr>
-                                    <th>Nama Pasien</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Nomor WhatsApp</th>
-                                    <th>Tanggal Input</th>
-                                    <th>Tanggal Edit</th>
-                                </tr>
+                                <!-- MENGGUNAKAN JS DATATABLE -->
                             </thead>
                             <tbody>
-                                <?php if (!empty($pasien)) : ?>
-                                    <?php foreach ($pasien as $p) : ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($p['nama_pasien']); ?></td>
-                                            <td><?= htmlspecialchars(date('d/m/Y', strtotime($p['tanggal_lahir']))); ?></td>
-                                            <td><?= htmlspecialchars($p['no_whatsapp']); ?></td>
-                                            <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['created_at']))); ?></td>
-                                            <td>
-                                                <?= !empty($p['updated_at']) && $p['updated_at'] !== '0000-00-00 00:00:00'
-                                                    ? htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['updated_at'])))
-                                                    : ''; ?>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else : ?>
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak ada data pasien.</td>
-                                    </tr>
-                                <?php endif; ?>
+                                <!-- MENGGUNAKAN JS DATATABLE -->
                             </tbody>
                         </table>
                     </div>
@@ -311,39 +286,114 @@
                 });
             });
 
-
-
             // SCRIPT UNTUK CHATBOT OTOMATIS DIBAWAH INI:
             $(document).ready(function() {
-                $('.btn-status').click(function() {
-                    var pesan = $(this).data('pesan'); // Ambil pesan dari atribut data
-                    $('#pesan_status').val(pesan); // Masukkan pesan ke textarea
-                });
-            });
+                let pesanDariButton = "";
 
-            $(document).ready(function() {
-                let pesanDariButton = ""; // Simpan pesan dari tombol status
+                $(document).on("click", ".btn-status", function() {
+                    let pesanStatus = $(this).data("pesan");
+                    let namaPasienSelect = document.getElementById("nama_pasien");
+                    let tanggalLahirInput = document.getElementById("tanggal_lahir");
 
-                // Event saat tombol status diklik
-                $(".btn-status").click(function() {
-                    pesanDariButton = $(this).data("pesan"); // Ambil data pesan dari tombol yang diklik
+                    if (!namaPasienSelect || !tanggalLahirInput) {
+                        console.error("Elemen Nama Pasien atau Tanggal Lahir tidak ditemukan!");
+                        return;
+                    }
+
+                    let namaPasien = namaPasienSelect.options[namaPasienSelect.selectedIndex]?.text || "";
+                    let tanggalLahir = tanggalLahirInput.value || "";
+
+                    if (namaPasien === "-- Pilih Pasien --" || namaPasien === "") {
+                        Swal.fire({
+                            title: "Oops...",
+                            text: "Silakan pilih pasien terlebih dahulu!",
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK"
+                        });
+                        return;
+                    }
+
+                    if (tanggalLahir) {
+                        let parts = tanggalLahir.split("-");
+                        tanggalLahir = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    }
+
+                    pesanDariButton = `Nama: *${namaPasien}*\nTanggal Lahir: *${tanggalLahir}*\n\n${pesanStatus}`;
                     updatePesan();
                 });
 
-                // Event saat dropdown "Ucapan" berubah
                 $("#ucapan").change(function() {
                     updatePesan();
                 });
 
-                // Fungsi untuk memperbarui textarea
-                function updatePesan() {
-                    let ucapan = $("#ucapan").val(); // Ambil nilai ucapan
-                    let teksUcapan = ucapan ? "*Selamat " + ucapan + " Bapak/Ibu,*\n\n" : ""; // Format ucapan
-                    //let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
-                    let pesanFinal = teksUcapan + pesanDariButton;
+                $("#nama_pasien").change(function() {
+                    pesanDariButton = "";
+                    $("#ucapan").val("").trigger("change");
 
+                    setTimeout(() => {
+                        $("#pesan_status").val("").trigger("input");
+                    }, 0);
+                });
+
+                function updatePesan() {
+                    let ucapan = $("#ucapan").val();
+                    let teksUcapan = ucapan ? `*Selamat ${ucapan} Bapak/Ibu,*\n\n` : "";
+                    let pesanFinal = teksUcapan + pesanDariButton;
                     $("#pesan_status").val(pesanFinal);
                 }
+            });
+
+            // DATATABLE JS
+            $(document).ready(function() {
+
+                if ($.fn.DataTable.isDataTable("#logTable")) {
+                    $('#logTable').DataTable().destroy();
+                }
+
+                // Inisialisasi ulang DataTable
+                let table = $('#logTable').DataTable({
+                    "processing": true,
+                    "serverSide": false,
+                    "destroy": true,
+                    "ajax": {
+                        "url": "<?= base_url('users/farmasi/get_pasien') ?>",
+                        "type": "GET",
+                        "dataSrc": function(json) {
+                            return json.data;
+                        }
+                    },
+                    "order": [
+                        [4, "desc"]
+                    ], // Urutkan berdasarkan "Tanggal Input" (created_at)
+                    "columns": [{
+                            "title": "Nama Pasien",
+                            "data": "nama_pasien"
+                        },
+                        {
+                            "title": "Tanggal Lahir",
+                            "data": "tanggal_lahir"
+                        },
+                        {
+                            "title": "Nomor WhatsApp",
+                            "data": "no_whatsapp"
+                        },
+                        {
+                            "title": "Ruangan",
+                            "data": "kamar"
+                        },
+                        {
+                            "title": "Tanggal Input",
+                            "data": "created_at"
+                        },
+                        {
+                            "title": "Tanggal Edit",
+                            "data": "updated_at",
+                            "render": function(data, type, row) {
+                                return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
+                            }
+                        }
+                    ]
+                });
             });
         </script>
 

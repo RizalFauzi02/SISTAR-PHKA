@@ -261,26 +261,58 @@
             });
 
             $(document).ready(function() {
-                let pesanDariButton = ""; // Simpan pesan dari tombol status
+                let pesanDariButton = "";
 
-                // Event saat tombol status diklik
-                $(".btn-status").click(function() {
-                    pesanDariButton = $(this).data("pesan"); // Ambil data pesan dari tombol yang diklik
+                $(document).on("click", ".btn-status", function() {
+                    let pesanStatus = $(this).data("pesan");
+                    let namaPasienSelect = document.getElementById("nama_pasien");
+                    let tanggalLahirInput = document.getElementById("tanggal_lahir");
+
+                    if (!namaPasienSelect || !tanggalLahirInput) {
+                        console.error("Elemen Nama Pasien atau Tanggal Lahir tidak ditemukan!");
+                        return;
+                    }
+
+                    let namaPasien = namaPasienSelect.options[namaPasienSelect.selectedIndex]?.text || "";
+                    let tanggalLahir = tanggalLahirInput.value || "";
+
+                    if (namaPasien === "-- Pilih Pasien --" || namaPasien === "") {
+                        Swal.fire({
+                            title: "Oops...",
+                            text: "Silakan pilih pasien terlebih dahulu!",
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK"
+                        });
+                        return;
+                    }
+
+                    if (tanggalLahir) {
+                        let parts = tanggalLahir.split("-");
+                        tanggalLahir = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    }
+
+                    pesanDariButton = `Nama: *${namaPasien}*\nTanggal Lahir: *${tanggalLahir}*\n\n${pesanStatus}`;
                     updatePesan();
                 });
 
-                // Event saat dropdown "Ucapan" berubah
                 $("#ucapan").change(function() {
                     updatePesan();
                 });
 
-                // Fungsi untuk memperbarui textarea
-                function updatePesan() {
-                    let ucapan = $("#ucapan").val(); // Ambil nilai ucapan
-                    let teksUcapan = ucapan ? "*Selamat " + ucapan + " Bapak/Ibu,*\n\n" : ""; // Format ucapan
-                    //let pesanFinal = teksUcapan + pesanDariButton + "\n\n_[ ini adalah pesan otomatis ]_";
-                    let pesanFinal = teksUcapan + pesanDariButton;
+                $("#nama_pasien").change(function() {
+                    pesanDariButton = "";
+                    $("#ucapan").val("").trigger("change");
+                    $("#jaminan").val("").trigger("change");
 
+                    setTimeout(() => {
+                        $("#pesan_status").val("").trigger("input");
+                    }, 0);
+                });
+
+                function updatePesan() {
+                    let ucapan = $("#ucapan").val();
+                    let teksUcapan = ucapan ? `*Selamat ${ucapan} Bapak/Ibu,*\n\n` : "";
+                    let pesanFinal = teksUcapan + pesanDariButton;
                     $("#pesan_status").val(pesanFinal);
                 }
             });
@@ -295,18 +327,22 @@
                 $("#jaminan").change(function() {
                     var selectedJaminan = $(this).val();
 
-                    $(".status-btn-container").hide();
-                    $(".status-btn-container[data-jaminan='NULL']").show();
+                    $(".status-btn-container").hide(); // Sembunyikan semua tombol status
 
+                    // Tampilkan tombol sesuai dengan jaminan yang dipilih
                     if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
                         $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
                     }
                 });
 
-                // Event saat tombol status diklik untuk menyimpan id_status ke input form
+                // Event saat select nama pasien berubah -> Pastikan jaminan NULL tetap muncul
+                $("#nama_pasien").change(function() {
+                    $(".status-btn-container").hide();
+                    $(".status-btn-container[data-jaminan='NULL']").show();
+                });
+
                 $(".btn-status").click(function() {
                     selectedIdStatus = $(this).data("id");
-                    // Simpan ID Status ke dalam input form dengan id #id_status
                     $("#id_status").val(selectedIdStatus);
                 });
             });

@@ -114,57 +114,10 @@
 
                        <table id="logTable" class="table datatable-basic">
                            <thead>
-                               <tr>
-                                   <th>Nama Pasien</th>
-                                   <th>Tanggal Lahir</th>
-                                   <th>Nomor WhatsApp</th>
-                                   <th>Ruangan</th>
-                                   <th>Tanggal Input</th>
-                                   <th>Tanggal Edit</th>
-                                   <th class="text-center">Actions</th>
-                               </tr>
+                               <!-- MENGGUNAKAN JS DATATABLE -->
                            </thead>
                            <tbody>
-                               <!-- <?php if (!empty($pasien)) : ?>
-                                   <?php foreach ($pasien as $p) : ?>
-                                       <tr>
-                                           <td><?= htmlspecialchars($p['nama_pasien']); ?></td>
-                                           <td><?= htmlspecialchars(date('d/m/Y', strtotime($p['tanggal_lahir']))); ?></td>
-                                           <td><?= htmlspecialchars($p['no_whatsapp']); ?></td>
-                                           <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['created_at']))); ?></td>
-                                           <td>
-                                               <?= !empty($p['updated_at']) && $p['updated_at'] !== '0000-00-00 00:00:00'
-                                                    ? htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['updated_at'])))
-                                                    : ''; ?>
-                                           </td>
-                                           <td class="text-center">
-                                               <div class="dropdown">
-                                                   <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                                       <i class="icon-menu9"></i>
-                                                   </a>
-                                                   <div class="dropdown-menu dropdown-menu-right">
-                                                       <a href="#" class="dropdown-item edit-btn"
-                                                           data-id="<?= $p['id_pasien']; ?>"
-                                                           data-nama="<?= $p['nama_pasien']; ?>"
-                                                           data-tanggal="<?= $p['tanggal_lahir']; ?>"
-                                                           data-whatsapp="<?= $p['no_whatsapp']; ?>"
-                                                           data-toggle="modal" data-target="#editModal">Edit</a>
-                                                       <a href="#" class="dropdown-item" data-toggle="modal" data-target="#confirmDeleteModal"
-                                                           data-id="<?= $p['id_pasien']; ?>"
-                                                           data-nama="<?= htmlspecialchars($p['nama_pasien']); ?>"
-                                                           data-tgl="<?= date('Y-m-d', strtotime($p['tanggal_lahir'])); ?>">
-                                                           Hapus
-                                                       </a>
-                                                   </div>
-                                               </div>
-                                           </td>
-                                       </tr>
-                                   <?php endforeach; ?>
-                               <?php else : ?>
-                                   <tr>
-                                       <td colspan="5" class="text-center">Tidak ada data pasien.</td>
-                                   </tr>
-                               <?php endif; ?> -->
+                               <!-- MENGGUNAKAN JS DATATABLE -->
                            </tbody>
                        </table>
                    </div>
@@ -300,7 +253,6 @@
 
            $(document).ready(function() {
 
-               // Cek jika DataTable sudah ada, hancurkan dulu
                if ($.fn.DataTable.isDataTable("#logTable")) {
                    $('#logTable').DataTable().destroy();
                }

@@ -130,37 +130,12 @@
                             <h5 class="card-title">Data Pasien</h5>
                         </div>
 
-                        <table class="table datatable-basic">
+                        <table id="logTable" class="table datatable-basic">
                             <thead>
-                                <tr>
-                                    <th>Nama Pasien</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Nomor WhatsApp</th>
-                                    <th>Tanggal Input</th>
-                                    <th>Tanggal Edit</th>
-                                </tr>
+                                <!-- MENGGUNAKAN JS DATATABLE -->
                             </thead>
                             <tbody>
-                                <?php if (!empty($pasien)) : ?>
-                                    <?php foreach ($pasien as $p) : ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($p['nama_pasien']); ?></td>
-                                            <td><?= htmlspecialchars(date('d/m/Y', strtotime($p['tanggal_lahir']))); ?></td>
-                                            <td><?= htmlspecialchars($p['no_whatsapp']); ?></td>
-                                            <td><?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['created_at']))); ?></td>
-                                            <td>
-                                                <?= !empty($p['updated_at']) && $p['updated_at'] !== '0000-00-00 00:00:00'
-                                                    ? htmlspecialchars(date('d/m/Y H:i:s', strtotime($p['updated_at'])))
-                                                    : ''; ?>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else : ?>
-                                    <tr>
-                                        <td colspan="5" class="text-center">Tidak ada data pasien.</td>
-                                    </tr>
-                                <?php endif; ?>
+                                <!-- MENGGUNAKAN JS DATATABLE -->
                             </tbody>
                         </table>
                     </div>
@@ -387,6 +362,59 @@
             $(document).ready(function() {
                 $('.select-search').select2({
                     allowClear: true
+                });
+            });
+
+            // DATATABLE JS
+            $(document).ready(function() {
+
+                if ($.fn.DataTable.isDataTable("#logTable")) {
+                    $('#logTable').DataTable().destroy();
+                }
+
+                // Inisialisasi ulang DataTable
+                let table = $('#logTable').DataTable({
+                    "processing": true,
+                    "serverSide": false,
+                    "destroy": true,
+                    "ajax": {
+                        "url": "<?= base_url('users/perawat/get_pasien') ?>",
+                        "type": "GET",
+                        "dataSrc": function(json) {
+                            return json.data;
+                        }
+                    },
+                    "order": [
+                        [4, "desc"]
+                    ], // Urutkan berdasarkan "Tanggal Input" (created_at)
+                    "columns": [{
+                            "title": "Nama Pasien",
+                            "data": "nama_pasien"
+                        },
+                        {
+                            "title": "Tanggal Lahir",
+                            "data": "tanggal_lahir"
+                        },
+                        {
+                            "title": "Nomor WhatsApp",
+                            "data": "no_whatsapp"
+                        },
+                        {
+                            "title": "Ruangan",
+                            "data": "kamar"
+                        },
+                        {
+                            "title": "Tanggal Input",
+                            "data": "created_at"
+                        },
+                        {
+                            "title": "Tanggal Edit",
+                            "data": "updated_at",
+                            "render": function(data, type, row) {
+                                return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
+                            }
+                        }
+                    ]
                 });
             });
         </script>

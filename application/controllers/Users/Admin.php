@@ -219,4 +219,32 @@ class Admin extends CI_Controller
 
         $this->template->load('template/default/template', 'admin/log_sendWA', $this->data);
     }
+
+    public function get_pasien()
+    {
+        header('Content-Type: application/json');
+
+        $logs = $this->M_superadmin->get_pasien();
+
+        if (!$logs) {
+            echo json_encode(["data" => []]);
+            return;
+        }
+
+        // Ubah dari array biasa ke format JSON yang benar
+        $data = [];
+        foreach ($logs as $log) {
+            $data[] = [
+                "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
+                "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
+                "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+                "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
+                "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
+                "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),
+                "id_pasien"       => $log['id_pasien']
+            ];
+        }
+
+        echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
+    }
 }
