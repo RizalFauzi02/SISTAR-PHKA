@@ -54,6 +54,7 @@
                                     <option value="" disabled selected>-- Pilih Jaminan --</option>
                                     <option value="JKN">JKN</option>
                                     <option value="NON JKN">NON JKN</option>
+                                    <option value="cancel">Cancel</option>
                                 </select>
                             </div>
 
@@ -328,6 +329,14 @@
                     var selectedJaminan = $(this).val();
 
                     $(".status-btn-container").hide(); // Sembunyikan semua tombol status
+
+                    // Logika untuk "Cancel"
+                    if (selectedJaminan === "cancel") {
+                        $(".status-btn-container").hide();
+                        $(".status-btn-container[data-jaminan='NULL']").show();
+                        $(this).val("");
+                        $("#jaminan option[value='']").prop("selected", true);
+                    }
 
                     // Tampilkan tombol sesuai dengan jaminan yang dipilih
                     if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {

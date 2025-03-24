@@ -122,6 +122,62 @@
                 </table>
             </div>
         </div>
+
+        <!-- Modal Edit Pasien -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Pasien</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?= base_url('users/admin/editPasien'); ?>" method="post">
+                        <div class="modal-body">
+                            <input type="hidden" name="id_pasien" id="edit_id">
+                            <div class="form-group">
+                                <label for="edit_nama">Nama Pasien</label>
+                                <input type="text" class="form-control" id="edit_nama" name="nama_pasien">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_tanggal">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="edit_tanggal" name="tanggal_lahir">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit_whatsapp">No WhatsApp</label>
+                                <input type="text" class="form-control" id="edit_whatsapp" name="no_whatsapp">
+                                <p>*Penulisan nomor WhatsApp: <b>6285956xxxxxx</b></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="kamar">Ruangan</label>
+                                <select class="form-control select-search" id="kamar" name="kamar" required>
+                                    <option value="" disabled selected>-- Pilih Kamar --</option>
+                                    <option value="NICU/PICU">NICU/PICU</option>
+                                    <option value="VK">VK</option>
+                                    <option value="ICU/HCU">ICU/HCU</option>
+                                    <option value="SAPPHIRE">SAPPHIRE</option>
+                                    <option value="EMERALD">EMERALD</option>
+                                    <option value="RUBBY">RUBBY</option>
+                                    <option value="DIAMOND">DIAMOND</option>
+                                    <option value="TOPAZ">TOPAZ</option>
+                                    <option value="CRYSTAL">CRYSTAL</option>
+                                    <option value="ENDOSCOPY">ENDOSCOPY</option>
+                                    <option value="UKB">UKB</option>
+                                    <option value="Malam">Malam</option>
+                                    <option value="Malam">Malam</option>
+                                    <option value="Malam">Malam</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -140,7 +196,38 @@
         return true; // Lanjutkan submit jika valid
     }
 
-    // DATATABLE JS
+    // ================== PROSES MEMUNCULKAN DATA PASIEN DENGAN DATATABLE ==================================
+    function formatTanggal(tanggal) {
+        let parts = tanggal.split("/");
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        return tanggal;
+    }
+
+    // Saat tombol edit diklik
+    $(document).on("click", ".edit-btn", function() {
+        let id = $(this).data("id");
+        let nama = $(this).data("nama");
+        let tanggal = $(this).data("tanggal");
+        let whatsapp = $(this).data("whatsapp");
+        let kamar = $(this).data("kamar");
+
+        let tanggalFormatted = formatTanggal(tanggal); // Konversi tanggal
+
+        // Masukkan data ke dalam modal
+        $("#edit_id").val(id);
+        $("#edit_nama").val(nama);
+        $("#edit_tanggal").val(tanggalFormatted);
+        $("#edit_whatsapp").val(whatsapp);
+
+        // Pilih kamar yang sesuai di dalam select dropdown
+        $("#kamar").val(kamar).trigger("change");
+
+        // Tampilkan modal
+        $("#editModal").modal("show");
+    });
+
     $(document).ready(function() {
 
         if ($.fn.DataTable.isDataTable("#logTable")) {
@@ -188,9 +275,33 @@
                     "render": function(data, type, row) {
                         return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
                     }
+                },
+                {
+                    "title": "Actions",
+                    "data": null,
+                    "render": function(data, type, row) {
+                        return `
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                    <i class="icon-menu9"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item edit-btn"
+                                    data-id="${row.id_pasien}"
+                                    data-nama="${row.nama_pasien}"
+                                    data-tanggal="${row.tanggal_lahir}"
+                                    data-whatsapp="${row.no_whatsapp}"
+                                    data-kamar="${row.kamar}"
+                                    data-toggle="modal" data-target="#editModal">Edit</a>
+                                </div>
+                            </div>
+                        </td>`;
+                    }
                 }
             ]
         });
     });
+    //    ================================== END ======================================
 </script>
 <!-- /content area -->

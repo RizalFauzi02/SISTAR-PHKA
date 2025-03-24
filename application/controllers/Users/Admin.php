@@ -133,6 +133,37 @@ class Admin extends CI_Controller
         }
     }
 
+    public function editPasien()
+    {
+        $id_pasien = $this->input->post('id_pasien');
+
+        // Ambil data dari input form
+        $data = [
+            'nama_pasien'   => $this->input->post('nama_pasien'),
+            'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+            'no_whatsapp'   => $this->input->post('no_whatsapp'),
+            'kamar'   => $this->input->post('kamar')
+        ];
+
+        // Hapus field yang kosong agar tidak memperbarui dengan NULL
+        $data = array_filter($data, function ($value) {
+            return !empty($value);
+        });
+
+        // Cek jika ada perubahan data
+        if (!empty($data)) {
+            if ($this->M_superadmin->update_pasien($id_pasien, $data)) {
+                $this->session->set_flashdata('success', 'Data pasien berhasil diperbarui!');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal memperbarui data pasien.');
+            }
+        } else {
+            $this->session->set_flashdata('info', 'Tidak ada perubahan data.');
+        }
+
+        redirect('users/admin');
+    }
+
     // ================================= BUTTON KIRIM WHATSAPP ==========================================
 
     // public function kirim_whatsapp()
@@ -219,6 +250,34 @@ class Admin extends CI_Controller
 
         $this->template->load('template/default/template', 'admin/log_sendWA', $this->data);
     }
+
+    // public function get_pasien()
+    // {
+    //     header('Content-Type: application/json');
+
+    //     $logs = $this->M_superadmin->get_pasien();
+
+    //     if (!$logs) {
+    //         echo json_encode(["data" => []]);
+    //         return;
+    //     }
+
+    //     // Ubah dari array biasa ke format JSON yang benar
+    //     $data = [];
+    //     foreach ($logs as $log) {
+    //         $data[] = [
+    //             "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
+    //             "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
+    //             "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+    //             "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
+    //             "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
+    //             "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),
+    //             "id_pasien"       => $log['id_pasien']
+    //         ];
+    //     }
+
+    //     echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
+    // }
 
     public function get_pasien()
     {

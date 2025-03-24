@@ -76,7 +76,7 @@
                 </div> -->
 
                 <div class="form-group text-center text-muted content-divider">
-                    <span class="px-2">Develop by: <a href="https://github.com/RizalFauzi02/SISTAR-PHKA" target="_blank">UnderSky a.k.a Rizal</a></span>
+                    <span class="px-2">Develop by: <a href="" target="_blank">UnderSky</a></span>
                 </div>
 
                 <!-- <div class="form-group">
