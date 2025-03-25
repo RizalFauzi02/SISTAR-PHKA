@@ -2,37 +2,14 @@
     <!-- Login form -->
     <form class="login-form" action="<?= base_url('auth/ProsesLogin'); ?>" method="POST">
         <div class="card mb-0">
+            <?= $this->session->flashdata('pesan') ?>
             <div class="card-body">
-                <?php if ($this->session->userdata('error')) { ?>
-                    <div class="alert alert-warning alert-styled-right alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        <span class="font-weight-semibold"><?= $this->session->userdata('error') ?></span>
-                    </div>
-                <?php } ?>
-                <?php if ($this->session->userdata('success')) { ?>
-                    <div class="alert alert-info alert-styled-right alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        <span class="font-weight-semibold"><?= $this->session->userdata('success') ?></span>
-                    </div>
-                <?php } ?>
                 <div class="text-center mb-3">
                     <!-- <i class="icon-reading icon-2x text-slate-300 border-slate-300 border-3 rounded-round p-3 mb-3 mt-1"></i> -->
                     <img src="<?php echo base_url('assets/app-assets/img/logo.png'); ?>" alt="Logo" class="logo-login">
-                    <h1 class="mb-0">SISTAR</h1>
-                    <span class="d-block text-muted"><b>S</b>istem <b>I</b>nformasi <b>S</b>tatus <b>T</b>indak lanjut <b>A</b>dministrasi <b>R</b>awat inap</span>
+                    <h1 class="mb-0">SIAP</h1>
+                    <span class="d-block text-muted"><b>S</b>istem <b>I</b>nformasi p<b>A</b>sien <b>P</b>ulang</span>
                 </div>
-
-                <?php if ($this->session->flashdata('success')): ?>
-                    <div class="alert alert-success">
-                        <?= $this->session->flashdata('success') ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($this->session->flashdata('error')): ?>
-                    <div class="alert alert-danger">
-                        <?= $this->session->flashdata('error') ?>
-                    </div>
-                <?php endif; ?>
 
                 <div class="form-group form-group-feedback form-group-feedback-left">
                     <input type="text" name="username" class="form-control" placeholder="Username" autocomplete>
@@ -76,7 +53,7 @@
                 </div> -->
 
                 <div class="form-group text-center text-muted content-divider">
-                    <span class="px-2">Develop by: <a href="" target="_blank">UnderSky</a></span>
+                    <span class="px-2">Develop by: <a href="#">UnderSky</a></span>
                 </div>
 
                 <!-- <div class="form-group">

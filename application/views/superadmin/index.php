@@ -15,17 +15,24 @@
             <!-- Dashboard content -->
             <div class="row">
                 <div class="col-xl-8">
-                    <!-- Quick stats boxes -->
                     <div class="row">
                         <div class="col-lg-4">
-
-
+                            <a href="<?= base_url('users/superadmin/add_pasien') ?>">
+                                <div class="card bg-info-400">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <h3 class="font-weight-semibold mb-0"><?= $total_pasien; ?></h3>
+                                        </div>
+                                        <div>
+                                            Total Pasien Terinput
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
-                    <!-- /quick stats boxes -->
                 </div>
             </div>
-            <!-- /dashboard content -->
 
         </div>
         <!-- /content area -->

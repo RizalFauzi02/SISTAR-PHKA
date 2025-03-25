@@ -43,6 +43,8 @@ class Superadmin extends CI_Controller
         $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
         // WAJIB ADA
 
+        $this->data['total_pasien'] = $this->M_superadmin->get_total_pasien();
+
         $this->template->load('template/default/template', 'superadmin/index', $this->data);
     }
 

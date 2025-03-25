@@ -48,7 +48,7 @@
                                 <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
                             </div>
 
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="jaminan">Jaminan</label>
                                 <select class="form-control select-search" id="jaminan" name="jaminan" required>
                                     <option value="" disabled selected>-- Pilih Jaminan --</option>
@@ -56,7 +56,7 @@
                                     <option value="NON JKN">NON JKN</option>
                                     <option value="cancel">Cancel</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <div class="form-group">
                                 <label for="ucapan">Ucapan</label>
@@ -135,6 +135,11 @@
             $(document).ready(function() {
                 $('.select-search').select2({
                     allowClear: true
+                });
+
+                $(".btn-status").click(function() {
+                    selectedIdStatus = $(this).data("id");
+                    $("#id_status").val(selectedIdStatus);
                 });
             });
 
@@ -318,43 +323,43 @@
                 }
             });
 
-            $(document).ready(function() {
-                $(".status-btn-container").hide();
-                $(".status-btn-container[data-jaminan='NULL']").show();
+            // $(document).ready(function() {
+            //     $(".status-btn-container").hide();
+            //     $(".status-btn-container[data-jaminan='NULL']").show();
 
-                var selectedIdStatus = null;
+            //     var selectedIdStatus = null;
 
-                // Event saat select jaminan berubah
-                $("#jaminan").change(function() {
-                    var selectedJaminan = $(this).val();
+            //     // Event saat select jaminan berubah
+            //     $("#jaminan").change(function() {
+            //         var selectedJaminan = $(this).val();
 
-                    $(".status-btn-container").hide(); // Sembunyikan semua tombol status
+            //         $(".status-btn-container").hide(); // Sembunyikan semua tombol status
 
-                    // Logika untuk "Cancel"
-                    if (selectedJaminan === "cancel") {
-                        $(".status-btn-container").hide();
-                        $(".status-btn-container[data-jaminan='NULL']").show();
-                        $(this).val("");
-                        $("#jaminan option[value='']").prop("selected", true);
-                    }
+            //         // Logika untuk "Cancel"
+            //         if (selectedJaminan === "cancel") {
+            //             $(".status-btn-container").hide();
+            //             $(".status-btn-container[data-jaminan='NULL']").show();
+            //             $(this).val("");
+            //             $("#jaminan option[value='']").prop("selected", true);
+            //         }
 
-                    // Tampilkan tombol sesuai dengan jaminan yang dipilih
-                    if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
-                        $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
-                    }
-                });
+            //         // Tampilkan tombol sesuai dengan jaminan yang dipilih
+            //         if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
+            //             $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
+            //         }
+            //     });
 
-                // Event saat select nama pasien berubah -> Pastikan jaminan NULL tetap muncul
-                $("#nama_pasien").change(function() {
-                    $(".status-btn-container").hide();
-                    $(".status-btn-container[data-jaminan='NULL']").show();
-                });
+            //     // Event saat select nama pasien berubah -> Pastikan jaminan NULL tetap muncul
+            //     $("#nama_pasien").change(function() {
+            //         $(".status-btn-container").hide();
+            //         $(".status-btn-container[data-jaminan='NULL']").show();
+            //     });
 
-                $(".btn-status").click(function() {
-                    selectedIdStatus = $(this).data("id");
-                    $("#id_status").val(selectedIdStatus);
-                });
-            });
+            //     $(".btn-status").click(function() {
+            //         selectedIdStatus = $(this).data("id");
+            //         $("#id_status").val(selectedIdStatus);
+            //     });
+            // });
         </script>
 
 

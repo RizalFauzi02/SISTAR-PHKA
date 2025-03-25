@@ -64,14 +64,14 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="jaminan">Jaminan</label>
                             <select class="form-control select-search" id="jaminan" name="jaminan">
                                 <option value="" disabled selected>-- Pilih Jaminan --</option>
                                 <option value="JKN">JKN</option>
                                 <option value="NON JKN">NON JKN</option>
                             </select>
-                        </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label for="exampleTextarea">Pesan Status</label>
@@ -99,7 +99,7 @@
                             <th>Nama Status</th>
                             <th>Pengguna Status</th>
                             <th>Pesan Status</th>
-                            <th>Jaminan</th>
+                            <!-- <th>Jaminan</th> -->
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -114,7 +114,7 @@
                                             <?= htmlspecialchars(mb_strimwidth($status['pesan_status'], 0, 30, "...")); ?>
                                         </a>
                                     </td>
-                                    <td><?= htmlspecialchars($status['jaminan']); ?></td>
+                                    <!-- <td><?= htmlspecialchars($status['jaminan']); ?></td> -->
                                     <td class="text-center">
                                         <div class="list-icons">
                                             <div class="dropdown">
@@ -128,6 +128,7 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
 
@@ -180,7 +181,7 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="mb-3">
+                                                    <!-- <div class="mb-3">
                                                         <label>Jaminan</label>
                                                         <select class="form-control select-search" id="jaminan" name="jaminan">
                                                             <option value="" disabled <?= (!isset($status['jaminan']) || empty($status['jaminan']) || !in_array($status['jaminan'], ['NON JKN', 'JKN', 'hapus'])) ? 'selected' : ''; ?>>
@@ -190,7 +191,7 @@
                                                             <option value="JKN" <?= (isset($status['jaminan']) && $status['jaminan'] == 'JKN') ? 'selected' : ''; ?>>JKN</option>
                                                             <option value="hapus" <?= (isset($status['jaminan']) && $status['jaminan'] === 'hapus') ? 'selected' : ''; ?>>hapus</option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
 
 
                                                     <div class="mb-3">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= $title; ?> - SISTAR</title>
+    <title><?= $title; ?> - SIAP</title>
 
     <link rel="shortcut icon" href="<?php echo base_url('assets/app-assets/img/logo.png'); ?>">
 
@@ -76,7 +76,7 @@
             <a href="#" class="d-inline-block">
                 <!-- <img src="<?= base_url('assets/app-assets/img/logo-bg.png') ?>" alt=""> -->
             </a>
-            <h5 class="ml-2 font-weight-bold mb-0">SISTAR - PHKA</h5>
+            <h5 class="ml-2 font-weight-bold mb-0">SIAP - PHKA</h5>
         </div>
 
 

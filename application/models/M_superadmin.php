@@ -102,6 +102,11 @@ class M_superadmin extends CI_Model
             ->result_array();
     }
 
+    public function get_total_pasien()
+    {
+        return $this->db->count_all('m_pasien');
+    }
+
     public function update_user($id_user, $username, $is_role, $password = null)
     {
         $data = [
@@ -169,7 +174,7 @@ class M_superadmin extends CI_Model
 
     public function getStatusByRole($role)
     {
-        $this->db->select('m_status.nama_status, m_status.id_status, m_status.jaminan, m_status.pesan_status, tbl_user.username');
+        $this->db->select('m_status.nama_status, m_status.id_status, m_status.pesan_status, tbl_user.username');
         $this->db->from('m_status');
         $this->db->join('status_user', 'status_user.id_status = m_status.id_status');
         $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user');
