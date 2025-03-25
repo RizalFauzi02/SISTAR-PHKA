@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Mar 2025 pada 17.54
+-- Waktu pembuatan: 25 Mar 2025 pada 17.19
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.26
 
@@ -66,7 +66,9 @@ INSERT INTO `log_sendwhatsapp` (`id_logWA`, `username_pengirim`, `id_user`, `id_
 (21, 'admin', 2, 2, '6285956368533', '*Selamat Sore Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\nTerima kasih telah bersedia menunggu.', '2025-03-21 16:26:38', 20),
 (22, 'superadmin', 1, 2, '6285956368533', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Syaiful Fikri*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, silahkan ke Kasir Rawat Inap untuk menyelesaikan administrasi.\nTerima kasih telah bersedia menunggu.', '2025-03-21 16:29:45', 3),
 (23, 'admin', 2, 1, '6281310734256', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \n\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', '2025-03-21 16:51:48', 4),
-(24, 'admin', 2, 1, '6281310734256', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\nTerima kasih telah bersedia menunggu.', '2025-03-21 16:52:05', 20);
+(24, 'admin', 2, 1, '6281310734256', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\nTerima kasih telah bersedia menunggu.', '2025-03-21 16:52:05', 20),
+(25, 'superadmin', 1, 1, '6281310734256', '*Selamat Siang Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\nTerima kasih telah bersedia menunggu.', '2025-03-25 15:24:26', 20),
+(26, 'admin', 2, 1, '6281310734256', '*Selamat Malam Bapak/Ibu,*\n\nNama: *Rizal Fauzi*\nTanggal Lahir: *02/03/2001*\n\nBerkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\nTerima kasih telah bersedia menunggu.', '2025-03-25 15:46:19', 20);
 
 -- --------------------------------------------------------
 
@@ -95,7 +97,7 @@ INSERT INTO `m_pasien` (`id_pasien`, `nama_pasien`, `tanggal_lahir`, `no_whatsap
 (4, 'Faturrochman', '1989-07-09', '6289664152236', 'KAMAR', '2025-03-09 02:20:19', '2025-03-17 17:31:23'),
 (6, 'Upi', '2009-06-05', '6289644515663', 'KAMAR', '2025-03-09 02:31:01', '0000-00-00 00:00:00'),
 (7, 'HALIMAHATUS', '2007-05-04', '628544635445', 'KAMAR', '2025-03-09 02:39:06', '0000-00-00 00:00:00'),
-(8, 'TRIASTUTRI', '2001-09-26', '628554153365', 'DIAMOND', '2025-03-09 02:43:43', '0000-00-00 00:00:00'),
+(8, 'TRIASTUTRInnzzzzAA', '2001-09-26', '628554153365', 'DIAMOND', '2025-03-09 02:43:43', '2025-03-24 19:43:16'),
 (9, 'Ayu Kepo', '1989-11-17', '6289664872217', 'DIAMOND', '2025-03-10 08:28:35', '2025-03-16 06:26:16'),
 (12, 'TEST aaaaa', '2002-02-02', '62865442056698', 'ICU/HCU', '2025-03-16 06:25:25', '2025-03-21 22:53:29'),
 (18, 'YANTO', '2005-05-02', '62896546198896', NULL, '2025-03-21 12:23:51', '0000-00-00 00:00:00'),
@@ -123,9 +125,10 @@ CREATE TABLE `m_status` (
 INSERT INTO `m_status` (`id_status`, `nama_status`, `pesan_status`, `jaminan`, `created_at`, `updated_at`) VALUES
 (1, '1. Menyiapkan Berkas Pulang', 'Saat ini perawat sedang menyiapkan berkas kepulangan Anda.\r\nMohon menunggu, kami akan segera menginformasikan proses selanjutnya.\r\n', NULL, '2025-03-09 00:39:22', ''),
 (2, '4. Mengantar Obat Pasien Pulang', 'Terima kasih telah bersedia menunggu. \r\n\r\nPetugas Farmasi akan segera mengantarkan obat ke ruang perawatan\r\n\r\n\r\n', NULL, '2025-03-09 01:44:59', ''),
-(3, '3. Penyelesaian Administrasi', 'Berkas kepulangan Anda saat ini sudah selesai, silahkan ke Kasir Rawat Inap untuk menyelesaikan administrasi.\r\nTerima kasih telah bersedia menunggu.\r\n', 'NON JKN', '2025-03-09 01:59:03', ''),
+(3, '3. Penyelesaian Administrasi', 'Berkas kepulangan Anda saat ini sudah selesai, silahkan ke Kasir Rawat Inap untuk menyelesaikan administrasi.\r\nTerima kasih telah bersedia menunggu.\r\n', NULL, '2025-03-09 01:59:03', ''),
 (4, '2. Sedang Dalam Proses', 'Berkas kepulangan Anda saat ini sedang diproses oleh Petugas Kasir Rawat Inap. \r\n\r\nEstimasi waktu penyelesaian adalah 10 menit. Terima kasih atas pengertiannya.', NULL, '2025-03-09 01:59:43', ''),
-(20, '3. Penyelesaian Administrasi', 'Berkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\r\nTerima kasih telah bersedia menunggu.', 'JKN', '2025-03-19 12:14:52', '');
+(20, '3. Penyelesaian Administrasi', 'Berkas kepulangan Anda saat ini sudah selesai, mohon untuk menunggu obat pulang.\r\nTerima kasih telah bersedia menunggu.', NULL, '2025-03-19 12:14:52', ''),
+(24, 'TEST TANPA ADA JAMINAN', 'EDIT TANPA ADA JAMINAN', NULL, '2025-03-25 22:30:49', '');
 
 -- --------------------------------------------------------
 
@@ -153,7 +156,8 @@ INSERT INTO `status_user` (`id_status_user`, `id_status`, `id_user`) VALUES
 (81, 20, 1),
 (82, 20, 2),
 (96, 4, 1),
-(97, 4, 2);
+(97, 4, 2),
+(103, 24, 1);
 
 -- --------------------------------------------------------
 
@@ -230,7 +234,7 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `log_sendwhatsapp`
 --
 ALTER TABLE `log_sendwhatsapp`
-  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_logWA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_pasien`
@@ -242,13 +246,13 @@ ALTER TABLE `m_pasien`
 -- AUTO_INCREMENT untuk tabel `m_status`
 --
 ALTER TABLE `m_status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT untuk tabel `status_user`
 --
 ALTER TABLE `status_user`
-  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id_status_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_user`
