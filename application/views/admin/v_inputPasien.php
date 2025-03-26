@@ -94,7 +94,7 @@
                         </div>
                         <div class="form-group">
                             <label for="jaminan">Jaminan</label>
-                            <select class="form-control select-search" id="jaminan" name="jaminan" required>
+                            <select class="form-control select-search" id="jaminan" name="jaminan">
                                 <option value="" disabled selected>-- Pilih Jaminan --</option>
                                 <option value="UMUM">UMUM</option>
                                 <option value="ASURANSI">ASURANSI</option>
