@@ -87,7 +87,7 @@ class M_superadmin extends CI_Model
 
     public function get_all_pasien()
     {
-        $this->db->select('id_pasien, nama_pasien, tanggal_lahir, no_whatsapp, created_at, updated_at');
+        $this->db->select('id_pasien, nama_pasien, tanggal_lahir, jaminan, no_whatsapp, created_at, updated_at');
         $this->db->from('m_pasien');
         $query = $this->db->get();
         return $query->result_array();
@@ -174,11 +174,21 @@ class M_superadmin extends CI_Model
 
     public function getStatusByRole($role)
     {
-        $this->db->select('m_status.nama_status, m_status.id_status, m_status.pesan_status, tbl_user.username');
+        $this->db->select('m_status.nama_status, m_status.id_status, m_status.pesan_status, m_status.jaminan, tbl_user.username');
         $this->db->from('m_status');
         $this->db->join('status_user', 'status_user.id_status = m_status.id_status');
         $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user');
         $this->db->where('tbl_user.is_role', $role); // Sesuaikan dengan role
+        return $this->db->get()->result_array();
+    }
+
+    public function getStatusByUsername($username)
+    {
+        $this->db->select('m_status.nama_status, m_status.id_status, m_status.pesan_status, tbl_user.username');
+        $this->db->from('m_status');
+        $this->db->join('status_user', 'status_user.id_status = m_status.id_status');
+        $this->db->join('tbl_user', 'tbl_user.id_user = status_user.id_user');
+        $this->db->where('tbl_user.username', $username); // Menggunakan username sebagai filter
         return $this->db->get()->result_array();
     }
 

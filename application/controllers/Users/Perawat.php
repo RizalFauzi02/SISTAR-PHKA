@@ -50,7 +50,7 @@ class Perawat extends CI_Controller
         $is_role = $this->M_superadmin->getUserRole($id_user);
 
         // Ambil status berdasarkan role user
-        $this->data['status'] = $this->M_superadmin->getStatusByRole($is_role);
+        $this->data['status'] = $this->M_superadmin->getStatusByUsername($session);
         $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
 
         $this->template->load('template/default/template', 'perawat/status_perawat', $this->data);

@@ -122,6 +122,7 @@ class Admin extends CI_Controller
             $data = [
                 'nama_pasien'   => $this->input->post('nama_pasien'),
                 'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+                'jaminan'       => $this->input->post('jaminan'),
                 'no_whatsapp'   => $no_whatsapp,
                 'created_at'    => date('Y-m-d H:i:s')
             ];
@@ -297,6 +298,7 @@ class Admin extends CI_Controller
                 "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
                 "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
                 "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+                "jaminan"           => htmlspecialchars($log['jaminan'] ?? ""), // Pastikan tidak null
                 "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
                 "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
                 "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),

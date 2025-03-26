@@ -19,6 +19,8 @@
             </div>
 
             <div class="card-body">
+                <div class="alert alert-danger alert-dismissible" id="alert" style="display: none;"></div>
+
                 <form action="<?= base_url('users/superadmin/kirim_whatsapp'); ?>" method="POST">
                     <input type="hidden" id="id_status" name="id_status">
                     <div class="form-group text-center text-muted content-divider">
@@ -49,15 +51,13 @@
                         <input type="number" id="no_whatsapp" name="no_whatsapp" class="form-control" readonly>
                     </div>
 
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label for="jaminan">Jaminan</label>
-                        <select class="form-control select-search" id="jaminan" name="jaminan" required>
+                        <select class="form-control select-search" id="jaminan" name="jaminan">
                             <option value="" disabled selected>-- Pilih Jaminan --</option>
-                            <option value="JKN">JKN</option>
-                            <option value="NON JKN">NON JKN</option>
-                            <option value="cancel">Cancel</option>
+                            <!-- ADA DI PROSES JS get_pasien -->
                         </select>
-                    </div> -->
+                    </div>
 
                     <div class="form-group">
                         <label for="ucapan">Ucapan</label>
@@ -70,7 +70,7 @@
                         </select>
                     </div>
 
-                    <?php if (!empty($status)) { ?>
+                    <!-- <?php if (!empty($status)) { ?>
                         <?php foreach ($status as $s) { ?>
                             <div class="text-center mt-2 status-btn-container">
                                 <button type="button"
@@ -85,22 +85,20 @@
                         <div class="text-center mt-2">
                             <p class="text-muted">Belum ada status tersedia.</p>
                         </div>
-                    <?php } ?>
+                    <?php } ?> -->
 
-
-
-                    <!-- <?php if (!empty($status)) : ?>
+                    <?php if (!empty($status)) : ?>
                         <?php foreach ($status as $s) : ?>
                             <?php
-                                    $jaminan = strtoupper($s['jaminan'] ?? 'NULL');
-                                    $hide = ($jaminan === 'JKN' || $jaminan === 'NON JKN') ? 'style="display: none;"' : '';
+                            $jaminan = strtoupper($s['jaminan'] ?? 'NULL');
                             ?>
                             <div class="text-center mt-2 status-btn-container"
-                                data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>" <?= $hide; ?>>
+                                data-jaminan="<?= htmlspecialchars($jaminan); ?>"
+                                style="display: <?= ($jaminan === 'NULL') ? 'block' : 'none'; ?>;">
                                 <button type="button"
                                     class="btn btn-primary btn-status"
                                     data-id="<?= $s['id_status']; ?>"
-                                    data-jaminan="<?= htmlspecialchars($s['jaminan'] ?? 'NULL'); ?>"
+                                    data-jaminan="<?= htmlspecialchars($jaminan); ?>"
                                     data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
                                     <?= $s['nama_status']; ?>
                                 </button>
@@ -110,7 +108,7 @@
                         <div class="text-center mt-2">
                             <p class="text-muted">Belum ada status tersedia.</p>
                         </div>
-                    <?php endif; ?> -->
+                    <?php endif; ?>
 
 
                     <div class="form-group text-center text-muted content-divider mt-2">
@@ -157,10 +155,10 @@
             allowClear: true
         });
 
-        $(".btn-status").click(function() {
-            selectedIdStatus = $(this).data("id");
-            $("#id_status").val(selectedIdStatus);
-        });
+        // $(".btn-status").click(function() {
+        //     selectedIdStatus = $(this).data("id");
+        //     $("#id_status").val(selectedIdStatus);
+        // });
     });
 
     $(document).ready(function() {
@@ -179,6 +177,20 @@
                         if (data) {
                             $('#tanggal_lahir').val(data.tanggal_lahir);
                             $('#no_whatsapp').val(data.no_whatsapp);
+
+                            var jaminanSelect = $('#jaminan');
+                            jaminanSelect.empty();
+                            jaminanSelect.append('<option value="" disabled selected>-- Pilih Jaminan --</option>');
+
+                            if (data.jaminan) {
+                                var jaminanList = data.jaminan.split(',');
+                                jaminanList.forEach(function(jaminan) {
+                                    jaminanSelect.append('<option value="' + jaminan.trim() + '">' + jaminan.trim() + '</option>');
+                                });
+                            }
+
+                            jaminanSelect.append('<option value="batal">-- Batalkan Pilihan --</option>');
+
                         } else {
                             alert('Data tidak ditemukan!');
                         }
@@ -190,9 +202,11 @@
             } else {
                 $('#tanggal_lahir').val('');
                 $('#no_whatsapp').val('');
+                $('#jaminan').empty().append('<option value="" disabled selected>-- Pilih Jaminan --</option>');
             }
         });
     });
+
 
     // SCRIPT UNTUK CHAT DENGAN REDIRECT WA.ME
     document.getElementById('kirimWa').addEventListener('click', function() {
@@ -344,39 +358,84 @@
     //     $(".status-btn-container").hide();
     //     $(".status-btn-container[data-jaminan='NULL']").show();
 
-    //     var selectedIdStatus = null;
-
     //     // Event saat select jaminan berubah
     //     $("#jaminan").change(function() {
     //         var selectedJaminan = $(this).val();
 
-    //         $(".status-btn-container").hide(); // Sembunyikan semua tombol status
+    //         // Sembunyikan semua tombol status terlebih dahulu
+    //         $(".status-btn-container").hide();
 
-    //         // Logika untuk "Cancel"
-    //         if (selectedJaminan === "cancel") {
-    //             $(".status-btn-container").hide();
+    //         if (!selectedJaminan || selectedJaminan === "batal") {
+    //             // Jika batal dipilih, tampilkan kembali tombol dengan jaminan NULL
     //             $(".status-btn-container[data-jaminan='NULL']").show();
-    //             $(this).val("");
-    //             $("#jaminan option[value='']").prop("selected", true);
-    //         }
-
-    //         // Logika untuk JKN dan NON JKN
-    //         else if (selectedJaminan === "JKN" || selectedJaminan === "NON JKN") {
-    //             $(".status-btn-container[data-jaminan='" + selectedJaminan + "']:first").show();
+    //             $(this).val(""); // Reset pilihan
+    //         } else {
+    //             // Tampilkan hanya status yang sesuai dengan jaminan yang dipilih
+    //             $(".status-btn-container[data-jaminan='" + selectedJaminan + "']").show();
     //         }
     //     });
 
-    //     // Event saat select nama pasien berubah -> Pastikan jaminan NULL tetap muncul
     //     $("#nama_pasien").change(function() {
     //         $(".status-btn-container").hide();
     //         $(".status-btn-container[data-jaminan='NULL']").show();
+
+    //         $("#jaminan").val("").trigger("change");
     //     });
 
-    //     $(".btn-status").click(function() {
-    //         selectedIdStatus = $(this).data("id");
+    //     // Event saat tombol status diklik
+    //     $(document).on("click", ".btn-status", function() {
+    //         var selectedIdStatus = $(this).data("id");
     //         $("#id_status").val(selectedIdStatus);
     //     });
     // });
+    $(document).ready(function() {
+        $(".status-btn-container").hide();
+        $(".status-btn-container[data-jaminan='NULL']").show();
+
+        // Event saat select jaminan berubah
+        $("#jaminan").change(function() {
+            var selectedJaminan = $(this).val();
+            var $matchingStatus = $(".status-btn-container[data-jaminan='" + selectedJaminan + "']");
+            var $nullStatusContainer = $(".status-btn-container[data-jaminan='NULL']");
+
+            $(".status-btn-container").hide();
+            $nullStatusContainer.find(".status-message").remove();
+
+            if (!selectedJaminan || selectedJaminan === "batal") {
+                // **Jika batal dipilih, tampilkan kembali NULL tanpa pesan error**
+                $nullStatusContainer.show();
+                $(this).val(""); // Reset pilihan
+            } else if ($matchingStatus.length > 0) {
+                // **Jika status ditemukan, tampilkan tombol yang sesuai**
+                $matchingStatus.show();
+            } else {
+                $(".status-btn-container").hide();
+                $("#alert").html("").hide();
+
+                // Tambahkan pesan error ke dalam div #alert
+                $("#alert").html(`
+                    Status dengan jaminan <span class="font-weight-semibold">[ ${selectedJaminan} ] tidak tersedia</span> . Silahkan Hubungi Mutu.
+                `).show();
+
+                setTimeout(function() {
+                    $("#alert").fadeOut("slow");
+                }, 5000);
+            }
+        });
+
+        // Event saat select nama pasien berubah
+        $("#nama_pasien").change(function() {
+            $(".status-btn-container").hide();
+            $(".status-btn-container[data-jaminan='NULL']").show().find(".status-message").remove();
+            $("#jaminan").val("").trigger("change");
+        });
+
+        // Event saat tombol status diklik
+        $(document).on("click", ".btn-status", function() {
+            var selectedIdStatus = $(this).data("id");
+            $("#id_status").val(selectedIdStatus);
+        });
+    });
 </script>
 
 

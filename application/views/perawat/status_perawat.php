@@ -65,9 +65,6 @@
                                         <option value="CRYSTAL">CRYSTAL</option>
                                         <option value="ENDOSCOPY">ENDOSCOPY</option>
                                         <option value="UKB">UKB</option>
-                                        <option value="Malam">Malam</option>
-                                        <option value="Malam">Malam</option>
-                                        <option value="Malam">Malam</option>
                                     </select>
                                 </div>
 
@@ -101,7 +98,8 @@
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <div class="text-center mt-2">
-                                        <p class="text-muted">Belum ada status tersedia.</p>
+                                        <button type="button" disabled class="btn btn-danger"><?= $user['username'] ?></button><br><br>
+                                        <button type="button" disabled class="btn btn-danger">Belum ada status Tersedia. Silahkan hubungi Mutu.</button>
                                     </div>
                                 <?php endif; ?>
 
@@ -227,6 +225,13 @@
             });
 
             $(document).ready(function() {
+                var selectedKamar = ""; // Ganti dengan value yang ingin diseleksi otomatis
+
+                // Set default value jika ada
+                if (selectedKamar) {
+                    $('#kamar').val(selectedKamar).trigger('change'); // Tambahkan trigger change
+                }
+
                 $('#nama_pasien').change(function() {
                     var id_pasien = $(this).val();
 
@@ -242,6 +247,11 @@
                                 if (data) {
                                     $('#tanggal_lahir').val(data.tanggal_lahir);
                                     $('#no_whatsapp').val(data.no_whatsapp);
+
+                                    // Set kamar jika ada di data
+                                    if (data.kamar) {
+                                        $('#kamar').val(data.kamar).trigger('change'); // Tambahkan trigger change
+                                    }
                                 } else {
                                     alert('Data tidak ditemukan!');
                                 }
@@ -253,9 +263,12 @@
                     } else {
                         $('#tanggal_lahir').val('');
                         $('#no_whatsapp').val('');
+                        $('#kamar').val('').trigger('change'); // Reset select
                     }
                 });
             });
+
+
 
             // SCRIPT UNTUK CHAT DENGAN REDIRECT WA.ME, MENYALIN TEKS, DAN MENYIMPAN DATA LOG WA
             document.getElementById('kirimWa').addEventListener('click', function() {
@@ -315,6 +328,7 @@
 
                                 setTimeout(() => {
                                     window.open(urlUserInput, '_blank');
+                                    location.reload();
                                 }, 1500);
                             } else {
                                 throw new Error(data.message);
