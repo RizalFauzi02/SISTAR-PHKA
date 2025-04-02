@@ -297,7 +297,7 @@ class Superadmin extends CI_Controller
             $this->session->set_flashdata('error', 'Gagal Update Status!');
         }
 
-        redirect('Users/superadmin/m_status');
+        redirect('users/superadmin/m_status');
     }
 
 
@@ -312,7 +312,7 @@ class Superadmin extends CI_Controller
 
         $this->session->set_flashdata('success', 'Berhasil Hapus Status!');
 
-        redirect('Users/superadmin/m_status');
+        redirect('users/superadmin/m_status');
     }
 
     public function m_user()
@@ -478,7 +478,7 @@ class Superadmin extends CI_Controller
                 });
             </script>
         ");
-            redirect('Users/superadmin/m_status');
+            redirect('users/superadmin/m_status');
         } else {
             $data = [
                 'nama_status'    => $this->input->post('nama_status'),
@@ -493,7 +493,7 @@ class Superadmin extends CI_Controller
 
             $this->session->set_flashdata('success', 'Berhasil menambahkan Status!');
 
-            redirect('Users/superadmin/m_status');
+            redirect('users/superadmin/m_status');
         }
     }
 
@@ -551,7 +551,7 @@ class Superadmin extends CI_Controller
                     });
                 </script>
             ");
-            redirect('Users/superadmin/add_pasien');
+            redirect('users/superadmin/add_pasien');
         } else {
             $no_whatsapp = $this->input->post('no_whatsapp');
 
@@ -559,7 +559,7 @@ class Superadmin extends CI_Controller
             $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
             if ($cek_pasien) {
                 $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
-                redirect('Users/superadmin/add_pasien');
+                redirect('users/superadmin/add_pasien');
             }
 
             // Data yang akan disimpan
@@ -574,7 +574,7 @@ class Superadmin extends CI_Controller
             // Simpan ke database
             $this->M_pasien->insertPasien($data);
             $this->session->set_flashdata('success', 'Data pasien berhasil ditambahkan!');
-            redirect('Users/superadmin/add_pasien');
+            redirect('users/superadmin/add_pasien');
         }
     }
 
@@ -625,7 +625,7 @@ class Superadmin extends CI_Controller
             $this->session->set_flashdata('info', 'Tidak ada perubahan data.');
         }
 
-        redirect('Users/superadmin/add_pasien');
+        redirect('users/superadmin/add_pasien');
     }
 
     public function deletePasien($id_pasien)
@@ -636,6 +636,6 @@ class Superadmin extends CI_Controller
             $this->session->set_flashdata('error', 'Gagal menghapus data pasien.');
         }
 
-        redirect('Users/superadmin/add_pasien');
+        redirect('users/superadmin/add_pasien');
     }
 }

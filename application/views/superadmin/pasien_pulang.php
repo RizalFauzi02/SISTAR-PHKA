@@ -80,7 +80,7 @@
                             </button>
                         </div>
                     <?php endif; ?>
-                    <form action="<?= base_url('Users/superadmin/prosesAddPasien'); ?>" method="POST" onsubmit="return validateWhatsApp()">
+                    <form action="<?= base_url('users/superadmin/prosesAddPasien'); ?>" method="POST" onsubmit="return validateWhatsApp()">
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Data Pasien</span>
                         </div>
@@ -151,7 +151,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('Users/superadmin/editPasien'); ?>" method="post">
+            <form action="<?= base_url('users/superadmin/editPasien'); ?>" method="post">
                 <div class="modal-body">
                     <input type="hidden" name="id_pasien" id="edit_id">
                     <div class="form-group">
@@ -278,11 +278,10 @@
         $("#tLahir").text(tanggal);
 
         // Perbarui href tombol hapus dengan ID pasien
-        $("#deleteConfirmButton").attr("href", "<?= base_url('Users/superadmin/deletePasien/') ?>" + id);
+        $("#deleteConfirmButton").attr("href", "<?= base_url('users/superadmin/deletePasien/') ?>" + id);
     });
 
     $(document).ready(function() {
-
         if ($.fn.DataTable.isDataTable("#logTable")) {
             $('#logTable').DataTable().destroy();
         }
@@ -303,67 +302,96 @@
                 [5, "desc"]
             ], // Urutkan berdasarkan "Tanggal Input" (created_at)
             "columns": [{
-                    //    "title": "Nama Pasien",
                     "data": "nama_pasien"
                 },
                 {
-                    //    "title": "Tanggal Lahir",
                     "data": "tanggal_lahir"
                 },
                 {
-                    //    "title": "Nomor WhatsApp",
                     "data": "no_whatsapp"
                 },
                 {
-                    //    "title": "Ruangan",
                     "data": "kamar"
                 },
                 {
-                    //    "title": "Jaminan",
                     "data": "jaminan"
                 },
                 {
-                    //    "title": "Tanggal Input",
-                    "data": "created_at"
-                },
-                {
-                    //    "title": "Tanggal Edit",
-                    "data": "updated_at",
+                    "data": "created_at",
+                    "type": "date",
                     "render": function(data, type, row) {
-                        return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
+                        if (!data || data === "30/11/-0001 00:00:00") return "";
+                        let parts = data.split(" ");
+                        let dateParts = parts[0].split("/");
+                        return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
                     }
                 },
                 {
-                    //    "title": "Actions",
+                    "data": "updated_at",
+                    "render": function(data, type, row) {
+                        return (data === "30/11/-0001 00:00:00" || !data) ? "" : data;
+                    }
+                },
+                {
                     "data": null,
                     "render": function(data, type, row) {
                         return `
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                    <i class="icon-menu9"></i>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item edit-btn"
+                                data-id="${row.id_pasien}"
+                                data-nama="${row.nama_pasien}"
+                                data-tanggal="${row.tanggal_lahir}"
+                                data-whatsapp="${row.no_whatsapp}"
+                                data-jaminan="${row.jaminan}"
+                                data-kamar="${row.kamar}"
+                                data-toggle="modal" data-target="#editModal">Edit</a>
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#confirmDeleteModal"
+                                   data-id="${row.id_pasien}"
+                                   data-nama="${row.nama_pasien}"
+                                   data-tgl="${row.tanggal_lahir}">
+                                   Hapus
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" class="dropdown-item edit-btn"
-                                    data-id="${row.id_pasien}"
-                                    data-nama="${row.nama_pasien}"
-                                    data-tanggal="${row.tanggal_lahir}"
-                                    data-whatsapp="${row.no_whatsapp}"
-                                    data-jaminan="${row.jaminan}"
-                                    data-kamar="${row.kamar}"
-                                    data-toggle="modal" data-target="#editModal">Edit</a>
-                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#confirmDeleteModal"
-                                       data-id="${row.id_pasien}"
-                                       data-nama="${row.nama_pasien}"
-                                       data-tgl="${row.tanggal_lahir}">
-                                       Hapus
-                                    </a>
-                                </div>
                             </div>
-                        </td>`;
+                        </div>
+                    </td>`;
                     }
                 }
-            ]
+            ],
+            "columnDefs": [{
+                    "width": "200px",
+                    "targets": 0
+                }, // Nama Pasien
+                {
+                    "width": "150px",
+                    "targets": 1
+                }, // Tanggal Lahir
+                {
+                    "width": "180px",
+                    "targets": 2
+                }, // Nomor WhatsApp
+                {
+                    "width": "120px",
+                    "targets": 3
+                }, // Ruangan
+                {
+                    "width": "150px",
+                    "targets": 4
+                }, // Jaminan
+                {
+                    "width": "180px",
+                    "targets": 5
+                }, // Tanggal Input
+                {
+                    "width": "180px",
+                    "targets": 6
+                } // Tanggal Edit
+            ],
+            "autoWidth": false // Nonaktifkan agar ukuran yang diatur bisa diterapkan
         });
     });
     //    ================================== END ======================================
@@ -393,7 +421,7 @@
             $("#namaPasien").text(namaPasien);
             $("#tglLahir").text(formattedDate);
 
-            var deleteUrl = "<?= base_url('Users/superadmin/deletePasien/'); ?>" + idPasien;
+            var deleteUrl = "<?= base_url('users/superadmin/deletePasien/'); ?>" + idPasien;
             $("#deleteConfirmButton").attr("href", deleteUrl);
         });
     });

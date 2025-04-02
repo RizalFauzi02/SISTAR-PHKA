@@ -14,7 +14,7 @@
 
             <div class="navbar-collapse collapse" id="navbar-footer">
                 <span class="navbar-text">
-                    &copy; <?= date('Y'); ?>. <a href="#">SIAP.V.3.5</a> by <a href="#" target="_blank">UnderSky</a>
+                    &copy; <?= date('Y'); ?>. <a href="#">SIAP.V.3.6</a> by <a href="#" target="_blank">UnderSky</a>
                 </span>
             </div>
         </div>

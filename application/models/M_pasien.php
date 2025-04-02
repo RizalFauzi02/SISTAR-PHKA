@@ -21,8 +21,9 @@ class M_pasien extends CI_Model
 
     public function getPasien()
     {
-        return $this->db->get('m_pasien')->result_array();
+        return $this->db->order_by('created_at', 'DESC')->get('m_pasien')->result_array();
     }
+
 
     public function get_pasien_by_id($id)
     {

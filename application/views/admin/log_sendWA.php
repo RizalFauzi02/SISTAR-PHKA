@@ -74,7 +74,33 @@
 								"title": "Pengirim Pesan",
 								"data": "username_pengirim"
 							}
-						]
+						],
+						"columnDefs": [{
+								"width": "100px",
+								"targets": 0
+							}, // Tanggal Kirim
+							{
+								"width": "250px",
+								"targets": 1
+							}, // Nama Pasien
+							{
+								"width": "50px",
+								"targets": 2
+							}, // Kamar
+							{
+								"width": "50px",
+								"targets": 3
+							}, // Nomor WA Pasien
+							{
+								"width": "150px",
+								"targets": 4
+							}, // Pesan Status
+							{
+								"width": "110px",
+								"targets": 5
+							}, // Tanggal Input
+						],
+						"autoWidth": false // Nonaktifkan agar ukuran yang diatur bisa diterapkan
 					});
 				});
 

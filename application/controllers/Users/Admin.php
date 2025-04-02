@@ -107,7 +107,7 @@ class Admin extends CI_Controller
                     });
                 </script>
             ");
-            redirect('Users/admin');
+            redirect('users/admin');
         } else {
             $no_whatsapp = $this->input->post('no_whatsapp');
 
@@ -115,7 +115,7 @@ class Admin extends CI_Controller
             $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
             if ($cek_pasien) {
                 $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
-                redirect('Users/admin');
+                redirect('users/admin');
             }
 
             // Data yang akan disimpan
@@ -130,7 +130,7 @@ class Admin extends CI_Controller
             // Simpan ke database
             $this->M_pasien->insertPasien($data);
             $this->session->set_flashdata('success', 'Data pasien berhasil ditambahkan!');
-            redirect('Users/admin');
+            redirect('users/admin');
         }
     }
 

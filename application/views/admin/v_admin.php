@@ -36,7 +36,7 @@
                 <?php endif; ?>
 
                 <div class="card-body">
-                    <form action="<?= base_url('Users/admin/prosesAddPasien'); ?>" method="POST" onsubmit="return validateWhatsApp()">
+                    <form action="<?= base_url('users/admin/prosesAddPasien'); ?>" method="POST" onsubmit="return validateWhatsApp()">
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Data Pasien</span>
                         </div>

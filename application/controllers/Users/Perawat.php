@@ -51,7 +51,7 @@ class Perawat extends CI_Controller
 
         // Ambil status berdasarkan role user
         $this->data['status'] = $this->M_superadmin->getStatusByUsername($session);
-        $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
+        // $this->data['pasien'] = $this->M_superadmin->get_all_pasien();
 
         $this->template->load('template/default/template', 'perawat/status_perawat', $this->data);
     }
@@ -138,6 +138,7 @@ class Perawat extends CI_Controller
                 "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
                 "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
                 "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+                "jaminan"         => htmlspecialchars($log['jaminan'] ?? ""), // Pastikan tidak null
                 "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
                 "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
                 "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),

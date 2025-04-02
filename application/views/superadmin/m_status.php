@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="<?= base_url('Users/superadmin/prosesAddMasterStatus'); ?>" method="POST">
+                    <form action="<?= base_url('users/superadmin/prosesAddMasterStatus'); ?>" method="POST">
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Master Status Pelayanan</span>
                         </div>
@@ -155,7 +155,7 @@
                                 <div class="modal fade" id="modalEdit<?= $status['id_status']; ?>" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form action="<?= base_url('Users/superadmin/updateStatus'); ?>" method="post">
+                                            <form action="<?= base_url('users/superadmin/updateStatus'); ?>" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Edit Status</h5>
                                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -217,7 +217,7 @@
                                 <div class="modal fade" id="modalDelete<?= $status['id_status']; ?>" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form action="<?= base_url('Users/superadmin/deleteStatus/' . $status['id_status']); ?>" method="post">
+                                            <form action="<?= base_url('users/superadmin/deleteStatus/' . $status['id_status']); ?>" method="post">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Konfirmasi Hapus</h5>
                                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -130,7 +130,13 @@
 
                         <table id="logTable" class="table datatable-basic">
                             <thead>
-                                <!-- MENGGUNAKAN JS DATATABLE -->
+                                <th>Nama Pasien</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Nomor WhatsApp</th>
+                                <th>Ruangan</th>
+                                <th>Jaminan</th>
+                                <th>Tanggal Input</th>
+                                <th>Tanggal Edit</th>
                             </thead>
                             <tbody>
                                 <!-- MENGGUNAKAN JS DATATABLE -->
@@ -380,56 +386,82 @@
             });
 
             // DATATABLE JS
-            $(document).ready(function() {
-
-                if ($.fn.DataTable.isDataTable("#logTable")) {
-                    $('#logTable').DataTable().destroy();
-                }
-
-                // Inisialisasi ulang DataTable
-                let table = $('#logTable').DataTable({
-                    "processing": true,
-                    "serverSide": false,
-                    "destroy": true,
-                    "ajax": {
-                        "url": "<?= base_url('users/perawat/get_pasien') ?>",
-                        "type": "GET",
-                        "dataSrc": function(json) {
-                            return json.data;
+            let table = $('#logTable').DataTable({
+                "processing": true,
+                "serverSide": false,
+                "destroy": true,
+                "ajax": {
+                    "url": "<?= base_url('users/perawat/get_pasien') ?>",
+                    "type": "GET",
+                    "dataSrc": function(json) {
+                        return json.data;
+                    }
+                },
+                "order": [
+                    [5, "desc"]
+                ],
+                "columns": [{
+                        "data": "nama_pasien"
+                    },
+                    {
+                        "data": "tanggal_lahir"
+                    },
+                    {
+                        "data": "no_whatsapp"
+                    },
+                    {
+                        "data": "kamar"
+                    },
+                    {
+                        "data": "jaminan"
+                    },
+                    {
+                        "data": "created_at",
+                        "type": "date",
+                        "render": function(data, type, row) {
+                            if (!data || data === "30/11/-0001 00:00:00") return "";
+                            let parts = data.split(" ");
+                            let dateParts = parts[0].split("/");
+                            return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${parts[1]}`;
                         }
                     },
-                    "order": [
-                        [4, "desc"]
-                    ], // Urutkan berdasarkan "Tanggal Input" (created_at)
-                    "columns": [{
-                            "title": "Nama Pasien",
-                            "data": "nama_pasien"
-                        },
-                        {
-                            "title": "Tanggal Lahir",
-                            "data": "tanggal_lahir"
-                        },
-                        {
-                            "title": "Nomor WhatsApp",
-                            "data": "no_whatsapp"
-                        },
-                        {
-                            "title": "Ruangan",
-                            "data": "kamar"
-                        },
-                        {
-                            "title": "Tanggal Input",
-                            "data": "created_at"
-                        },
-                        {
-                            "title": "Tanggal Edit",
-                            "data": "updated_at",
-                            "render": function(data, type, row) {
-                                return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
-                            }
+                    {
+                        "data": "updated_at",
+                        "render": function(data, type, row) {
+                            return (data === "30/11/-0001 00:00:00" || data === null || data === "") ? "" : data;
                         }
-                    ]
-                });
+                    }
+                ],
+                "columnDefs": [{
+                        "width": "200px",
+                        "targets": 0
+                    }, // Nama Pasien
+                    {
+                        "width": "150px",
+                        "targets": 1
+                    }, // Tanggal Lahir
+                    {
+                        "width": "180px",
+                        "targets": 2
+                    }, // Nomor WhatsApp
+                    {
+                        "width": "120px",
+                        "targets": 3
+                    }, // Ruangan
+                    {
+                        "width": "150px",
+                        "targets": 4
+                    }, // Jaminan
+                    {
+                        "width": "180px",
+                        "targets": 5
+                    }, // Tanggal Input
+                    {
+                        "width": "180px",
+                        "targets": 6
+                    } // Tanggal Edit
+                ],
+                "autoWidth": false // Nonaktifkan agar ukuran yang diatur bisa diterapkan
             });
         </script>
 
