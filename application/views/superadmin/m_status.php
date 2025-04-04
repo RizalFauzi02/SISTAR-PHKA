@@ -5,6 +5,7 @@
             <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></span></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
+        <h5>Layanan Pengaduan SIAP-PHKA Hubungi : <br><a href="https://wa.link/4ia9bz" target="_blank">Divisi Mutu PHKA</a></h5>
         <?php if ($this->session->flashdata('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <?= $this->session->flashdata('success'); ?>
@@ -115,7 +116,7 @@
                                             <?= htmlspecialchars(mb_strimwidth($status['pesan_status'], 0, 30, "...")); ?>
                                         </a>
                                     </td>
-                                    <td><?= htmlspecialchars($status['jaminan']); ?></td>
+                                    <td><?= htmlspecialchars($status['jaminan'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td class="text-center">
                                         <div class="list-icons">
                                             <div class="dropdown">

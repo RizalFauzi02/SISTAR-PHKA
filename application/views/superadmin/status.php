@@ -5,6 +5,7 @@
             <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></span></h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
+        <h5>Layanan Pengaduan SIAP-PHKA Hubungi : <br><a href="https://wa.link/4ia9bz" target="_blank">Divisi Mutu PHKA</a></h5>
     </div>
 </div>
 <!-- /page header -->
@@ -88,6 +89,7 @@
                     <?php } ?> -->
 
                     <?php if (!empty($status)) : ?>
+                        <?php $no = 1; ?>
                         <?php foreach ($status as $s) : ?>
                             <?php
                             $jaminan = strtoupper($s['jaminan'] ?? 'NULL');
@@ -95,12 +97,16 @@
                             <div class="text-center mt-2 status-btn-container"
                                 data-jaminan="<?= htmlspecialchars($jaminan); ?>"
                                 style="display: <?= ($jaminan === 'NULL') ? 'block' : 'none'; ?>;">
+
                                 <button type="button"
                                     class="btn btn-primary btn-status"
                                     data-id="<?= $s['id_status']; ?>"
                                     data-jaminan="<?= htmlspecialchars($jaminan); ?>"
                                     data-pesan="<?= htmlspecialchars($s['pesan_status']); ?>">
-                                    <?= $s['nama_status']; ?>
+                                    <?= htmlspecialchars($s['nama_status']); ?>
+                                    <?php if (!empty($s['pengguna_status'])) : ?>
+                                        <b>[<?= htmlspecialchars($s['pengguna_status']); ?>]</b>
+                                    <?php endif; ?>
                                 </button>
                             </div>
                         <?php endforeach; ?>
