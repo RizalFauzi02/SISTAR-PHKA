@@ -195,6 +195,17 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item-header">
+                        <div class="text-uppercase font-size-xs line-height-xs">Dropdown Menu</div> <i class="icon-menu" title="Main"></i>
+                    </li>
+                    <li class="nav-item nav-item-submenu <?= $dropdownManajemen['nav']; ?>">
+                        <a href="#" class="nav-link"><i class="icon-users"></i> <span>Laporan</span></a>
+
+                        <ul class="nav nav-group-sub" data-submenu-title="Layouts" style="<?= $dropdownManajemen['style']; ?>">
+                            <li class="nav-item"><a href="<?= base_url('users/manajemen/m_lap_pasien'); ?>" class="nav-link <?= $linkManajemen['linkLapPasien']; ?>">Laporan Data Pasien</a></li>
+                            <li class="nav-item"><a href="<?= base_url('users/manajemen/m_lap_log_wa'); ?>" class="nav-link <?= $linkManajemen['linkLapLogWA']; ?>">Laporan History Log WhatsApp</a></li>
+                        </ul>
+                    </li>
                 <?php } ?>
             </ul>
         </div>
