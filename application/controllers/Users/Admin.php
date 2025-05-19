@@ -167,30 +167,34 @@ class Admin extends CI_Controller
 
     // ================================= BUTTON KIRIM WHATSAPP ==========================================
 
-    // public function kirim_whatsapp()
-    // {
-    //     // Ambil data user yang sedang login
-    //     $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
-    //     $username = $this->session->userdata('username'); // Pastikan session user sudah diset
-    //     $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
-    //     $nomor = $this->input->post('no_whatsapp');
-    //     $pesan = $this->input->post('pesan_status');
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+    public function kirim_whatsapp_otomatis()
+    {
+        // Ambil data user yang sedang login
+        $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+        $username = $this->session->userdata('username'); // Pastikan session user sudah diset
 
-    //     $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
+        $id_status = $this->input->post('id_status');
+        $id_pasien = $this->input->post('nama_pasien');
+        $nomor = $this->input->post('no_whatsapp');
+        $pesan = $this->input->post('pesan_status');
 
-    //     if (isset($response['sent']) && $response['sent'] == true) {
-    //         $status = "Sukses";
-    //         $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
-    //     } else {
-    //         $status = "Gagal";
-    //         $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
-    //     }
+        $response = $this->M_superadmin->kirim_pesan_otomatis($nomor, $pesan);
 
-    //     // Simpan log ke database dengan user_id
-    //     $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+        if (isset($response['sent']) && $response['sent'] == true) {
+            $status = "Sukses";
+            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+        } else {
+            $status = "Gagal";
+            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+        }
 
-    //     redirect($_SERVER['HTTP_REFERER']);
-    // }
+        // Simpan log ke database dengan user_id
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status);
+
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
 
     public function kirim_whatsapp()
     {

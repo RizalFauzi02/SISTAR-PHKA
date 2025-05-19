@@ -51,7 +51,13 @@
 						],
 						"columns": [{
 								"title": "Tanggal Kirim WA",
-								"data": "tgl_kirim"
+								"data": "tgl_kirim",
+								"render": function(data, type, row) {
+									if (type === 'sort' || type === 'type') {
+										return moment(data, "DD-MM-YYYY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+									}
+									return data;
+								}
 							},
 							{
 								"title": "Nama Pasien",

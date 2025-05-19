@@ -56,6 +56,38 @@ class Perawat extends CI_Controller
         $this->template->load('template/default/template', 'perawat/status_perawat', $this->data);
     }
 
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+    public function kirim_whatsapp_otomatis()
+    {
+        $user_id = $this->session->userdata('id_user');
+        $username = $this->session->userdata('username');
+
+        $id_status = $this->input->post('id_status');
+        $id_pasien = $this->input->post('nama_pasien');
+        $nomor = $this->input->post('no_whatsapp');
+        $pesan = $this->input->post('pesan_status');
+        $kamar = $this->input->post('kamar');
+
+        $response = $this->M_superadmin->kirim_pesan_otomatis($nomor, $pesan);
+
+        if (isset($response['sent']) && $response['sent'] == true) {
+            $status = "Sukses";
+            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+        } else {
+            $status = "Gagal";
+            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+        }
+
+        // Simpan log
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status);
+        $this->M_superadmin->update_kamar($id_pasien, $kamar);
+
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+
     public function kirim_whatsapp()
     {
         $id_status = $this->input->post('id_status');

@@ -7,6 +7,10 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $is_maintenance = $this->config->item('maintenance_mode');
+        if ($is_maintenance) {
+            redirect('/'); //DEFAULT ROOM MAINTENANCE = TRUE
+        }
         $this->load->model('M_login');
         $this->load->model('M_register');
         // if (count($this->db->get_where('users', ['akses' => 1])->result()) == 0) {
@@ -59,6 +63,8 @@ class Auth extends CI_Controller
                         redirect('users/perawat');
                     } elseif ($getUser[0]->is_role == 4) {
                         redirect('users/farmasi');
+                    } elseif ($getUser[0]->is_role == 5) {
+                        redirect('users/manajemen');
                     }
                 } else {
                     $this->session->set_flashdata('error', 'Akun Belum Aktif. Silahkan hubungi administrator!');
@@ -125,7 +131,7 @@ class Auth extends CI_Controller
             $data['username']       = $this->input->post('username');
             $password               = $this->input->post('password1');
             $password2              = $this->input->post('password2');
-            $data['is_role']        = 1; //1 > SUPERADMIN | 2 > ADMIN | 3 > PERAWAT | 4 > FARMASI 
+            $data['is_role']        = 0; //1 > SUPERADMIN | 2 > ADMIN | 3 > PERAWAT | 4 > FARMASI | 5 > MANAJEMEN
             $data['is_active']      = 0;
             $data['created_at']     = date('Y-m-d H:i:s');
 

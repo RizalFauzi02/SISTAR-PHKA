@@ -1,0 +1,126 @@
+			<!-- Page header -->
+			<div class="page-header page-header-light">
+			    <div class="page-header-content header-elements-md-inline">
+			        <div class="page-title d-flex">
+			            <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold"><?= $title; ?></h4>
+			            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+			        </div>
+			        <h5>Layanan Pengaduan SIAP-PHKA Hubungi : <br><a href="https://wa.link/4ia9bz" target="_blank">Divisi Mutu PHKA</a></h5>
+			    </div>
+			</div>
+			<!-- /page header -->
+
+
+			<!-- Content area -->
+			<div class="content">
+
+			    <!-- Basic datatable -->
+			    <div class="card">
+			        <div class="card-header d-flex justify-content-between align-items-center">
+			            <h5 class="card-title"><?= $title; ?></h5>
+			            <button type="button" id="btnExportAll" class="btn btn-primary">
+			                Export Excel
+			            </button>
+			        </div>
+			        <table id="logTable" class="table datatable-basic">
+			            <thead>
+			                <!-- MENGGUNAKAN JS DATATABLE -->
+			            </thead>
+			            <tbody>
+			                <!-- MENGGUNAKAN JS DATATABLE -->
+			            </tbody>
+			        </table>
+			    </div>
+			    <!-- /basic datatable -->
+			</div>
+			<!-- /content area -->
+
+			<script>
+			    // EXPORT EXCEL
+			    $('#btnExportAll').on('click', function() {
+			        window.location.href = "<?= base_url('users/superadmin/export_lap_log_all') ?>";
+			    });
+
+			    $(document).ready(function() {
+			        if ($.fn.DataTable.isDataTable("#logTable")) {
+			            $('#logTable').DataTable().destroy();
+			        }
+
+			        let table = $('#logTable').DataTable({
+			            "processing": true,
+			            "serverSide": false,
+			            "destroy": true,
+			            "ajax": {
+			                "url": "<?= base_url('users/manajemen/get_log_WhatsApp') ?>",
+			                "type": "GET",
+			                "dataSrc": function(json) {
+			                    return json.data;
+			                }
+			            },
+			            "order": [
+			                [0, "desc"]
+			            ],
+			            "columns": [{
+			                    "title": "Tanggal Kirim WA",
+			                    "data": "tgl_kirim",
+			                    "render": function(data, type, row) {
+			                        if (type === 'sort' || type === 'type') {
+			                            return moment(data, "DD-MM-YYYY HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+			                        }
+			                        return data;
+			                    }
+			                },
+			                {
+			                    "title": "Nama Pasien",
+			                    "data": "nama_pasien"
+			                },
+			                {
+			                    "title": "Kamar",
+			                    "data": "kamar"
+			                },
+			                {
+			                    "title": "Nomor WA Pasien",
+			                    "data": "nomor_pasien"
+			                },
+			                {
+			                    "title": "Pesan Status",
+			                    "data": "nama_status"
+			                },
+			                {
+			                    "title": "Pengirim Pesan",
+			                    "data": "username_pengirim"
+			                }
+			            ],
+			            "columnDefs": [{
+			                    "width": "100px",
+			                    "targets": 0
+			                }, // Tanggal Kirim
+			                {
+			                    "width": "250px",
+			                    "targets": 1
+			                }, // Nama Pasien
+			                {
+			                    "width": "50px",
+			                    "targets": 2
+			                }, // Kamar
+			                {
+			                    "width": "50px",
+			                    "targets": 3
+			                }, // Nomor WA Pasien
+			                {
+			                    "width": "150px",
+			                    "targets": 4
+			                }, // Pesan Status
+			                {
+			                    "width": "110px",
+			                    "targets": 5
+			                }, // Tanggal Input
+			            ],
+			            "autoWidth": false // Nonaktifkan agar ukuran yang diatur bisa diterapkan
+			        });
+			    });
+
+			    // setInterval(function() {
+			    // 	location.reload();
+			    // }, 10000);
+			</script>

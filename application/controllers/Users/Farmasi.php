@@ -56,6 +56,35 @@ class Farmasi extends CI_Controller
         $this->template->load('template/default/template', 'farmasi/status_farmasi', $this->data);
     }
 
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+    public function kirim_whatsapp_otomatis()
+    {
+        // Ambil data user yang sedang login
+        $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+        $username = $this->session->userdata('username'); // Pastikan session user sudah diset
+
+        $id_status = $this->input->post('id_status');
+        $id_pasien = $this->input->post('nama_pasien');
+        $nomor = $this->input->post('no_whatsapp');
+        $pesan = $this->input->post('pesan_status');
+
+        $response = $this->M_superadmin->kirim_pesan_otomatis($nomor, $pesan);
+
+        if (isset($response['sent']) && $response['sent'] == true) {
+            $status = "Sukses";
+            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+        } else {
+            $status = "Gagal";
+            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+        }
+
+        // Simpan log ke database dengan user_id
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status);
+
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+
     public function kirim_whatsapp()
     {
         $user_id = $this->session->userdata('id_user');

@@ -32,6 +32,8 @@
                                     echo "Perawat";
                                 } elseif ($_SESSION['is_role'] == 4) {
                                     echo "Farmasi";
+                                } elseif ($_SESSION['is_role'] == 5) {
+                                    echo "Manajemen";
                                 } ?>
                             </div>
                         </div>
@@ -94,6 +96,15 @@
                         <ul class="nav nav-group-sub" data-submenu-title="Layouts" style="<?= $dropdownSuperAdmin['style']; ?>">
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_status'); ?>" class="nav-link <?= $linkSuperAdmin['linkStatusPelayanan']; ?>">Data Status Pelayanan</a></li>
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_user'); ?>" class="nav-link <?= $linkSuperAdmin['linkUser']; ?>">Data User</a></li>
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_log_WA'); ?>" class="nav-link <?= $linkSuperAdmin['linkDelLogWA']; ?>">Hapus History Log WA</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-submenu <?= $dropdownSuperAdminLaporan['nav']; ?>">
+                        <a href="#" class="nav-link"><i class="icon-users"></i> <span>Laporan</span></a>
+
+                        <ul class="nav nav-group-sub" data-submenu-title="Layouts" style="<?= $dropdownSuperAdminLaporan['style']; ?>">
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_lap_pasien'); ?>" class="nav-link <?= $linkSuperAdminLap['linkLapPasien']; ?>">Laporan Data Pasien</a></li>
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_lap_log_wa'); ?>" class="nav-link <?= $linkSuperAdminLap['linkLapLog']; ?>">Laporan History Log WhatsApp</a></li>
                         </ul>
                     </li>
                 <?php } elseif ($_SESSION['is_role'] == 2) { ?>
@@ -152,6 +163,32 @@
                     </li>
                     <li class="nav-item">
                         <a href="<?= base_url('users/farmasi/log_SendWhatsApp'); ?>" class="nav-link <?= $menuFarmasi['log_WA']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
+                <?php } elseif ($_SESSION['is_role'] == 5) { ?>
+                    <!-- Manajemen -->
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/manajemen'); ?>" class="nav-link <?= $menuManajemen['Dashboard']; ?>">
+                            <i class="icon-home4"></i>
+                            <span>
+                                Dashboard
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/manajemen/data_pasien'); ?>" class="nav-link <?= $menuManajemen['data_pasien']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Data Pasien
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/manajemen/log_SendWhatsApp'); ?>" class="nav-link <?= $menuManajemen['log_WA']; ?>">
                             <i class="icon-gear"></i>
                             <span>
                                 History Pengiriman WhatsApp

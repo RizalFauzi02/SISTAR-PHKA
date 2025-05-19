@@ -68,7 +68,8 @@
 											1 => 'Superadmin',
 											2 => 'Admin',
 											3 => 'Perawat',
-											4 => 'Farmasi'
+											4 => 'Farmasi',
+											5 => 'Manajemen'
 										];
 										echo $roles[$u['is_role']] ?? 'Tidak Diketahui';
 										?>
@@ -133,6 +134,7 @@
 															<option value="2" <?= $u['is_role'] == 2 ? 'selected' : '' ?>>Admin</option>
 															<option value="3" <?= $u['is_role'] == 3 ? 'selected' : '' ?>>Perawat</option>
 															<option value="4" <?= $u['is_role'] == 4 ? 'selected' : '' ?>>Farmasi</option>
+															<option value="5" <?= $u['is_role'] == 5 ? 'selected' : '' ?>>Manajemen</option>
 														</select>
 													</div>
 
@@ -193,6 +195,7 @@
 											<option value="2">Admin</option>
 											<option value="3">Perawat</option>
 											<option value="4">Farmasi</option>
+											<option value="5">Manajemen</option>
 										</select>
 									</div>
 									<button type="submit" class="btn btn-success">Simpan</button>

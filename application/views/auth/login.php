@@ -53,7 +53,8 @@
                 </div> -->
 
                 <div class="form-group text-center text-muted content-divider">
-                    <span class="px-2">Develop by: <a href="#">UnderSky</a></span>
+                    <!-- <span class="px-2">Develop by: <a href="#">UnderSky</a></span> -->
+                    <span class="px-2">PRIMAYA HOSPITAL KARAWANG</a></span>
                 </div>
 
                 <!-- <div class="form-group">

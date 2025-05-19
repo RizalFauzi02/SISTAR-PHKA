@@ -7,6 +7,7 @@ class Superadmin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->library('excel');
         $this->load->model('M_superadmin');
         $this->load->model('M_pasien');
         if ($this->session->has_userdata('is_Loggin') != true) {
@@ -34,7 +35,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -68,7 +84,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -92,30 +123,34 @@ class Superadmin extends CI_Controller
 
     // ================================= BUTTON KIRIM WHATSAPP ==========================================
 
-    // public function kirim_whatsapp()
-    // {
-    //     // Ambil data user yang sedang login
-    //     $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
-    //     $username = $this->session->userdata('username'); // Pastikan session user sudah diset
-    //     $is_role = $this->session->userdata('is_role'); // Pastikan session user sudah diset
-    //     $nomor = $this->input->post('no_whatsapp');
-    //     $pesan = $this->input->post('pesan_status');
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
+    public function kirim_whatsapp_otomatis()
+    {
+        // Ambil data user yang sedang login
+        $user_id = $this->session->userdata('id_user'); // Pastikan session user sudah diset
+        $username = $this->session->userdata('username'); // Pastikan session user sudah diset
 
-    //     $response = $this->M_superadmin->kirim_pesan($nomor, $pesan);
+        $id_status = $this->input->post('id_status');
+        $id_pasien = $this->input->post('nama_pasien');
+        $nomor = $this->input->post('no_whatsapp');
+        $pesan = $this->input->post('pesan_status');
 
-    //     if (isset($response['sent']) && $response['sent'] == true) {
-    //         $status = "Sukses";
-    //         $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
-    //     } else {
-    //         $status = "Gagal";
-    //         $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
-    //     }
+        $response = $this->M_superadmin->kirim_pesan_otomatis($nomor, $pesan);
 
-    //     // Simpan log ke database dengan user_id
-    //     $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $status, $response, $user_id, $username, $is_role);
+        if (isset($response['sent']) && $response['sent'] == true) {
+            $status = "Sukses";
+            $this->session->set_flashdata('swal_success', 'Pesan berhasil dikirim!');
+        } else {
+            $status = "Gagal";
+            $this->session->set_flashdata('swal_error', 'Gagal mengirim pesan! ' . json_encode($response));
+        }
 
-    //     redirect($_SERVER['HTTP_REFERER']);
-    // }
+        // Simpan log ke database dengan user_id
+        $this->M_superadmin->simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status);
+
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    // -------------------------------- KIRIM PESAN OTOMATIS --------------------------------
 
     public function kirim_whatsapp()
     {
@@ -163,7 +198,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -255,7 +305,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => 'active',
-            'linkUser' => ''
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -336,7 +401,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => 'active'
+            'linkUser' => 'active',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -516,7 +596,22 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
         ];
         // END Default
 
@@ -639,4 +734,413 @@ class Superadmin extends CI_Controller
 
         redirect('users/superadmin/add_pasien');
     }
+
+    public function m_del_log_WA()
+    {
+        // Default
+        $this->data['title'] = 'Hapus History Log WhatsApp';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => ''
+        ];
+
+        // MENU DATA MASTER
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'linkDelLogWA' => 'active'
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->template->load('template/default/template', 'superadmin/m_del_log_wa', $this->data);
+    }
+
+    public function delete_log_wa_all()
+    {
+        $this->M_superadmin->delete_log_wa_all();
+        $this->session->set_flashdata('success', 'Semua log berhasil dihapus.');
+        redirect('users/superadmin/m_del_log_WA');
+    }
+
+    public function delete_log_wa_by_date()
+    {
+        $dari = DateTime::createFromFormat('d/m/Y', $this->input->get('dari'))->format('Y-m-d');
+        $sampai = DateTime::createFromFormat('d/m/Y', $this->input->get('sampai'))->format('Y-m-d');
+
+        if ($dari && $sampai) {
+            $this->M_superadmin->delete_log_wa_by_date($dari, $sampai);
+            $this->session->set_flashdata('success', 'Log berhasil dihapus berdasarkan rentang tanggal.');
+        } else {
+            $this->session->set_flashdata('error', 'Tanggal tidak valid.');
+        }
+        redirect('users/superadmin/m_del_log_WA');
+    }
+
+    // ============= LAPORAN =============
+    public function m_lap_pasien()
+    {
+        // Default
+        $this->data['title'] = 'Tarik Laporan Data Pasien by Excel';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => ''
+        ];
+
+        // MENU DATA MASTER
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => 'active',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->template->load('template/default/template', 'superadmin/m_lap_pasien', $this->data);
+    }
+
+    public function m_lap_log_wa()
+    {
+        // Default
+        $this->data['title'] = 'Tarik Laporan Log WhatsApp by Excel';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => ''
+        ];
+
+        // MENU DATA MASTER
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'linkDelLogWA' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => 'active',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->template->load('template/default/template', 'superadmin/m_lap_log_wa', $this->data);
+    }
+
+    // ========================== LAPORAN ==================================
+    public function export_lap_pasien_all()
+    {
+        $data = $this->M_superadmin->get_all_pasien_lap();
+        $this->_export_all_data_pasien($data, 'Semua_Data_Pasien');
+    }
+
+    public function export_lap_log_all()
+    {
+        $data = $this->M_superadmin->get_log_WhatsApp();
+        $this->_export_all_data_log_wa($data, 'Semua_History_Pengiriman');
+    }
+
+    // ==================================================== START FUNCTION EXPORT EXCEL ====================================================
+    public function export_lap_pasien_by_date()
+    {
+        $start_date_input = $this->input->get('dari_tanggal');
+        $end_date_input = $this->input->get('sampai_tanggal');
+        // var_dump($start_date_input);
+        // var_dump($start_date_input);
+        // die;
+        if (!$start_date_input || !$end_date_input) {
+            $this->session->set_flashdata('error', 'Invalid date range.');
+            redirect('users/superadmin/m_lap_pasien');
+            return;
+        }
+
+        // Konversi format
+        // $start_date = DateTime::createFromFormat('m/d/Y', $start_date_input)->format('Y-m-d');
+        // $end_date = DateTime::createFromFormat('m/d/Y', $end_date_input)->format('Y-m-d');
+
+        // Model Query
+        $data = $this->M_superadmin->get_pasien_by_date($start_date_input, $end_date_input);
+
+        // Debug hasil data
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // exit;
+
+        if (empty($data)) {
+            $this->session->set_flashdata('error', 'No data available for the selected date range.');
+            redirect('users/superadmin/m_lap_pasien');
+            return;
+        }
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $spreadsheet->getProperties()->setCreator('SIAP-PHKA')
+            ->setTitle('Export Data Pasien PHKA')
+            ->setDescription('Data Pasien dari ' . $start_date_input . ' sampai ' . $end_date_input);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'Nama Pasien')
+            ->setCellValue('C1', 'Tanggal Lahir')
+            ->setCellValue('D1', 'No WhatsApp')
+            ->setCellValue('E1', 'Ruangan')
+            ->setCellValue('F1', 'Jaminan')
+            ->setCellValue('G1', 'Tanggal Input');
+
+        $row = 2;
+        $no = 1;
+        foreach ($data as $datPasien) {
+            $sheet->setCellValue('A' . $row, $no++)
+                ->setCellValue('B' . $row, $datPasien['nama_pasien'])
+                ->setCellValue('C' . $row, date('d-m-Y', strtotime($datPasien['tanggal_lahir'])))
+                ->setCellValueExplicit('D' . $row, $datPasien['no_whatsapp'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
+                ->setCellValue('E' . $row, $datPasien['kamar'])
+                ->setCellValue('F' . $row, $datPasien['jaminan'])
+                ->setCellValue('G' . $row, date('d-m-Y H:i:s', strtotime($datPasien['created_at'])));
+            $row++;
+        }
+
+        $filename = 'Data Pasien_' . date('d-m-Y', strtotime($start_date_input)) . ' sampai ' . date('d-m-Y', strtotime($end_date_input)) . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
+    }
+
+    private function _export_all_data_pasien($data, $filename = 'Data_Pasien')
+    {
+        $spreadsheet = $this->excel->createSpreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama Pasien');
+        $sheet->setCellValue('C1', 'Tanggal Lahir');
+        $sheet->setCellValue('D1', 'No WhatsApp');
+        $sheet->setCellValue('E1', 'Ruangan');
+        $sheet->setCellValue('F1', 'Jaminan');
+        $sheet->setCellValue('G1', 'Tanggal Input');
+
+        $row = 2;
+        $no = 1;
+        foreach ($data as $d) {
+            $sheet->setCellValue('A' . $row, $no++);
+            $sheet->setCellValue('B' . $row, $d->nama_pasien);
+            $sheet->setCellValue('C' . $row, date('d-m-Y', strtotime($d->tanggal_lahir)));
+            $sheet->setCellValueExplicit('D' . $row, $d->no_whatsapp, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->setCellValue('E' . $row, $d->kamar);
+            $sheet->setCellValue('F' . $row, $d->jaminan);
+            $sheet->setCellValue('G' . $row, date('d-m-Y H:i:s', strtotime($d->created_at)));
+            $row++;
+        }
+
+        // Set nama file
+        $filename .= '_' . date('d-m-Y') . '.xlsx';
+
+        // Set header untuk download
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header('Cache-Control: max-age=0');
+
+        $writer = $this->excel->createWriter($spreadsheet);
+        $writer->save('php://output');
+    }
+
+    public function export_lap_log_WA_by_date()
+    {
+        $start_date_input = $this->input->get('dari_tanggal');
+        $end_date_input = $this->input->get('sampai_tanggal');
+
+        // print_r($start_date_input);
+        // print_r($end_date_input);
+
+        // Tambahkan waktu untuk rentang penuh dalam satu hari
+        $start_datetime = $start_date_input . ' 00:00:00';
+        $end_datetime   = $end_date_input . ' 23:59:59';
+
+        if (!$start_datetime || !$end_datetime) {
+            $this->session->set_flashdata('error', 'Invalid date range.');
+            redirect('users/superadmin/m_lap_log_wa');
+            return;
+        }
+
+        // Model Query
+        $data = $this->M_superadmin->get_log_by_date($start_datetime, $end_datetime);
+
+        // Debug hasil data
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // exit;
+
+        if (empty($data)) {
+            $this->session->set_flashdata('error', 'No data available for the selected date range.');
+            redirect('users/superadmin/m_lap_log_wa');
+            return;
+        }
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $spreadsheet->getProperties()->setCreator('SIAP-PHKA')
+            ->setTitle('Export Data Log Send WhatsApp PHKA')
+            ->setDescription('Data Log Send WhatsApp dari ' . $start_datetime . ' sampai ' . $end_datetime);
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'Tanggal Kirim')
+            ->setCellValue('C1', 'Nama Pasien')
+            ->setCellValue('D1', 'Ruangan')
+            ->setCellValue('E1', 'Nomor WhatsApp')
+            ->setCellValue('F1', 'Pesan Status')
+            ->setCellValue('G1', 'Pengirim Pesan')
+            ->setCellValue('H1', 'Pesan Status');
+
+        $row = 2;
+        $no = 1;
+        foreach ($data as $datLog) {
+            $sheet->setCellValue('A' . $row, $no++)
+                ->setCellValue('B' . $row, date('d-m-Y H:i:s', strtotime($datLog['tgl_kirim'])))
+                ->setCellValue('C' . $row, $datLog['nama_pasien'])
+                ->setCellValue('D' . $row, $datLog['kamar'])
+                ->setCellValueExplicit('E' . $row, $datLog['nomor_pasien'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
+                ->setCellValue('F' . $row, $datLog['nama_status'])
+                ->setCellValue('G' . $row, $datLog['username_pengirim'])
+                ->setCellValue('H' . $row, $datLog['pesan_whatsapp']);
+            $row++;
+        }
+
+        $filename = 'Data Log WhatsApp_' . date('d-m-Y', strtotime($start_datetime)) . ' sampai ' . date('d-m-Y', strtotime($end_datetime)) . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $writer->save('php://output');
+        exit;
+    }
+
+    private function _export_all_data_log_wa($data, $filename = 'History_Pengiriman')
+    {
+        $spreadsheet = $this->excel->createSpreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Tanggal Kirim');
+        $sheet->setCellValue('C1', 'Nama Pasien');
+        $sheet->setCellValue('D1', 'Ruangan');
+        $sheet->setCellValue('E1', 'Nomor WhatsApp');
+        $sheet->setCellValue('F1', 'Pesan Status');
+        $sheet->setCellValue('G1', 'Pengirim Pesan');
+        $sheet->setCellValue('H1', 'Pesan Status');
+
+        $row = 2;
+        $no = 1;
+        foreach ($data as $d) {
+            $sheet->setCellValue('A' . $row, $no++);
+            $sheet->setCellValue('B' . $row, date('d-m-Y H:i:s', strtotime($d['tgl_kirim'])));
+            $sheet->setCellValue('C' . $row, $d['nama_pasien']);
+            $sheet->setCellValue('D' . $row, $d['kamar']);
+            $sheet->setCellValueExplicit('E' . $row, $d['nomor_pasien'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->setCellValue('F' . $row, $d['nama_status']);
+            $sheet->setCellValue('G' . $row, $d['username_pengirim']);
+            $sheet->setCellValue('H' . $row, $d['pesan_whatsapp']);
+            $row++;
+        }
+
+        // Set nama file
+        $filename .= '_' . date('d-m-Y') . '.xlsx';
+
+        // Set header untuk download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header('Cache-Control: max-age=0');
+
+        $writer = $this->excel->createWriter($spreadsheet);
+        $writer->save('php://output');
+    }
+
+    // ==================================================== END FUNCTION EXPORT EXCEL ====================================================
+
+    // ========================== END LAPORAN ==============================
+
+    // END LAPORAN
 }

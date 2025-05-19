@@ -21,7 +21,8 @@
                         </div>
 
                         <div class="card-body">
-                            <form action="<?= base_url('users/farmasi/kirim_whatsapp'); ?>" method="POST">
+                            <form id="formWA" action="<?= base_url('auth/logout'); ?>" method="POST">
+                                <!-- <form id="formWA" action="<?= base_url('users/farmasi/kirim_whatsapp_otomatis'); ?>" method="POST"> -->
                                 <input type="hidden" id="id_status" name="id_status">
                                 <div class="form-group text-center text-muted content-divider">
                                     <span class="px-2">Data Pasien</span>
@@ -97,7 +98,7 @@
 
 
                                 <div class="text-right">
-                                    <button type="button" class="btn btn-info" id="kirimWa">Kirim WhatsApp</button>
+                                    <button type="submit" class="btn btn-info" id="kirimWa">Kirim WhatsApp</button>
                                 </div>
                             </form>
                         </div>
@@ -130,6 +131,17 @@
             </div>
         </div>
         <script>
+            // DISABLE BUTTON KIRIM WA KETIKA SEDANG DALAM PROSES PENGIRIMAN
+            document.addEventListener("DOMContentLoaded", function() {
+                const form = document.getElementById("formWA");
+                const btn = document.getElementById("kirimWa");
+
+                form.addEventListener("submit", function() {
+                    btn.disabled = true;
+                    btn.innerHTML = `<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Mengirim...`;
+                });
+            });
+
             $(document).ready(function() {
                 $(".status-btn-container").hide();
                 $(".status-btn-container[data-jaminan='NULL']").show();
@@ -210,86 +222,6 @@
                         $('#tanggal_lahir').val('');
                         $('#no_whatsapp').val('');
                     }
-                });
-            });
-            // SCRIPT UNTUK CHAT DENGAN REDIRECT WA.ME
-            document.getElementById('kirimWa').addEventListener('click', function() {
-                var button = this;
-                var noWhatsApp = document.getElementById('no_whatsapp').value.trim();
-                var pesan = document.getElementById('pesan_status').value.trim();
-                var idPasien = document.getElementById('nama_pasien').value.trim(); // Ambil ID pasien, bukan nama pasien
-                var idStatus = document.getElementById('id_status').value.trim();
-
-                if (noWhatsApp === "" || pesan === "" || idPasien === "" || idStatus === "") {
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'ID Pasien, Nomor WhatsApp, dan Pesan tidak boleh kosong!',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    });
-                    return;
-                }
-
-                // Salin teks ke clipboard
-                navigator.clipboard.writeText(pesan).then(() => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Tersalin!',
-                        text: 'Pesan berhasil disalin ke clipboard.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-
-                    noWhatsApp = noWhatsApp.replace(/^0/, "62");
-                    var encodedPesan = encodeURIComponent(pesan);
-                    var urlUserInput = "https://wa.me/" + noWhatsApp + "?text=" + encodedPesan;
-
-                    // Disable tombol untuk mencegah spam klik
-                    button.disabled = true;
-                    button.innerText = "Sedang Mengirim...";
-
-                    // Kirim data ke database
-                    fetch("<?= base_url('users/farmasi/kirim_whatsapp') ?>", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded"
-                            },
-                            body: `no_whatsapp=${encodeURIComponent(noWhatsApp)}&pesan_status=${encodeURIComponent(pesan)}&nama_pasien=${encodeURIComponent(idPasien)}&id_status=${encodeURIComponent(idStatus)}`
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: data.message,
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'OK'
-                                });
-
-                                setTimeout(() => {
-                                    window.open(urlUserInput, '_blank');
-                                }, 1500);
-                            } else {
-                                throw new Error(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error:", error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal!',
-                                text: error.message || 'Terjadi kesalahan!',
-                                confirmButtonColor: '#d33',
-                                confirmButtonText: 'OK'
-                            });
-                        })
-                        .finally(() => {
-                            button.disabled = false;
-                            button.innerText = "Kirim WhatsApp";
-                        });
-                }).catch(err => {
-                    console.error('Gagal menyalin teks: ', err);
                 });
             });
 

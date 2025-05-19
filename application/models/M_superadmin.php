@@ -6,40 +6,43 @@ if (!defined('BASEPATH'))
 class M_superadmin extends CI_Model
 {
 
-    // private $instance_id = ""; // Ganti dengan INSTANCE_ID UltraMsg Anda
-    // private $api_token = ""; // Ganti dengan API TOKEN UltraMsg Anda
+    private $instance_id = "instance113372"; // Ganti dengan INSTANCE_ID UltraMsg Anda
+    private $api_token = "y5pyygjgtuegum21"; // Ganti dengan API TOKEN UltraMsg Anda
 
-    // public function kirim_pesan($nomor, $pesan)
-    // {
-    //     $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages/chat";
+    public function kirim_pesan_otomatis($nomor, $pesan)
+    {
+        $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages/chat";
 
-    //     $data = [
-    //         'token' => $this->api_token,
-    //         'to'    => $nomor,
-    //         'body'  => $pesan
-    //     ];
+        $data = [
+            'token' => $this->api_token,
+            'to'    => $nomor,
+            'body'  => $pesan
+        ];
 
-    //     $ch = curl_init();
-    //     curl_setopt($ch, CURLOPT_URL, $api_url);
-    //     curl_setopt($ch, CURLOPT_POST, true);
-    //     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //     $response = curl_exec($ch);
-    //     curl_close($ch);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $api_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
 
-    //     return json_decode($response, true);
-    // }
+        return json_decode($response, true);
+    }
 
     // Fungsi untuk menyimpan log WhatsApp
     public function simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status)
     {
+        date_default_timezone_set('Asia/Jakarta'); // Set timezone ke WIB
+
         $data = [
-            'nomor_pasien' => $nomor,
-            'pesan_whatsapp' => $pesan,
-            'username_pengirim' => $username,
-            'id_user' => $user_id,
-            'id_pasien' => $id_pasien,
-            'id_status' => $id_status,
+            'nomor_pasien'       => $nomor,
+            'pesan_whatsapp'     => $pesan,
+            'username_pengirim'  => $username,
+            'id_user'            => $user_id,
+            'id_pasien'          => $id_pasien,
+            'id_status'          => $id_status,
+            'tgl_kirim'          => date('Y-m-d H:i:s'), // Tambahkan waktu kirim sesuai WIB
         ];
 
         $insert = $this->db->insert('log_sendwhatsapp', $data);
@@ -50,6 +53,7 @@ class M_superadmin extends CI_Model
         }
         return true;
     }
+
 
     // Fungsi untuk mengupdate kamar pasien
     public function update_kamar($id_pasien, $kamar)
@@ -105,6 +109,11 @@ class M_superadmin extends CI_Model
     public function get_total_pasien()
     {
         return $this->db->count_all('m_pasien');
+    }
+
+    public function get_total_log()
+    {
+        return $this->db->count_all('log_sendwhatsapp');
     }
 
     public function update_user($id_user, $username, $is_role, $password = null)
@@ -278,4 +287,51 @@ class M_superadmin extends CI_Model
         }
         return false; // Username belum ada
     }
+
+    public function delete_log_wa_all()
+    {
+        $this->db->empty_table('log_sendwhatsapp');
+    }
+
+    public function delete_log_wa_by_date($dari, $sampai)
+    {
+        $from = date('Y-m-d', strtotime($dari));
+        $to = date('Y-m-d', strtotime($sampai));
+
+        $this->db->where('DATE(tgl_kirim) >=', $from);
+        $this->db->where('DATE(tgl_kirim) <=', $to);
+        $this->db->delete('log_sendwhatsapp');
+    }
+
+    // laporan
+    public function get_all_pasien_lap()
+    {
+        return $this->db->get('m_pasien')->result();
+    }
+
+    public function get_pasien_by_date($start_date, $end_date)
+    {
+        $this->db->select('*');
+        $this->db->from('m_pasien');
+        $this->db->where('DATE(created_at) >=', $start_date);
+        $this->db->where('DATE(created_at) <=', $end_date);
+        return $this->db->get()->result_array();
+    }
+
+    public function get_log_by_date($start_datetime, $end_datetime)
+    {
+        return $this->db->select('log_sendwhatsapp.*, m_pasien.nama_pasien, m_pasien.tanggal_lahir, m_pasien.kamar, m_status.nama_status')
+            ->from('log_sendwhatsapp')
+            ->join('m_pasien', 'm_pasien.id_pasien = log_sendwhatsapp.id_pasien', 'inner')
+            ->join('m_status', 'm_status.id_status = log_sendwhatsapp.id_status', 'inner')
+            ->where('DATE(log_sendwhatsapp.tgl_kirim) >=', $start_datetime)
+            ->where('DATE(log_sendwhatsapp.tgl_kirim) <=', $end_datetime)
+            ->order_by('log_sendwhatsapp.tgl_kirim', 'DESC')
+            ->get()
+            ->result_array();
+    }
+
+
+
+    // end
 }

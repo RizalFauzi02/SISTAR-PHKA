@@ -114,6 +114,8 @@
                                     echo "Perawat";
                                 } elseif ($_SESSION['is_role'] == 4) {
                                     echo "Farmasi";
+                                } elseif ($_SESSION['is_role'] == 5) {
+                                    echo "Manajemen";
                                 } ?></span>
                     </a>
 
