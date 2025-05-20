@@ -22,8 +22,7 @@
                     <div class="card-body">
                         <div class="alert alert-danger alert-dismissible" id="alert" style="display: none;"></div>
 
-                        <form id="formWA" action="<?= base_url('auth/logout'); ?>" method="POST">
-                            <!-- <form id="formWA" action="<?= base_url('users/admin/kirim_whatsapp_otomatis'); ?>" method="POST"> -->
+                        <form id="formWA" action="<?= base_url('users/admin/kirim_whatsapp_otomatis'); ?>" method="POST">
                             <div class="form-group text-center text-muted content-divider">
                                 <span class="px-2">Data Pasien</span>
                             </div>

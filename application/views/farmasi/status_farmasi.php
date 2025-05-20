@@ -21,8 +21,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form id="formWA" action="<?= base_url('auth/logout'); ?>" method="POST">
-                                <!-- <form id="formWA" action="<?= base_url('users/farmasi/kirim_whatsapp_otomatis'); ?>" method="POST"> -->
+                            <form id="formWA" action="<?= base_url('users/farmasi/kirim_whatsapp_otomatis'); ?>" method="POST">
                                 <input type="hidden" id="id_status" name="id_status">
                                 <div class="form-group text-center text-muted content-divider">
                                     <span class="px-2">Data Pasien</span>
