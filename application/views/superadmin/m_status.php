@@ -72,6 +72,7 @@
                                 <option value="UMUM">UMUM</option>
                                 <option value="ASURANSI">ASURANSI</option>
                                 <option value="BPJS TK">BPJS TK</option>
+                                <option value="BPJS COB">BPJS COB</option>
                             </select>
                         </div>
 
