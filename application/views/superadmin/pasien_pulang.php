@@ -6,6 +6,16 @@
         margin-bottom: 15px;
         text-align: left;
     }
+
+    /* CSS hanya untuk teks dalam <i><b>...</b></i> di label #izinkan_double */
+    label[for="izinkan_double"] i b {
+        font-size: 12px;
+        color: red;
+        margin-top: 3px;
+        margin-bottom: 15px;
+        display: inline-block;
+        text-align: left;
+    }
 </style>
 <!-- Page header -->
 <div class="page-header page-header-light">
@@ -85,14 +95,17 @@
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Data Pasien</span>
                         </div>
+
                         <div class="form-group">
                             <label for="nama_pasien">Nama Pasien</label>
                             <input type="text" name="nama_pasien" class="form-control" autocomplete="off">
                         </div>
+
                         <div class="form-group mt-3">
                             <label for="tanggal_lahir">Tanggal Lahir:</label>
                             <input type="date" name="tanggal_lahir" class="form-control">
                         </div>
+
                         <div class="form-group">
                             <label for="jaminan">Jaminan</label>
                             <select class="form-control select-search" id="jaminan" name="jaminan">
@@ -103,11 +116,23 @@
                                 <option value="BPJS COB">BPJS COB</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="no_whatsapp">No Whatsapp Pasien:</label>
                             <input type="number" name="no_whatsapp" class="form-control" placeholder="6285956xxxxxx">
                             <p>*Penulisan nomor WhatsApp: <b>6285956xxxxxx</b></p>
                         </div>
+
+                        <!-- Checkbox Izinkan Double Nomor WA -->
+                        <?php if ($this->session->userdata('is_role') == '1'): ?>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="izinkan_double" name="izinkan_double">
+                                    <label class="form-check-label" for="izinkan_double">Izinkan Double Nomor WhatsApp* <i><b>( hanya tampil di akun superadmin )</b></i></label>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

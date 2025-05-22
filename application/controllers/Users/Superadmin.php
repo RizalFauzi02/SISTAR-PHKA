@@ -650,12 +650,22 @@ class Superadmin extends CI_Controller
             redirect('users/superadmin/add_pasien');
         } else {
             $no_whatsapp = $this->input->post('no_whatsapp');
+            $izinkan_double = $this->input->post('izinkan_double');
 
             // Cek apakah nomor WhatsApp sudah terdaftar
-            $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
-            if ($cek_pasien) {
-                $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
-                redirect('users/superadmin/add_pasien');
+            // $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
+            // if ($cek_pasien) {
+            //     $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
+            //     redirect('users/superadmin/add_pasien');
+            // }
+
+            // Jika checkbox tidak diceklis (tidak izinkan double nomor)
+            if (!$izinkan_double) {
+                $cek_pasien = $this->M_superadmin->cekNomorWhatsApp($no_whatsapp);
+                if ($cek_pasien) {
+                    $this->session->set_flashdata('error', 'Pasien dengan nomor WhatsApp ini sudah terdaftar!');
+                    redirect('users/superadmin/add_pasien');
+                }
             }
 
             // Data yang akan disimpan
