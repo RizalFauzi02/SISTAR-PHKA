@@ -97,6 +97,7 @@
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_status'); ?>" class="nav-link <?= $linkSuperAdmin['linkStatusPelayanan']; ?>">Data Status Pelayanan</a></li>
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_user'); ?>" class="nav-link <?= $linkSuperAdmin['linkUser']; ?>">Data User</a></li>
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_log_WA'); ?>" class="nav-link <?= $linkSuperAdmin['linkDelLogWA']; ?>">Hapus History Log WA</a></li>
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_dat_pasien'); ?>" class="nav-link <?= $linkSuperAdmin['linkDelDatPasien']; ?>">Hapus Data Pasien</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-submenu <?= $dropdownSuperAdminLaporan['nav']; ?>">

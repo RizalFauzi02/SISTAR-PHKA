@@ -36,7 +36,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -85,7 +86,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -199,7 +201,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -306,7 +309,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => 'active',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -402,7 +406,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => 'active',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -597,7 +602,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -767,7 +773,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => 'active'
+            'linkDelLogWA' => 'active',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -814,6 +821,76 @@ class Superadmin extends CI_Controller
         redirect('users/superadmin/m_del_log_WA');
     }
 
+    public function m_del_dat_pasien()
+    {
+        // Default
+        $this->data['title'] = 'Hapus Data Pasien';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => ''
+        ];
+
+        // MENU DATA MASTER
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => 'active'
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->template->load('template/default/template', 'superadmin/m_del_dat_pasien', $this->data);
+    }
+
+    public function delete_dat_pasien_all()
+    {
+        $this->M_superadmin->delete_dat_pasien_all();
+        $this->session->set_flashdata('success', 'Semua log berhasil dihapus.');
+        redirect('users/superadmin/m_del_dat_pasien');
+    }
+
+    public function delete_dat_pasien_by_date()
+    {
+        $dari = DateTime::createFromFormat('d/m/Y', $this->input->get('dari'))->format('Y-m-d');
+        $sampai = DateTime::createFromFormat('d/m/Y', $this->input->get('sampai'))->format('Y-m-d');
+
+        if ($dari && $sampai) {
+            $this->M_superadmin->delete_dat_pasien_by_date($dari, $sampai);
+            $this->session->set_flashdata('success', 'Log berhasil dihapus berdasarkan rentang tanggal.');
+        } else {
+            $this->session->set_flashdata('error', 'Tanggal tidak valid.');
+        }
+        redirect('users/superadmin/m_del_dat_pasien');
+    }
+
     // ============= LAPORAN =============
     public function m_lap_pasien()
     {
@@ -837,7 +914,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN
@@ -885,7 +963,8 @@ class Superadmin extends CI_Controller
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
             'linkUser' => '',
-            'linkDelLogWA' => ''
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
         ];
 
         // MENU LAPORAN

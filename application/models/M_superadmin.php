@@ -303,6 +303,21 @@ class M_superadmin extends CI_Model
         $this->db->delete('log_sendwhatsapp');
     }
 
+    public function delete_dat_pasien_all()
+    {
+        $this->db->empty_table('m_pasien');
+    }
+
+    public function delete_dat_pasien_by_date($dari, $sampai)
+    {
+        $from = date('Y-m-d', strtotime($dari));
+        $to = date('Y-m-d', strtotime($sampai));
+
+        $this->db->where('DATE(created_at) >=', $from);
+        $this->db->where('DATE(created_at) <=', $to);
+        $this->db->delete('m_pasien');
+    }
+
     // laporan
     public function get_all_pasien_lap()
     {
