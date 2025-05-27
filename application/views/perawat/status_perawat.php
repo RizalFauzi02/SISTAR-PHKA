@@ -53,7 +53,7 @@
 
                                 <div class="form-group">
                                     <label for="kamar">Kamar</label>
-                                    <select class="form-control select-search" id="kamar" name="kamar" required>
+                                    <select class="form-control select-search" id="kamar" name="kamar">
                                         <option value="" disabled selected>-- Pilih Kamar --</option>
                                         <option value="NICU/PICU">NICU/PICU</option>
                                         <option value="VK">VK</option>
@@ -66,9 +66,9 @@
                                         <option value="CRYSTAL">CRYSTAL</option>
                                         <option value="ENDOSCOPY">ENDOSCOPY</option>
                                         <option value="UKB">UKB</option>
+                                        <option value="PERINA">PERINA</option>
                                     </select>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="ucapan">Ucapan</label>
                                     <select class="form-control select-search" id="ucapan">

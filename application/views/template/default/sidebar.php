@@ -91,13 +91,19 @@
                         <div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
                     </li>
                     <li class="nav-item nav-item-submenu <?= $dropdownSuperAdmin['nav']; ?>">
-                        <a href="#" class="nav-link"><i class="icon-users"></i> <span>DATA MASTER</span></a>
+                        <a href="#" class="nav-link"><i class="icon-users"></i> <span>Data Master</span></a>
 
                         <ul class="nav nav-group-sub" data-submenu-title="Layouts" style="<?= $dropdownSuperAdmin['style']; ?>">
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_status'); ?>" class="nav-link <?= $linkSuperAdmin['linkStatusPelayanan']; ?>">Data Status Pelayanan</a></li>
                             <li class="nav-item"><a href="<?= base_url('users/superadmin/m_user'); ?>" class="nav-link <?= $linkSuperAdmin['linkUser']; ?>">Data User</a></li>
-                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_log_WA'); ?>" class="nav-link <?= $linkSuperAdmin['linkDelLogWA']; ?>">Hapus History Log WA</a></li>
-                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_dat_pasien'); ?>" class="nav-link <?= $linkSuperAdmin['linkDelDatPasien']; ?>">Hapus Data Pasien</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-item-submenu <?= $dropdownSuperAdminSubMenu['nav']; ?>">
+                        <a href="#" class="nav-link"><i class="icon-users"></i> <span>Master Delete</span></a>
+
+                        <ul class="nav nav-group-sub" data-submenu-title="Layouts" style="<?= $dropdownSuperAdminSubMenu['style']; ?>">
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_log_WA'); ?>" class="nav-link <?= $linkSuperAdminSubMenu['linkDelLogWA']; ?>">Hapus History Log WA</a></li>
+                            <li class="nav-item"><a href="<?= base_url('users/superadmin/m_del_dat_pasien'); ?>" class="nav-link <?= $linkSuperAdminSubMenu['linkDelDatPasien']; ?>">Hapus Data Pasien</a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-submenu <?= $dropdownSuperAdminLaporan['nav']; ?>">

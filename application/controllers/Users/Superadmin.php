@@ -35,7 +35,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -85,7 +96,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -200,7 +222,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -308,7 +341,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => 'active',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -405,7 +449,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => 'active',
+            'linkUser' => 'active'
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -472,7 +527,6 @@ class Superadmin extends CI_Controller
             }
         }
     }
-
 
     public function update_isActive()
     {
@@ -601,7 +655,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -764,15 +829,26 @@ class Superadmin extends CI_Controller
 
         // MENU DATA MASTER
         $this->data['dropdownSuperAdmin'] = [
-            'nav' => 'nav-item-open',
-            'style' => 'display: block;',
+            'nav' => '',
+            'style' => '',
             // nav : nav-item-open
             // style : display: block;
         ];
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => 'active',
             'linkDelDatPasien' => ''
         ];
@@ -834,15 +910,26 @@ class Superadmin extends CI_Controller
 
         // MENU DATA MASTER
         $this->data['dropdownSuperAdmin'] = [
-            'nav' => 'nav-item-open',
-            'style' => 'display: block;',
+            'nav' => '',
+            'style' => '',
             // nav : nav-item-open
             // style : display: block;
         ];
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => 'active'
         ];
@@ -913,7 +1000,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];
@@ -962,7 +1060,18 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => '',
+            'linkUser' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
             'linkDelLogWA' => '',
             'linkDelDatPasien' => ''
         ];

@@ -219,9 +219,7 @@
                             <option value="CRYSTAL">CRYSTAL</option>
                             <option value="ENDOSCOPY">ENDOSCOPY</option>
                             <option value="UKB">UKB</option>
-                            <option value="Malam">Malam</option>
-                            <option value="Malam">Malam</option>
-                            <option value="Malam">Malam</option>
+                            <option value="PERINA">PERINA</option>
                         </select>
                     </div>
                 </div>
