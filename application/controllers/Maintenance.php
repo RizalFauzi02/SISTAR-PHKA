@@ -6,6 +6,6 @@ class Maintenance extends CI_Controller
     public function index()
     {
         $data['title'] = 'Maintenance';
-        $this->load->view('maintenance', $data);
+        $this->load->view('maintenance_view', $data);
     }
 }

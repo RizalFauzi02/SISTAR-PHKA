@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title><?= $title; ?> - SIAP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="refresh" content="5;url=<?php echo site_url('/'); ?>">
     <link rel="shortcut icon" href="<?php echo base_url('assets/app-assets/img/logo.png'); ?>">
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -84,6 +85,11 @@
     <!-- Bootstrap 4 JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 30000); // 60000 ms = 60 detik
+    </script>
 
 </body>
 
