@@ -30,6 +30,30 @@ class M_superadmin extends CI_Model
         return json_decode($response, true);
     }
 
+    // Fungsi untuk mengambil status pesan dari UltraMsg
+
+    public function get_status_pesan($limit = 20, $status = '')
+    {
+        $api_url = "https://api.ultramsg.com/" . $this->instance_id . "/messages?token=" . $this->api_token . "&limit=" . $limit;
+
+        if (!empty($status)) {
+            $api_url .= "&status=" . urlencode($status);
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $api_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $result = json_decode($response, true);
+        // Perhatikan bahwa data pesan ada di kunci 'messages'
+        return $result['messages'] ?? [];
+    }
+
+
+
+
     // Fungsi untuk menyimpan log WhatsApp
     public function simpan_log_WhatsApp($nomor, $pesan, $user_id, $username, $id_pasien, $id_status)
     {

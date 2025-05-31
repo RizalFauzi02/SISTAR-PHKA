@@ -35,7 +35,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -96,7 +97,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -222,7 +224,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -341,7 +344,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => 'active',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -449,7 +453,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => 'active'
+            'linkUser' => 'active',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -655,7 +660,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -837,7 +843,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -918,7 +925,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -1000,7 +1008,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -1060,7 +1069,8 @@ class Superadmin extends CI_Controller
         $this->data['linkSuperAdmin'] = [
             // LINK ACTIVE
             'linkStatusPelayanan' => '',
-            'linkUser' => ''
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
         ];
 
         // MENU SUBMENU DELETE
@@ -1341,4 +1351,85 @@ class Superadmin extends CI_Controller
     // ========================== END LAPORAN ==============================
 
     // END LAPORAN
+
+
+    public function status_pesan_Ultramsg()
+    {
+        // Default
+        $this->data['title'] = 'Log Whatsapp API Whatsapp';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => ''
+        ];
+
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => 'nav-item-open',
+            'style' => 'display: block;',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'LinkLogUltraMsg' => 'active'
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $status = $this->input->get('status');
+        $this->data['data_pesan'] = $this->M_superadmin->get_status_pesan(100, $status);
+        $this->data['filter_status'] = $status;
+        $this->template->load('template/default/template', 'superadmin/log_UltraMsg', $this->data);
+    }
+
+    public function get_log_pesan_ajax()
+    {
+        $status = $this->input->get('status');
+        $data_pesan = $this->M_superadmin->get_status_pesan(100, $status);
+
+        // Jika butuh sorting di PHP:
+        usort($data_pesan, function ($a, $b) {
+            return ($b['sent_at'] ?? 0) - ($a['sent_at'] ?? 0);
+        });
+
+        $output = ['data' => $data_pesan];
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
 }
