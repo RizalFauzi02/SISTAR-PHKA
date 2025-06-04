@@ -141,6 +141,14 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/admin/status_pengiriman_pesan'); ?>" class="nav-link <?= $menuAdmin['status_pesan']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Status Pengiriman Whatsapp
+                            </span>
+                        </a>
+                    </li>
                 <?php } elseif ($_SESSION['is_role'] == 3) { ?>
                     <!-- PERAWAT -->
                     <li class="nav-item">
@@ -159,6 +167,14 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/perawat/status_pengiriman_pesan'); ?>" class="nav-link <?= $menuPerawat['status_pesan']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Status Pengiriman Whatsapp
+                            </span>
+                        </a>
+                    </li>
                 <?php } elseif ($_SESSION['is_role'] == 4) { ?>
                     <!-- FARMASI -->
                     <li class="nav-item">
@@ -174,6 +190,14 @@
                             <i class="icon-gear"></i>
                             <span>
                                 History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/farmasi/status_pengiriman_pesan'); ?>" class="nav-link <?= $menuFarmasi['status_pesan']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Status Pengiriman Whatsapp
                             </span>
                         </a>
                     </li>
@@ -200,6 +224,14 @@
                             <i class="icon-gear"></i>
                             <span>
                                 History Pengiriman WhatsApp
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/manajemen/status_pengiriman_pesan'); ?>" class="nav-link <?= $menuManajemen['status_pesan']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Status Pengiriman Whatsapp
                             </span>
                         </a>
                     </li>

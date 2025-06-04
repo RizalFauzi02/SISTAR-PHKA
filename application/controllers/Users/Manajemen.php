@@ -21,7 +21,8 @@ class Manajemen extends CI_Controller
         $this->data['menuManajemen'] = [
             'Dashboard'     => 'active',
             'data_pasien'        => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'status_pesan' => ''
         ];
 
         $this->data['dropdownManajemen'] = [
@@ -56,7 +57,8 @@ class Manajemen extends CI_Controller
         $this->data['menuManajemen'] = [
             'Dashboard'     => '',
             'data_pasien'        => 'active',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'status_pesan' => ''
         ];
 
         $this->data['dropdownManajemen'] = [
@@ -117,7 +119,8 @@ class Manajemen extends CI_Controller
         $this->data['menuManajemen'] = [
             'Dashboard'     => '',
             'data_pasien'        => '',
-            'log_WA'        => 'active'
+            'log_WA'        => 'active',
+            'status_pesan' => ''
         ];
 
         $this->data['dropdownManajemen'] = [
@@ -178,7 +181,8 @@ class Manajemen extends CI_Controller
         $this->data['menuManajemen'] = [
             'Dashboard'     => '',
             'data_pasien'        => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'status_pesan' => ''
         ];
 
         // MENU LAPORAN
@@ -210,7 +214,8 @@ class Manajemen extends CI_Controller
         $this->data['menuManajemen'] = [
             'Dashboard'     => '',
             'data_pasien'        => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'status_pesan' => ''
         ];
 
         // MENU LAPORAN
@@ -478,4 +483,56 @@ class Manajemen extends CI_Controller
     // ==================================================== END FUNCTION EXPORT EXCEL ====================================================
 
     // ========================== END LAPORAN ==============================
+
+    public function status_pengiriman_pesan()
+    {
+        // Default
+        $this->data['title'] = 'Status Pengiriman Whatsapp';
+        $this->data['menuManajemen'] = [
+            'Dashboard'     => '',
+            'data_pasien'        => '',
+            'log_WA'        => '',
+            'status_pesan' => 'active'
+        ];
+
+        $this->data['dropdownManajemen'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkManajemen'] = [
+            // LINK ACTIVE
+            'linkLapLogWA' => '',
+            'linkLapPasien' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $status = $this->input->get('status');
+        $this->data['data_pesan'] = $this->M_superadmin->get_status_pesan(100, $status);
+        $this->data['filter_status'] = $status;
+        $this->template->load('template/default/template', 'manajemen/log_UltraMsg', $this->data);
+    }
+
+    public function get_log_pesan_ajax()
+    {
+        $status = $this->input->get('status');
+        $data_pesan = $this->M_superadmin->get_status_pesan(100, $status);
+
+        // Jika butuh sorting di PHP:
+        usort($data_pesan, function ($a, $b) {
+            return ($b['sent_at'] ?? 0) - ($a['sent_at'] ?? 0);
+        });
+
+        $output = ['data' => $data_pesan];
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
 }
