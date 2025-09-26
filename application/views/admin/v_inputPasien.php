@@ -91,11 +91,11 @@
                         </div>
                         <div class="form-group mt-3">
                             <label for="tanggal_lahir">Tanggal Lahir:</label>
-                            <input type="date" name="tanggal_lahir" class="form-control">
+                            <input type="date" name="tanggal_lahir" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="jaminan">Jaminan</label>
-                            <select class="form-control select-search" id="jaminan" name="jaminan">
+                            <select class="form-control select-search" id="jaminan" name="jaminan" required>
                                 <option value="" disabled selected>-- Pilih Jaminan --</option>
                                 <option value="UMUM">UMUM</option>
                                 <option value="ASURANSI">ASURANSI</option>
@@ -105,7 +105,7 @@
                         </div>
                         <div class="form-group">
                             <label for="no_whatsapp">No Whatsapp Pasien:</label>
-                            <input type="number" name="no_whatsapp" class="form-control" placeholder="6285956xxxxxx">
+                            <input type="number" name="no_whatsapp" class="form-control" placeholder="6285956xxxxxx" required>
                             <p>*Penulisan nomor WhatsApp: <b>6285956xxxxxx</b></p>
                         </div>
                         <div class="text-right">

@@ -130,6 +130,20 @@ class M_superadmin extends CI_Model
             ->result_array();
     }
 
+    public function get_pasien_nullKamar()
+    {
+        return $this->db->select('m_pasien.*')
+            ->from('m_pasien')
+            ->group_start()                       // buka grup kondisi
+            ->where('m_pasien.kamar IS NULL') // kondisi null
+            ->or_where('m_pasien.kamar', '')  // kondisi string kosong
+            ->group_end()                         // tutup grup kondisi
+            ->order_by('m_pasien.created_at', 'DESC')
+            ->get()
+            ->result_array();
+    }
+
+
     public function get_total_pasien()
     {
         return $this->db->count_all('m_pasien');

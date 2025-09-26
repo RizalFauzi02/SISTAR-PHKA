@@ -160,6 +160,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?= base_url('users/perawat/dataPasien'); ?>" class="nav-link <?= $menuPerawat['DatPasien']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Data Pasien Kamar Kosong
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?= base_url('users/perawat/log_SendWhatsApp'); ?>" class="nav-link <?= $menuPerawat['log_WA']; ?>">
                             <i class="icon-gear"></i>
                             <span>

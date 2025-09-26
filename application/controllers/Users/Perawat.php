@@ -21,6 +21,7 @@ class Perawat extends CI_Controller
         $this->data['menuPerawat'] = [
             'Dashboard'     => '',
             'Status'       => 'active',
+            'DatPasien'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
             'status_pesan' => ''
@@ -126,6 +127,7 @@ class Perawat extends CI_Controller
         $this->data['menuPerawat'] = [
             'Dashboard'     => '',
             'Status'       => '',
+            'DatPasien'       => '',
             'PasienPulang'       => '',
             'log_WA'        => 'active',
             'status_pesan' => ''
@@ -183,6 +185,37 @@ class Perawat extends CI_Controller
         echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
     }
 
+    public function get_pasien_nulKamar()
+    {
+        header('Content-Type: application/json');
+
+        $logs = $this->M_superadmin->get_pasien_nullKamar();
+        // var_dump($logs);
+        // die;
+
+        if (!$logs) {
+            echo json_encode(["data" => []]);
+            return;
+        }
+
+        // Ubah dari array biasa ke format JSON yang benar
+        $data = [];
+        foreach ($logs as $log) {
+            $data[] = [
+                "nama_pasien"     => htmlspecialchars($log['nama_pasien']),
+                "tanggal_lahir"   => date('d/m/Y', strtotime($log['tanggal_lahir'])),
+                "no_whatsapp"     => htmlspecialchars($log['no_whatsapp']),
+                "jaminan"         => htmlspecialchars($log['jaminan'] ?? ""), // Pastikan tidak null
+                "kamar"           => htmlspecialchars($log['kamar'] ?? ""), // Pastikan tidak null
+                "created_at"      => date('d/m/Y H:i:s', strtotime($log['created_at'])),
+                "updated_at"      => date('d/m/Y H:i:s', strtotime($log['updated_at'])),
+                "id_pasien"       => $log['id_pasien']
+            ];
+        }
+
+        echo json_encode(["data" => $data], JSON_PRETTY_PRINT);
+    }
+
     public function status_pengiriman_pesan()
     {
         // Default
@@ -190,6 +223,7 @@ class Perawat extends CI_Controller
         $this->data['menuPerawat'] = [
             'Dashboard'     => '',
             'Status'       => '',
+            'DatPasien'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
             'status_pesan' => 'active'
@@ -234,5 +268,79 @@ class Perawat extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($output));
+    }
+
+    public function dataPasien()
+    {
+        // Default
+        $this->data['title'] = 'Data Pasien';
+        $this->data['menuPerawat'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'DatPasien'       => 'active',
+            'PasienPulang'       => '',
+            'log_WA'        => '',
+            'status_pesan' => ''
+        ];
+
+        $this->data['dropdownPerawat'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkPerawat'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // var_dump($this->data['user']);
+        // die;
+        // WAJIB ADA
+
+        $status = $this->input->get('status');
+        $this->data['data_pesan'] = $this->M_superadmin->get_status_pesan(100, $status);
+        $this->data['filter_status'] = $status;
+        $this->template->load('template/default/template', 'perawat/data_pasien', $this->data);
+    }
+
+    public function editPasien()
+    {
+        $id_pasien = $this->input->post('id_pasien');
+
+        // Ambil data dari input form
+        $data = [
+            'nama_pasien'   => $this->input->post('nama_pasien'),
+            'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+            'jaminan'   => $this->input->post('jaminan'),
+            'no_whatsapp'   => $this->input->post('no_whatsapp'),
+            'kamar'   => $this->input->post('kamar')
+        ];
+
+        // var_dump($data);
+        // die;
+
+        // Hapus field yang kosong agar tidak memperbarui dengan NULL
+        $data = array_filter($data, function ($value) {
+            return !empty($value);
+        });
+
+        // Cek jika ada perubahan data
+        if (!empty($data)) {
+            if ($this->M_superadmin->update_pasien($id_pasien, $data)) {
+                $this->session->set_flashdata('success', 'Data pasien berhasil diperbarui!');
+            } else {
+                $this->session->set_flashdata('error', 'Gagal memperbarui data pasien.');
+            }
+        } else {
+            $this->session->set_flashdata('info', 'Tidak ada perubahan data.');
+        }
+
+        redirect('users/perawat/dataPasien');
     }
 }
