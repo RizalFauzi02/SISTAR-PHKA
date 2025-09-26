@@ -1275,10 +1275,11 @@ class Superadmin extends CI_Controller
             ->setCellValue('B1', 'Tanggal Kirim')
             ->setCellValue('C1', 'Nama Pasien')
             ->setCellValue('D1', 'Ruangan')
-            ->setCellValue('E1', 'Nomor WhatsApp')
-            ->setCellValue('F1', 'Pesan Status')
-            ->setCellValue('G1', 'Pengirim Pesan')
-            ->setCellValue('H1', 'Pesan Status');
+            ->setCellValue('E1', 'Jaminan')
+            ->setCellValue('F1', 'Nomor WhatsApp')
+            ->setCellValue('G1', 'Pesan Status')
+            ->setCellValue('H1', 'Pengirim Pesan')
+            ->setCellValue('I1', 'Pesan Status');
 
         $row = 2;
         $no = 1;
@@ -1287,10 +1288,11 @@ class Superadmin extends CI_Controller
                 ->setCellValue('B' . $row, date('d-m-Y H:i:s', strtotime($datLog['tgl_kirim'])))
                 ->setCellValue('C' . $row, $datLog['nama_pasien'])
                 ->setCellValue('D' . $row, $datLog['kamar'])
-                ->setCellValueExplicit('E' . $row, $datLog['nomor_pasien'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
-                ->setCellValue('F' . $row, $datLog['nama_status'])
-                ->setCellValue('G' . $row, $datLog['username_pengirim'])
-                ->setCellValue('H' . $row, $datLog['pesan_whatsapp']);
+                ->setCellValue('E' . $row, $datLog['jaminan'])
+                ->setCellValueExplicit('F' . $row, $datLog['nomor_pasien'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING)
+                ->setCellValue('G' . $row, $datLog['nama_status'])
+                ->setCellValue('H' . $row, $datLog['username_pengirim'])
+                ->setCellValue('I' . $row, $datLog['pesan_whatsapp']);
             $row++;
         }
 

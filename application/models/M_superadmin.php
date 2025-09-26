@@ -359,7 +359,7 @@ class M_superadmin extends CI_Model
 
     public function get_log_by_date($start_datetime, $end_datetime)
     {
-        return $this->db->select('log_sendwhatsapp.*, m_pasien.nama_pasien, m_pasien.tanggal_lahir, m_pasien.kamar, m_status.nama_status')
+        return $this->db->select('log_sendwhatsapp.*, m_pasien.nama_pasien, m_pasien.tanggal_lahir, m_pasien.kamar, m_pasien.jaminan, m_status.nama_status')
             ->from('log_sendwhatsapp')
             ->join('m_pasien', 'm_pasien.id_pasien = log_sendwhatsapp.id_pasien', 'inner')
             ->join('m_status', 'm_status.id_status = log_sendwhatsapp.id_status', 'inner')
