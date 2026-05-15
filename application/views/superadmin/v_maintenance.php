@@ -132,7 +132,7 @@
                             </button>
                         </div>
                     <?php endif; ?>
-                    <form action="<?= base_url('users/superadmin/prosesMaintenance'); ?>" method="POST">
+                    <form action="<?= base_url('Users/superadmin/prosesMaintenance'); ?>" method="POST">
 
                         <div class="form-group text-center text-muted content-divider">
                             <span class="px-2">Maintenance Mode</span>
