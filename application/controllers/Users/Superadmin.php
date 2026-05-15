@@ -23,7 +23,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => 'active',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -85,7 +86,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => 'active',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -212,7 +214,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => 'active'
+            'log_WA'        => 'active',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -332,7 +335,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -441,7 +445,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'      => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -650,7 +655,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => 'active',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -830,7 +836,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -912,7 +919,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -995,7 +1003,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -1056,7 +1065,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -1363,7 +1373,8 @@ class Superadmin extends CI_Controller
             'Dashboard'     => '',
             'Status'       => '',
             'PasienPulang'       => '',
-            'log_WA'        => ''
+            'log_WA'        => '',
+            'mtc_mode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -1433,5 +1444,90 @@ class Superadmin extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($output));
+    }
+
+    public function maintenance()
+    {
+        // Default
+        $this->data['title'] = 'Maintenance Mode';
+        $this->data['menuSuperAdmin'] = [
+            'Dashboard'     => '',
+            'Status'       => '',
+            'PasienPulang'       => '',
+            'log_WA'        => '',
+            'mtc_mode'  => 'active'
+        ];
+
+        $this->data['dropdownSuperAdmin'] = [
+            'nav' => '',
+            'style' => '',
+        ];
+        $this->data['linkSuperAdmin'] = [
+            // LINK ACTIVE
+            'linkStatusPelayanan' => '',
+            'linkUser' => '',
+            'LinkLogUltraMsg' => ''
+        ];
+
+        // MENU SUBMENU DELETE
+        $this->data['dropdownSuperAdminSubMenu'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminSubMenu'] = [
+            // LINK ACTIVE
+            'linkDelLogWA' => '',
+            'linkDelDatPasien' => ''
+        ];
+
+        // MENU LAPORAN
+        $this->data['dropdownSuperAdminLaporan'] = [
+            'nav' => '',
+            'style' => '',
+            // nav : nav-item-open
+            // style : display: block;
+        ];
+        $this->data['linkSuperAdminLap'] = [
+            // LINK ACTIVE
+            'linkLapPasien' => '',
+            'linkLapLog' => '',
+            'linkLapUser' => ''
+        ];
+        // END Default
+
+        // WAJIB ADA
+        $session = $this->session->userdata('username');
+        $this->data['user'] = $this->M_superadmin->getuser($session)->row_array();
+        // WAJIB ADA
+
+        $this->data['site_config'] = $this->M_superadmin->getSiteConfig();
+
+        $this->template->load('template/default/template', 'superadmin/v_maintenance', $this->data);
+    }
+
+    public function prosesMaintenance()
+    {
+
+        // Jika checkbox dicentang
+        if ($this->input->post('maintenance_mode')) {
+            $maintenance = 1;
+        } else {
+            $maintenance = 0;
+        }
+
+        $data = [
+            'maintenance_mode' => $maintenance
+        ];
+
+        $this->M_superadmin->updateMaintenance($data);
+
+        $this->session->set_flashdata(
+            'success',
+            'Status maintenance berhasil diperbarui'
+        );
+
+        redirect('users/superadmin/maintenance');
     }
 }
