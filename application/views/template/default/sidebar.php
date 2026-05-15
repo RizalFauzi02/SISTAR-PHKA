@@ -255,17 +255,19 @@
                         </ul>
                     </li>
                 <?php } ?>
-                <li class="nav-item-header">
-                    <div class="text-uppercase font-size-xs line-height-xs">MAINTENANCE</div> <i class="icon-menu" title="Main"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= base_url('users/superadmin/maintenance'); ?>" class="nav-link <?= $menuSuperAdmin['MtcMode']; ?>">
-                        <i class="icon-gear"></i>
-                        <span>
-                            Maintenance Mode
-                        </span>
-                    </a>
-                </li>
+                <?php if ($_SESSION['is_role'] == 1) { ?>
+                    <li class="nav-item-header">
+                        <div class="text-uppercase font-size-xs line-height-xs">MAINTENANCE</div> <i class="icon-menu" title="Main"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url('users/superadmin/maintenance'); ?>" class="nav-link <?= $menuSuperAdmin['MtcMode']; ?>">
+                            <i class="icon-gear"></i>
+                            <span>
+                                Maintenance Mode
+                            </span>
+                        </a>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
         <!-- /main navigation -->
