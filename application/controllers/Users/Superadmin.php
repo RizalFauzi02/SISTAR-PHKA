@@ -24,7 +24,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -87,7 +87,7 @@ class Superadmin extends CI_Controller
             'Status'       => 'active',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -215,7 +215,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => 'active',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -336,7 +336,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -446,7 +446,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'      => ''
+            'MtcMode'      => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -656,7 +656,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => 'active',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -837,7 +837,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -920,7 +920,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -1004,7 +1004,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -1066,7 +1066,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         // MENU DATA MASTER
@@ -1374,7 +1374,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => ''
+            'MtcMode'  => ''
         ];
 
         $this->data['dropdownSuperAdmin'] = [
@@ -1455,7 +1455,7 @@ class Superadmin extends CI_Controller
             'Status'       => '',
             'PasienPulang'       => '',
             'log_WA'        => '',
-            'mtc_mode'  => 'active'
+            'MtcMode'  => 'active'
         ];
 
         $this->data['dropdownSuperAdmin'] = [
