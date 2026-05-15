@@ -384,7 +384,15 @@ class M_superadmin extends CI_Model
             ->result_array();
     }
 
+    public function getSiteConfig()
+    {
+        return $this->db->get('site_config')->row_array();
+    }
 
+    public function updateMaintenance($data)
+    {
+        return $this->db->update('site_config', $data);
+    }
 
     // end
 }
