@@ -80,6 +80,23 @@
                 Informasi lebih lengkap bisa hubungi <a href="https://wa.link/4ia9bz" target="_blank">Divis Mutu PHKA</a>
             </div>
         </div>
+        <!-- <div class="maintenance-box">
+            <div class="maintenance-icon mb-4">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h1 class="mb-3" style="color: red;">PERALIHAN LINK SIAP!</h1>
+            <p class="text-muted">Sistem SIAP <i>(Sistem Informasi pAsien Pulang)</i> sudah beralih ke link baru<br>yaitu: <br>
+                <center>
+                    <h4><a href="https://phka-siap.com/">https://phka-siap.com/</a></h4>
+                </center>
+            </p>
+
+            <hr>
+
+            <div class="info-text">
+                Informasi lebih lengkap bisa hubungi <a href="https://wa.link/4ia9bz" target="_blank">Divis Mutu PHKA</a>
+            </div>
+        </div> -->
     </div>
 
     <!-- Bootstrap 4 JS -->
