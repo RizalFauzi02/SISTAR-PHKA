@@ -1528,6 +1528,6 @@ class Superadmin extends CI_Controller
             'Status maintenance berhasil diperbarui'
         );
 
-        redirect('users/superadmin/maintenance');
+        redirect('Users/superadmin/maintenance');
     }
 }
