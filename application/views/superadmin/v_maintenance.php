@@ -137,7 +137,53 @@
                         method="POST"
                         id="formMaintenance">
 
-                        <!-- hidden password -->
+                        <div class="form-group text-center text-muted content-divider">
+                            <span class="px-2">Maintenance Mode</span>
+                        </div>
+
+                        <?php if ($this->session->userdata('is_role') == '1'): ?>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+
+                                    <input type="checkbox"
+                                        class="custom-control-input"
+                                        id="maintenance_mode"
+                                        name="maintenance_mode"
+                                        value="1"
+                                        <?= (!empty($site_config) && $site_config['maintenance_mode'] == 1) ? 'checked' : ''; ?>>
+
+                                    <label class="custom-control-label" for="maintenance_mode">
+                                        Aktifkan Maintenance
+                                    </label>
+
+                                </div>
+                            </div>
+
+                        <?php endif; ?>
+
+                        <div class="form-group">
+                            <label>Status Maintenance : </label>
+
+                            <h5>
+                                <b>
+                                    <?= ($site_config['maintenance_mode'] == 1) ? 'AKTIF' : 'NONAKTIF'; ?>
+                                </b>
+                            </h5>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit"
+                                class="btn btn-primary">
+                                Simpan Status
+                            </button>
+                        </div>
+
+                    </form>
+                    <!-- <form action="<?= base_url('Users/superadmin/prosesMaintenance'); ?>"
+                        method="POST"
+                        id="formMaintenance">
+
                         <input type="hidden" name="confirm_password" id="hidden_password">
 
                         <div class="form-group text-center text-muted content-divider">
@@ -183,10 +229,10 @@
                             </button>
                         </div>
 
-                    </form>
+                    </form> -->
                     <!-- MODAL AKSES MAINTENANCE MODE -->
                     <!-- MODAL PASSWORD -->
-                    <div class="modal fade"
+                    <!-- <div class="modal fade"
                         id="modalPassword"
                         tabindex="-1"
                         role="dialog"
@@ -218,7 +264,6 @@
 
                                         <label>Masukkan Password :</label>
 
-                                        <!-- Input Group -->
                                         <div class="input-group">
 
                                             <input type="password"
@@ -269,7 +314,7 @@
 
                         </div>
 
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
