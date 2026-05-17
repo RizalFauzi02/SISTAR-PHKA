@@ -133,7 +133,7 @@
                             </button>
                         </div>
                     <?php endif; ?>
-                    <form action="<?= base_url('Users/superadmin/prosesMaintenance'); ?>"
+                    <form action="<?= base_url('users/superadmin/prosesMaintenance'); ?>"
                         method="POST"
                         id="formMaintenance">
 
