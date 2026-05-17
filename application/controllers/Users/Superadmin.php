@@ -1545,7 +1545,7 @@ class Superadmin extends CI_Controller
         echo "
         <script>
             alert('Status maintenance berhasil diupdate!');
-            window.location.href = '" . base_url('Users/superadmin/maintenance') . "';
+            window.location.href = '" . base_url('users/superadmin/maintenance') . "';
         </script>
     ";
     }
