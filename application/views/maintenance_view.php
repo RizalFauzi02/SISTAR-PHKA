@@ -67,7 +67,7 @@
 <body>
 
     <div class="maintenance-wrapper">
-        <div class="maintenance-box">
+        <!-- <div class="maintenance-box">
             <div class="maintenance-icon mb-4">
                 <i class="fas fa-tools"></i>
             </div>
@@ -79,8 +79,8 @@
             <div class="info-text">
                 Informasi lebih lengkap bisa hubungi <a href="https://wa.link/4ia9bz" target="_blank">Divis Mutu PHKA</a>
             </div>
-        </div>
-        <!-- <div class="maintenance-box">
+        </div> -->
+        <div class="maintenance-box">
             <div class="maintenance-icon mb-4">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
@@ -96,7 +96,7 @@
             <div class="info-text">
                 Informasi lebih lengkap bisa hubungi <a href="https://wa.link/4ia9bz" target="_blank">Divis Mutu PHKA</a>
             </div>
-        </div> -->
+        </div>
     </div>
 
     <!-- Bootstrap 4 JS -->
