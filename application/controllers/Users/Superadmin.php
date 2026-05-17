@@ -1509,25 +1509,44 @@ class Superadmin extends CI_Controller
 
     public function prosesMaintenance()
     {
+        $password = $this->input->post('confirm_password');
 
-        // Jika checkbox dicentang
-        if ($this->input->post('maintenance_mode')) {
-            $maintenance = 1;
-        } else {
-            $maintenance = 0;
+        // ambil data user login
+        $user = $this->db
+            ->where('id_user', $this->session->userdata('id_user'))
+            ->get('tbl_user')
+            ->row_array();
+        // ambil data site config
+        $site_config = $this->db
+            ->get('site_config')
+            ->row_array();
+
+        // cek password plain text
+        if ($password != $site_config['pass_config']) {
+
+            echo "
+            <script>
+                alert('Password salah!');
+                window.history.back();
+            </script>
+        ";
+
+            exit;
         }
 
-        $data = [
+        // status maintenance
+        $maintenance = $this->input->post('maintenance_mode') ? 1 : 0;
+
+        // update database
+        $this->db->update('site_config', [
             'maintenance_mode' => $maintenance
-        ];
+        ]);
 
-        $this->M_superadmin->updateMaintenance($data);
-
-        $this->session->set_flashdata(
-            'success',
-            'Status maintenance berhasil diperbarui'
-        );
-
-        redirect('Users/superadmin/maintenance');
+        echo "
+        <script>
+            alert('Status maintenance berhasil diupdate!');
+            window.location.href = '" . base_url('Users/superadmin/maintenance') . "';
+        </script>
+    ";
     }
 }
