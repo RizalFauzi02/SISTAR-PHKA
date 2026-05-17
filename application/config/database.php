@@ -77,9 +77,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'u298777626_db_siap',
-	'password' => '3hL=xMV+C9x',
-	'database' => 'u298777626_db_siap',
+	'username' => 'u697875180_db_siap',
+	'password' => 'Db@S1Ap!@26',
+	'database' => 'u697875180_db_siap',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
